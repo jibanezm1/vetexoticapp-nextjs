@@ -1,0 +1,35 @@
+[
+    {
+        "id": "emergencias-reptiles",
+        "titulo": "Manejo de Emergencias en Reptiles",
+        "descripcion": "Workshop práctico de 6 horas sobre protocolos de urgencia en reptiles domésticos.",
+        "fecha": "2025-12-15",
+        "mes": "DIC",
+        "dia": 15,
+        "duracion": "6 horas",
+        "maxParticipantes": 12,
+        "precio": 85000
+    },
+    {
+        "id": "farmacologia-exotica",
+        "titulo": "Actualización en Farmacología Exótica",
+        "descripcion": "Nuevos protocolos farmacológicos y dosificaciones para animales no convencionales.",
+        "fecha": "2026-01-20",
+        "mes": "ENE",
+        "dia": 20,
+        "duracion": "4 horas",
+        "maxParticipantes": 15,
+        "precio": 65000
+    },
+    {
+        "id": "sutura-microcirugia",
+        "titulo": "Técnicas de Sutura en Microcirugia",
+        "descripcion": "Perfeccionamiento de técnicas de sutura para procedimientos delicados en animales pequeños.",
+        "fecha": "2026-02-10",
+        "mes": "FEB",
+        "dia": 10,
+        "duracion": "8 horas",
+        "maxParticipantes": 8,
+        "precio": 120000
+    }
+]

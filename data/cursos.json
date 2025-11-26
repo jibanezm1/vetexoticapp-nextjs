@@ -1,0 +1,53 @@
+[
+    {
+        "id": "cirugia-tejidos-blandos",
+        "titulo": "Cirugía de Tejidos Blandos en Animales Exóticos",
+        "descripcion": "Curso intensivo de técnicas quirúrgicas especializadas para pequeños mamíferos, aves y reptiles.",
+        "destacado": true,
+        "duracion": "8 semanas",
+        "horas": "40 horas",
+        "maxAlumnos": 8,
+        "precio": 450000,
+        "imagen": "/images/curso-cirugia.png",
+        "temario": [
+            "Técnicas anestésicas especializadas",
+            "Cirugía abdominal en conejos",
+            "Procedimientos en aves",
+            "Manejo post-operatorio"
+        ]
+    },
+    {
+        "id": "odontologia-mascotas-no-convencionales",
+        "titulo": "Odontología en Mascotas No Convencionales",
+        "descripcion": "Especialización en tratamientos dentales para conejos, roedores y otros pequeños mamíferos.",
+        "destacado": false,
+        "duracion": "6 semanas",
+        "horas": "30 horas",
+        "maxAlumnos": 10,
+        "precio": 320000,
+        "imagen": "/images/curso-odontologia.png",
+        "temario": [
+            "Anatomía dental comparada",
+            "Técnicas de limado dental",
+            "Diagnóstico por imágenes",
+            "Manejo de abscesos dentales"
+        ]
+    },
+    {
+        "id": "medicina-integral-aves",
+        "titulo": "Medicina Integral de Aves",
+        "descripcion": "Formación completa en diagnóstico, tratamiento y manejo de aves ornamentales y silvestres.",
+        "destacado": false,
+        "duracion": "10 semanas",
+        "horas": "50 horas",
+        "maxAlumnos": 6,
+        "precio": 520000,
+        "imagen": "/images/curso-aves.png",
+        "temario": [
+            "Anatomía y fisiología aviar",
+            "Medicina preventiva",
+            "Enfermedades infecciosas",
+            "Medicina de emergencias"
+        ]
+    }
+]

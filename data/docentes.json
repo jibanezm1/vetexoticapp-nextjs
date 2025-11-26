@@ -1,0 +1,94 @@
+[
+    {
+        "id": "natalia-villalobos",
+        "nombre": "Dra. Natalia Villalobos",
+        "especialidad": "Medicina Interna de Animales Exóticos",
+        "imagen": "/images/docente-natalia.jpg",
+        "descripcion": "Médico Veterinaria de la Universidad de Chile. Experta en Animales Exóticos certificada por la Universidad de Valencia, España. Especialista en medicina interna de mamíferos no tradicionales, con particular experiencia en Histricomorfos.",
+        "formacion": [
+            "Experto en Animales Exóticos - Universidad de Valencia, España",
+            "Diplomado en Imagenología de Pequeños Animales - Universidad de Chile",
+            "Múltiples Diplomados en Medicina de Animales Exóticos",
+            "Cursos: Emergencia, Cuidados Críticos, Dermatología, Imagenología"
+        ],
+        "areas": [
+            "Medicina Interna",
+            "Imagenología Veterinaria",
+            "Emergencias y Críticos",
+            "Dermatología Exóticos"
+        ],
+        "experiencia": "Docente de pre y postgrado, con experiencia como mentora de alumnos en práctica. Realiza charlas profesionales tanto a colegas como a tutores, enfocándose en la educación y actualización en el manejo de animales no tradicionales.",
+        "contacto": {
+            "email": "Contacto disponible"
+        }
+    },
+    {
+        "id": "macarena-hidalgo",
+        "nombre": "Dra. Macarena Hidalgo Pedemonte",
+        "especialidad": "Medicina y Manejo de Animales Exóticos",
+        "imagen": "/images/docente-macarena.jpg",
+        "descripcion": "Médico Veterinario de la Universidad Iberoamericana de Ciencias y Tecnología. Especialista en medicina y manejo de animales exóticos con formación continua en medicina interna de mascotas exóticas.",
+        "formacion": [
+            "Diplomado en Medicina y Manejo de Animales Exóticos - Universidad de Chile",
+            "PG Cert. Exotic - Ifevet",
+            "Múltiples cursos de actualización en medicina interna de mascotas exóticas"
+        ],
+        "areas": [
+            "Medicina Interna",
+            "Manejo Clínico",
+            "Diagnóstico Complejo",
+            "Tratamientos Especializados"
+        ],
+        "experiencia": "Especialista en medicina interna y manejo clínico de animales exóticos, con énfasis en diagnóstico y tratamiento de patologías complejas.",
+        "contacto": {}
+    },
+    {
+        "id": "amparo-hidalgo",
+        "nombre": "Dra. Amparo Hidalgo Mortera",
+        "especialidad": "Medicina de Aves y Cirugía de Exóticos",
+        "imagen": "/images/docente-amparo.jpg",
+        "descripcion": "Médico Veterinario especialista en medicina de aves y cirugía de animales exóticos. Docente de pre y postgrado con amplia experiencia clínica en Clínica Veterinaria Tus Mascotas.",
+        "formacion": [
+            "Diplomado en Medicina y Manejo de Mascotas No Convencionales - Universidad de Chile",
+            "Diplomado de Medicina de Aves - IMFAC (México)",
+            "Postgrado en Medicina y Cirugía de Animales Exóticos - Ifevet (España)"
+        ],
+        "areas": [
+            "Medicina de Aves",
+            "Cirugía de Exóticos",
+            "Medicina Interna",
+            "Docencia Universitaria"
+        ],
+        "experiencia": "Médico en Clínica Veterinaria Tus Mascotas, donde realiza consultas especializadas, procedimientos quirúrgicos y tratamientos de medicina interna en animales exóticos.",
+        "contacto": {}
+    },
+    {
+        "id": "camila-arancibia",
+        "nombre": "Dra. Camila Paz Arancibia Calcagno",
+        "especialidad": "Anestesia y Medicina de Fauna Silvestre",
+        "imagen": "/images/docente-camila.jpg",
+        "descripcion": "Médico Veterinario de la Universidad de Chile con especialización en anestesia veterinaria y medicina de fauna silvestre y animales exóticos. Profesional comprometida con la formación continua, responsable, proactiva y enfocada en el bienestar animal.",
+        "formacion": [
+            "Médico Veterinario - Universidad de Chile",
+            "Postgrado Universitario en Animales Exóticos - Universidad Católica de Valencia",
+            "Bases y Fundamentos de la Anestesia Veterinaria - Vets4Vets (cursando)"
+        ],
+        "areas": [
+            "Anestesia Veterinaria",
+            "Medicina de Fauna Silvestre",
+            "Animales Exóticos",
+            "Cuidados Críticos"
+        ],
+        "experiencia": "Anestesista y Médico Veterinario en Clínica Veterinaria Tus Mascotas (2023 - Actualidad). Experiencia previa en Clínica Veterinaria Cendovet (2018-2023).",
+        "certificaciones": [
+            "Bootcamp Anestesia Locoregional - AVA Perú",
+            "Mentoría en Anestesia",
+            "Medicina y Urgencia en Aves",
+            "Manejo de Aves Rapaces"
+        ],
+        "contacto": {
+            "email": "camila.arancibia.c@ug.uchile.cl",
+            "telefono": "+56 9 3416 3007"
+        }
+    }
+]

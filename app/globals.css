@@ -24,3 +24,167 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Case Detail Modal Styles */
+.case-detail-meta {
+  background: #f8f9fa;
+  padding: 25px;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  row-gap: 0;
+}
+
+.meta-item {
+  padding: 15px 20px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.meta-item:nth-child(odd) {
+  border-right: 1px solid #e9ecef;
+}
+
+.meta-item:nth-last-child(-n + 2) {
+  border-bottom: none;
+}
+
+.meta-item strong {
+  color: #2c5aa0;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.case-detail-content {
+  line-height: 1.8;
+  color: #444;
+  margin-top: 25px;
+}
+
+.case-detail-content p {
+  margin-bottom: 20px;
+}
+
+.case-detail-content strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.case-detail-footer {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e9ecef;
+  text-align: center;
+}
+
+.case-detail-footer em {
+  color: #666;
+}
+
+/* Modal Animations */
+.modal {
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive Modal */
+@media (max-width: 768px) {
+  .meta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .meta-item:nth-child(odd) {
+    border-right: none;
+  }
+
+  .meta-item:last-child {
+    border-bottom: none;
+  }
+
+  .modal-content {
+    margin: 10% auto;
+    padding: 30px 20px;
+    width: 95%;
+  }
+}
+
+/* Blog Content Styles */
+.blog-content h2 {
+  color: #2c5aa0;
+  font-size: 1.8rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.blog-content h3 {
+  color: #34495e;
+  font-size: 1.4rem;
+  margin-top: 2rem;
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+}
+
+.blog-content p {
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+}
+
+.blog-content ul,
+.blog-content ol {
+  margin-bottom: 1.5rem;
+  padding-left: 2rem;
+}
+
+.blog-content li {
+  margin-bottom: 0.8rem;
+  line-height: 1.7;
+}
+
+.blog-content strong {
+  color: #2c5aa0;
+  font-weight: 600;
+}
+
+.blog-content em {
+  color: #555;
+  font-style: italic;
+}
+
+.blog-content blockquote {
+  border-left: 4px solid #2c5aa0;
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+  font-style: italic;
+  color: #555;
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 5px;
+}

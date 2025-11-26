@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vetexoticapp.cl/sitemap.xml
+
+# Bloquear archivos innecesarios
+User-agent: *
+Disallow: /js/
+Disallow: /css/
+Disallow: /*.json$
+Disallow: /*.php$

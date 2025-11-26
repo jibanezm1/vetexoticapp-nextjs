@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# VetExoticApp - Next.js 15 SSR
 
-## Getting Started
+Sitio web de la Dra. Siboney Pérez, veterinaria especialista en animales exóticos en Chile, migrado a **Next.js 15** con **Server-Side Rendering (SSR)** y **TypeScript**.
 
-First, run the development server:
+## 🚀 Características
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- ✅ **Next.js 15** con App Router
+- ✅ **TypeScript** para type safety
+- ✅ **Server-Side Rendering (SSR)** para SEO óptimo
+- ✅ **Datos en JSON** (cursos, docentes, workshops)
+- ✅ **Optimización de imágenes** con Next/Image
+- ✅ **SEO completo** con metadata
+- ✅ **Google Tag Manager** integrado
+- ✅ **Responsive Design**
+
+## 📁 Estructura del Proyecto
+
+```
+nextjs-ssr/
+├── app/
+│   ├── layout.tsx          # Layout principal
+│   ├── page.tsx            # Página de inicio
+│   ├── cursos/page.tsx     # Cursos (SSR)
+│   └── docentes/page.tsx   # Docentes (SSR)
+├── components/
+│   ├── Header.tsx
+│   └── Footer.tsx
+├── data/
+│   ├── cursos.json
+│   ├── docentes.json
+│   └── workshops.json
+└── public/
+    ├── images/
+    ├── css/
+    └── js/
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Instalación
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Instalar dependencias
+npm install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Ejecutar en desarrollo
+npm run dev
 
-## Learn More
+# Construir para producción
+npm run build
 
-To learn more about Next.js, take a look at the following resources:
+# Iniciar servidor de producción
+npm start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Abrir [http://localhost:3000](http://localhost:3000) en el navegador.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📊 Datos Dinámicos (JSON)
 
-## Deploy on Vercel
+Los datos se cargan desde `/data`:
+- **cursos.json** - Información de cursos
+- **docentes.json** - Perfiles de docentes
+- **workshops.json** - Talleres disponibles
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Para actualizar datos, editar los archivos JSON y reconstruir.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📱 SEO
+
+Cada página incluye:
+- Meta titles y descriptions
+- Open Graph tags
+- Twitter Cards
+- Schema.org estructurado
+
+## 🚧 Páginas Pendientes
+
+- [ ] Casos Clínicos
+- [ ] Clínicas
+- [ ] Docencia
+- [ ] Currículum
+
+## 📞 Contacto
+
+- Email: vetexotic.app@gmail.com
+- Teléfono: +56 9 3449 7035
+- Instagram: @drasibo.exotic
+
+---
+
+**Desarrollado con Next.js 15**
