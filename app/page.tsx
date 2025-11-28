@@ -92,7 +92,7 @@ export default function HomePage() {
             </p>
           </div>
           <div className="services-grid">
-            <div className="service-card">
+            <div className="service-card overflow-hidden break-words">
               <div className="service-icon">
                 <i className="fas fa-cut"></i>
               </div>
@@ -101,20 +101,20 @@ export default function HomePage() {
                 Procedimientos quirúrgicos especializados en pequeños mamíferos
                 con protocolos anestésicos seguros.
               </p>
-              <ul className="service-details">
-                <li>
+              <ul className="service-details w-full break-words overflow-hidden">
+                <li className="break-words max-w-full hyphens-auto pr-2">
                   Cirugías Electivas: Esterilizaciones (OVH) y castraciones
                   preventivas
                 </li>
-                <li>Cirugías Programadas: Resolución de patologías diversas</li>
-                <li>
+                <li className="break-words max-w-full hyphens-auto pr-2">Cirugías Programadas: Resolución de patologías diversas</li>
+                <li className="break-words max-w-full hyphens-auto pr-2">
                   Urgencias Quirúrgicas 24/7: Disponibilidad para emergencias
                   vitales
                 </li>
               </ul>
             </div>
 
-            <div className="service-card">
+            <div className="service-card overflow-hidden break-words">
               <div className="service-icon">
                 <i className="fas fa-tooth"></i>
               </div>
@@ -122,21 +122,21 @@ export default function HomePage() {
               <p>
                 Manejo integral de la salud oral, fundamental en estas especies.
               </p>
-              <ul className="service-details">
-                <li>Procedimientos Dentales: Limados y destartrajes</li>
-                <li>Cirugía Oral: Exodoncias (extracciones) complejas</li>
-                <li>
+              <ul className="service-details w-full break-words overflow-hidden">
+                <li className="break-words max-w-full hyphens-auto pr-2">Procedimientos Dentales: Limados y destartrajes</li>
+                <li className="break-words max-w-full hyphens-auto pr-2">Cirugía Oral: Exodoncias (extracciones) complejas</li>
+                <li className="break-words max-w-full hyphens-auto pr-2">
                   Manejo de Abscesos: Resolución quirúrgica de abscesos de
                   origen dentario
                 </li>
-                <li>
+                <li className="break-words max-w-full hyphens-auto pr-2">
                   Cirugía Maxilofacial: Rinotomías, ablación del conducto
                   auditivo externo y sus variantes
                 </li>
               </ul>
             </div>
 
-            <div className="service-card">
+            <div className="service-card overflow-hidden break-words">
               <div className="service-icon">
                 <i className="fas fa-stethoscope"></i>
               </div>
@@ -151,21 +151,21 @@ export default function HomePage() {
               <p style={{ fontSize: "0.9rem", marginTop: "0.5rem" }}>
                 <em>Atención en Exotic Care y UBO</em>
               </p>
-              <ul className="service-details">
-                <li>
+              <ul className="service-details w-full break-words overflow-hidden">
+                <li className="break-words max-w-full hyphens-auto pr-2">
                   Consultas de Especialidad: Diagnóstico y plan de tratamiento
                 </li>
-                <li>
+                <li className="break-words max-w-full hyphens-auto pr-2">
                   Toma de Muestras: Exámenes de sangre, citologías y cultivos
                 </li>
-                <li>
+                <li className="break-words max-w-full hyphens-auto pr-2">
                   Seguimiento Clínico: Monitoreo integral de la evolución del
                   paciente
                 </li>
               </ul>
             </div>
 
-            <div className="service-card">
+            <div className="service-card overflow-hidden break-words">
               <div className="service-icon">
                 <i className="fas fa-home"></i>
               </div>
@@ -177,11 +177,11 @@ export default function HomePage() {
                 , realizada directamente por la Dra. Sibo o personal médico
                 calificado de su confianza.
               </p>
-              <ul className="service-details">
-                <li>Consultas domiciliarias especializadas</li>
-                <li>Medicina preventiva y seguimiento</li>
-                <li>Evaluación clínica personalizada</li>
-                <li>Reducción del estrés para tu mascota</li>
+              <ul className="service-details w-full break-words overflow-hidden">
+                <li className="break-words max-w-full hyphens-auto pr-2">Consultas domiciliarias especializadas</li>
+                <li className="break-words max-w-full hyphens-auto pr-2">Medicina preventiva y seguimiento</li>
+                <li className="break-words max-w-full hyphens-auto pr-2">Evaluación clínica personalizada</li>
+                <li className="break-words max-w-full hyphens-auto pr-2">Reducción del estrés para tu mascota</li>
               </ul>
             </div>
           </div>
@@ -189,12 +189,12 @@ export default function HomePage() {
       </section>
 
       {/* About Section */}
-      <section id="sobre-mi" className="about">
+      <section id="sobre-mi" className="about overflow-hidden">
         <div className="container">
-          <div className="about-content">
-            <div className="about-text">
+          <div className="about-content overflow-hidden">
+            <div className="about-text overflow-hidden break-words w-full max-w-full">
               <h2>Sobre la Dra. Sibo - Especialista en Pequeños Mamíferos</h2>
-              <p className="about-intro">
+              <p className="about-intro break-words overflow-wrap-break-word">
                 <strong>
                   Veterinaria especializada en pequeños mamíferos exóticos
                 </strong>
@@ -203,7 +203,7 @@ export default function HomePage() {
                 <strong>atención de alta calidad</strong> y en la{" "}
                 <em>docencia universitaria</em> en Chile.
               </p>
-              <p className="about-intro">
+              <p className="about-intro break-words overflow-wrap-break-word">
                 <em>Experiencia y Pasión por los Exóticos</em> - Con más de 7
                 años de experiencia, la Dra. Sibo se ha consolidado como
                 referente en la atención de mascotas no convencionales,
@@ -211,7 +211,7 @@ export default function HomePage() {
                 procedimientos odontológicos avanzados.
               </p>
 
-              <div className="credentials">
+              <div className="credentials overflow-hidden break-words w-full">
                 <h3>Especialidades y Certificaciones</h3>
                 <ul>
                   <li>
@@ -240,16 +240,16 @@ export default function HomePage() {
                 </ul>
               </div>
 
-              <div className="experience-highlights">
+              <div className="experience-highlights overflow-hidden break-words w-full">
                 <h3>Experiencia Destacada</h3>
-                <div className="experience-item">
+                <div className="experience-item overflow-hidden break-words">
                   <h4>Cirujano de Mascotas No Convencionales</h4>
                   <p>
                     Más de 7 años realizando cirugías especializadas en tejidos
                     blandos y odontológicas
                   </p>
                 </div>
-                <div className="experience-item">
+                <div className="experience-item overflow-hidden break-words">
                   <h4>Docente Universitaria</h4>
                   <p>
                     <strong>Pregrado:</strong> Universidad Andrés Bello (sedes
@@ -262,7 +262,7 @@ export default function HomePage() {
                     en Medicina de Animales Exóticos
                   </p>
                 </div>
-                <div className="experience-item">
+                <div className="experience-item overflow-hidden break-words">
                   <h4>Investigación Científica</h4>
                   <p>
                     Participación continua en estudios clínicos y publicaciones
