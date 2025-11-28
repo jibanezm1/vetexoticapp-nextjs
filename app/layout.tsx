@@ -17,18 +17,34 @@ export const metadata: Metadata = {
     template: "%s | VetExoticApp - Dra. Siboney Pérez",
   },
   description:
-    "Veterinaria especializada en animales exóticos en Chile. Cirugía, odontología, medicina interna para conejos, hurones, chinchillas, erizos y más. Atención en Exoticare Maipú, Centro Veterinario República e Italia.",
+    "🐰 Veterinaria especialista en animales exóticos en Santiago, Chile. Dra. Siboney Pérez - GPCert (ExAP). Cirugía de tejidos blandos, odontología especializada y medicina interna para conejos, hurones, chinchillas, cobayos, erizos y pequeños mamíferos. Atención en Exoticare Maipú, Centro Veterinario República. Urgencias 24/7 y servicio a domicilio disponible.",
   keywords: [
     "veterinaria animales exóticos chile",
-    "cirugía animales exóticos",
-    "odontología conejos",
-    "veterinario hurones",
-    "veterinario chinchillas",
+    "veterinaria especialista exóticos santiago",
+    "cirugía animales exóticos chile",
+    "odontología veterinaria conejos",
+    "veterinario hurones santiago",
+    "veterinario chinchillas chile",
+    "veterinario cobayos",
     "veterinario erizos",
-    "cirugía conejos",
-    "veterinaria exóticos santiago",
+    "cirugía conejos santiago",
+    "veterinaria exóticos maipú",
     "exoticare maipu",
-    "veterinaria república",
+    "veterinaria república santiago",
+    "odontología animales exóticos",
+    "cirugía tejidos blandos exóticos",
+    "medicina interna animales exóticos",
+    "veterinaria pequeños mamíferos",
+    "especialista lagomorfos",
+    "dra siboney pérez",
+    "veterinario miomorfos",
+    "atención veterinaria exóticos domicilio",
+    "urgencias veterinarias exóticos",
+    "esterilización conejos",
+    "castración hurones",
+    "dental rabbit",
+    "abscesos dentales conejos",
+    "cirugía maxilofacial animales exóticos",
   ],
   authors: [{ name: "Dra. Siboney Pérez" }],
   creator: "Dra. Siboney Pérez",
@@ -36,6 +52,19 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: 'google-site-verification-code', // Reemplazar con código real de Google Search Console
+  },
+  alternates: {
+    canonical: 'https://vetexoticapp.cl',
   },
   openGraph: {
     type: "website",
@@ -70,6 +99,19 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
+        {/* Preconnect para mejorar performance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+        
+        {/* DNS Prefetch */}
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+        
+        {/* Favicon */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/images/dra-siboney-real.jpg" />
+        
         {/* Google Tag Manager */}
         <Script id="google-tag-manager" strategy="afterInteractive">
           {`
@@ -90,6 +132,118 @@ export default function RootLayout({
         <meta name="geo.placename" content="Santiago, Chile" />
         <meta name="geo.position" content="-33.4489;-70.6693" />
         <meta name="ICBM" content="-33.4489, -70.6693" />
+        
+        {/* Schema.org structured data */}
+        <Script id="structured-data-organization" type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "VeterinaryCare",
+              "name": "VetExoticApp - Dra. Siboney Pérez",
+              "image": "https://vetexoticapp.cl/images/dra-siboney-real.jpg",
+              "description": "Veterinaria especialista en animales exóticos en Santiago, Chile. Cirugía, odontología y medicina interna para pequeños mamíferos.",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Exoticare Maipú",
+                "addressLocality": "Maipú",
+                "addressRegion": "Santiago",
+                "addressCountry": "CL"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": -33.4489,
+                "longitude": -70.6693
+              },
+              "url": "https://vetexoticapp.cl",
+              "telephone": "+56934497035",
+              "email": "vetexotic.app@gmail.com",
+              "priceRange": "$$",
+              "openingHoursSpecification": {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                "opens": "09:00",
+                "closes": "19:00"
+              },
+              "sameAs": [
+                "https://www.instagram.com/drasibo.exotic"
+              ]
+            }
+          `}
+        </Script>
+        
+        <Script id="structured-data-person" type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "Person",
+              "name": "Dra. Siboney Pérez",
+              "jobTitle": "Médico Veterinario Especialista en Animales Exóticos",
+              "description": "Veterinaria especialista en cirugía de tejidos blandos y odontología de animales exóticos. GPCert (ExAP) ISVPS.",
+              "url": "https://vetexoticapp.cl",
+              "image": "https://vetexoticapp.cl/images/dra-siboney-real.jpg",
+              "sameAs": [
+                "https://www.instagram.com/drasibo.exotic"
+              ],
+              "alumniOf": {
+                "@type": "EducationalOrganization",
+                "name": "Universidad Andrés Bello"
+              },
+              "worksFor": {
+                "@type": "VeterinaryCare",
+                "name": "VetExoticApp"
+              },
+              "knowsAbout": [
+                "Cirugía de Animales Exóticos",
+                "Odontología Veterinaria",
+                "Medicina Interna de Pequeños Mamíferos",
+                "Lagomorfos",
+                "Chinchillas",
+                "Hurones"
+              ]
+            }
+          `}
+        </Script>
+        
+        <Script id="structured-data-medical-service" type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "MedicalBusiness",
+              "@id": "https://vetexoticapp.cl",
+              "name": "VetExoticApp - Clínica Veterinaria Animales Exóticos",
+              "description": "Atención veterinaria especializada en animales exóticos. Cirugía, odontología, medicina interna y urgencias para conejos, hurones, chinchillas y pequeños mamíferos.",
+              "image": "https://vetexoticapp.cl/images/dra-siboney-real.jpg",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Santiago",
+                "addressRegion": "Región Metropolitana",
+                "addressCountry": "Chile"
+              },
+              "telephone": "+56934497035",
+              "email": "vetexotic.app@gmail.com",
+              "url": "https://vetexoticapp.cl",
+              "medicalSpecialty": "Veterinary Specialty",
+              "availableService": [
+                {
+                  "@type": "MedicalProcedure",
+                  "name": "Cirugía de Tejidos Blandos en Animales Exóticos"
+                },
+                {
+                  "@type": "MedicalProcedure",
+                  "name": "Odontología Veterinaria para Lagomorfos"
+                },
+                {
+                  "@type": "MedicalProcedure",
+                  "name": "Medicina Interna de Pequeños Mamíferos"
+                },
+                {
+                  "@type": "MedicalProcedure",
+                  "name": "Esterilizaciones y Castraciones"
+                }
+              ]
+            }
+          `}
+        </Script>
       </head>
       <body className={poppins.className}>
         {/* Google Tag Manager (noscript) */}

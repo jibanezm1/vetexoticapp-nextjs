@@ -1,6 +1,32 @@
 import Image from "next/image";
 import Link from "next/link";
 import ScrollAnimations from "@/components/ScrollAnimations";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Veterinaria Animales Exóticos Santiago Chile | Dra. Siboney Pérez - Cirugía y Odontología",
+  description: "🐰 Veterinaria especialista en animales exóticos en Santiago. Cirugía de tejidos blandos, odontología especializada y medicina interna para conejos, hurones, chinchillas, cobayos y pequeños mamíferos. Atención en Exoticare Maipú. Urgencias 24/7.",
+  keywords: [
+    "veterinaria animales exóticos santiago",
+    "cirugía conejos chile",
+    "odontología conejos santiago",
+    "veterinario hurones maipú",
+    "especialista animales exóticos chile",
+    "cirugía tejidos blandos exóticos",
+    "veterinaria pequeños mamíferos",
+    "exoticare maipú",
+    "urgencias veterinarias exóticos",
+  ],
+  openGraph: {
+    title: "Veterinaria Animales Exóticos Santiago | Dra. Siboney Pérez",
+    description: "Especialista en cirugía y odontología de animales exóticos. Atención para conejos, hurones, chinchillas y más.",
+    url: "https://vetexoticapp.cl",
+    type: "website",
+  },
+  alternates: {
+    canonical: "https://vetexoticapp.cl",
+  },
+};
 
 export default function HomePage() {
   return (
@@ -11,18 +37,23 @@ export default function HomePage() {
         <div className="hero-content">
           <div className="container">
             <div className="hero-text">
-              <h1>
-                Veterinaria Especialista en Animales Exóticos en Chile
-              </h1>
+              <h1>Veterinaria Especialista en Animales Exóticos en Chile</h1>
               <h2>
-                Dra. Siboney Pérez - Cirugía y Odontología para Conejos, Hurones, Chinchillas y Más
+                Dra. Siboney Pérez - Cirugía de Tejidos Blandos y Procedimientos
+                Odontológicos en Pequeños Mamíferos
               </h2>
               <p>
-                <strong>Atención veterinaria especializada en animales exóticos en Santiago</strong>.{" "}
-                <em>Cirugías avanzadas</em>, <em>odontología especializada</em> y{" "}
-                <em>medicina interna</em> para <strong>conejos</strong>, <strong>hurones</strong>,{" "}
-                <strong>chinchillas</strong>, <strong>erizos</strong> y otras mascotas exóticas. Más de{" "}
-                <strong>8 años de experiencia</strong> en centros de excelencia.
+                <strong>
+                  Atención veterinaria especializada en pequeños mamíferos
+                  exóticos en Santiago
+                </strong>
+                . <em>Cirugías avanzadas</em>,{" "}
+                <em>odontología especializada</em> y <em>medicina interna</em>{" "}
+                para <strong>conejos</strong>, <strong>cobayos</strong>,{" "}
+                <strong>chinchillas</strong>, <strong>miomorfos</strong> (ratas,
+                hámster sirio, hámster ruso, ratones y jerbos) y{" "}
+                <strong>hurones</strong>. Más de{" "}
+                <strong>7 años de experiencia</strong> en centros de excelencia.
               </p>
               <div className="hero-buttons">
                 <a href="#servicios" className="btn btn-primary">
@@ -54,9 +85,10 @@ export default function HomePage() {
       <section id="servicios" className="services">
         <div className="container">
           <div className="section-header">
-            <h2>Servicios Veterinarios Especializados en Animales Exóticos</h2>
+            <h2>Servicios Veterinarios Especializados en Pequeños Mamíferos</h2>
             <p>
-              Atención médica y quirúrgica de excelencia para conejos, hurones, chinchillas, erizos y más
+              Atención médica y quirúrgica de excelencia para conejos, cobayos,
+              chinchillas, miomorfos y hurones
             </p>
           </div>
           <div className="services-grid">
@@ -66,15 +98,19 @@ export default function HomePage() {
               </div>
               <h3>Cirugía de Tejidos Blandos para Animales Exóticos</h3>
               <p>
-                Procedimientos quirúrgicos especializados en chinchillas, cuyes, erizos y otros pequeños
-                mamíferos exóticos. Cirugías gastrointestinales, reproductivas y de emergencia realizadas
-                con equipamiento de última generación.
+                Procedimientos quirúrgicos especializados en pequeños mamíferos
+                con protocolos anestésicos seguros.
               </p>
               <ul className="service-details">
-                <li>Esterilizaciones y castraciones en animales exóticos</li>
-                <li>Cirugía gastrointestinal especializada</li>
-                <li>Extracción de tumores</li>
-                <li>Cirugías de emergencia 24/7</li>
+                <li>
+                  Cirugías Electivas: Esterilizaciones (OVH) y castraciones
+                  preventivas
+                </li>
+                <li>Cirugías Programadas: Resolución de patologías diversas</li>
+                <li>
+                  Urgencias Quirúrgicas 24/7: Disponibilidad para emergencias
+                  vitales
+                </li>
               </ul>
             </div>
 
@@ -84,15 +120,19 @@ export default function HomePage() {
               </div>
               <h3>Odontología Veterinaria para Animales Exóticos</h3>
               <p>
-                Tratamientos dentales especializados para conejos, chinchillas, cuyes, y otros roedores
-                exóticos. Limpieza, extracción y corrección dental con equipamiento especializado y
-                radiografía dental digital.
+                Manejo integral de la salud oral, fundamental en estas especies.
               </p>
               <ul className="service-details">
-                <li>Limado de dientes en conejos y roedores</li>
-                <li>Extracción dental especializada</li>
-                <li>Tratamiento de abscesos dentales</li>
-                <li>Evaluación radiográfica dental completa</li>
+                <li>Procedimientos Dentales: Limados y destartrajes</li>
+                <li>Cirugía Oral: Exodoncias (extracciones) complejas</li>
+                <li>
+                  Manejo de Abscesos: Resolución quirúrgica de abscesos de
+                  origen dentario
+                </li>
+                <li>
+                  Cirugía Maxilofacial: Rinotomías, ablación del conducto
+                  auditivo externo y sus variantes
+                </li>
               </ul>
             </div>
 
@@ -100,51 +140,28 @@ export default function HomePage() {
               <div className="service-icon">
                 <i className="fas fa-stethoscope"></i>
               </div>
-              <h3>Medicina Interna para Animales Exóticos</h3>
+              <h3>Medicina Interna y Preventiva</h3>
               <p>
-                <strong>Diagnóstico y tratamiento de enfermedades</strong> en <em>cuyes</em>,{" "}
-                <em>chinchillas</em>, <em>erizos</em> y otros pequeños mamíferos exóticos. Consultas
-                especializadas y seguimiento médico integral.
+                <strong>
+                  Diagnóstico y tratamiento de enfermedades en pequeños
+                  mamíferos exóticos
+                </strong>
+                . Consultas especializadas y seguimiento médico integral.
+              </p>
+              <p style={{ fontSize: "0.9rem", marginTop: "0.5rem" }}>
+                <em>Atención en Exotic Care y UBO</em>
               </p>
               <ul className="service-details">
-                <li>Diagnóstico por imágenes</li>
-                <li>Análisis clínicos</li>
-                <li>Tratamientos especializados</li>
-                <li>Medicina preventiva</li>
-              </ul>
-            </div>
-
-            <div className="service-card">
-              <div className="service-icon">
-                <i className="fas fa-dove"></i>
-              </div>
-              <h3>Medicina Veterinaria Especializada en Aves Exóticas</h3>
-              <p>
-                <strong>Atención integral para aves ornamentales y de compañía</strong>. Desde{" "}
-                <em>loros</em> hasta <em>canarios</em>, brindamos cuidado veterinario especializado.
-              </p>
-              <ul className="service-details">
-                <li>Medicina de aves ornamentales</li>
-                <li>Cirugía aviar</li>
-                <li>Sexado de aves</li>
-                <li>Nutrición especializada</li>
-              </ul>
-            </div>
-
-            <div className="service-card">
-              <div className="service-icon">
-                <i className="fas fa-dragon"></i>
-              </div>
-              <h3>Veterinaria Especializada en Reptiles Exóticos</h3>
-              <p>
-                <strong>Cuidado veterinario especializado para reptiles de compañía</strong>. Desde{" "}
-                <em>iguanas</em> hasta <em>tortugas</em>, ofrecemos atención médica integral.
-              </p>
-              <ul className="service-details">
-                <li>Medicina de reptiles</li>
-                <li>Manejo nutricional</li>
-                <li>Tratamiento parasitario</li>
-                <li>Cirugía de reptiles</li>
+                <li>
+                  Consultas de Especialidad: Diagnóstico y plan de tratamiento
+                </li>
+                <li>
+                  Toma de Muestras: Exámenes de sangre, citologías y cultivos
+                </li>
+                <li>
+                  Seguimiento Clínico: Monitoreo integral de la evolución del
+                  paciente
+                </li>
               </ul>
             </div>
 
@@ -152,16 +169,19 @@ export default function HomePage() {
               <div className="service-icon">
                 <i className="fas fa-home"></i>
               </div>
-              <h3>Veterinario a Domicilio para Animales Exóticos</h3>
+              <h3>Servicio a Domicilio</h3>
               <p>
-                <strong>Servicios veterinarios a domicilio</strong> en Santiago, en la comodidad de su
-                hogar para reducir el estrés de sus <em>mascotas exóticas</em>.
+                <strong>
+                  Atención personalizada en la comodidad de tu hogar
+                </strong>
+                , realizada directamente por la Dra. Sibo o personal médico
+                calificado de su confianza.
               </p>
               <ul className="service-details">
-                <li>Consultas domiciliarias</li>
-                <li>Medicina preventiva</li>
-                <li>Eutanasia humanitaria</li>
-                <li>Seguimiento post-quirúrgico</li>
+                <li>Consultas domiciliarias especializadas</li>
+                <li>Medicina preventiva y seguimiento</li>
+                <li>Evaluación clínica personalizada</li>
+                <li>Reducción del estrés para tu mascota</li>
               </ul>
             </div>
           </div>
@@ -173,12 +193,22 @@ export default function HomePage() {
         <div className="container">
           <div className="about-content">
             <div className="about-text">
-              <h2>Sobre la Dra. Siboney Pérez - Especialista en Animales Exóticos</h2>
+              <h2>Sobre la Dra. Sibo - Especialista en Pequeños Mamíferos</h2>
               <p className="about-intro">
-                <strong>Veterinaria especializada en animales exóticos</strong>, con más de 8 años de
-                experiencia en <em>clínica</em>, <em>cirugía</em> e <em>investigación</em>. Enfocada en
-                brindar <strong>atención de alta calidad</strong> y en la <em>docencia universitaria</em>{" "}
-                en Chile.
+                <strong>
+                  Veterinaria especializada en pequeños mamíferos exóticos
+                </strong>
+                , con más de 7 años de experiencia en <em>clínica</em>,{" "}
+                <em>cirugía</em> e <em>investigación</em>. Enfocada en brindar{" "}
+                <strong>atención de alta calidad</strong> y en la{" "}
+                <em>docencia universitaria</em> en Chile.
+              </p>
+              <p className="about-intro">
+                <em>Experiencia y Pasión por los Exóticos</em> - Con más de 7
+                años de experiencia, la Dra. Sibo se ha consolidado como
+                referente en la atención de mascotas no convencionales,
+                especializándose en cirugías complejas de tejidos blandos y
+                procedimientos odontológicos avanzados.
               </p>
 
               <div className="credentials">
@@ -186,23 +216,26 @@ export default function HomePage() {
                 <ul>
                   <li>
                     <i className="fas fa-graduation-cap"></i>
-                    <strong>GPCert (ExAP, ISVPS)</strong> - Postgrado en Clínica de animales exóticos
+                    <strong>GPCert (ExAP, ISVPS)</strong> - Postgrado en Clínica
+                    de animales exóticos
                   </li>
                   <li>
                     <i className="fas fa-certificate"></i>
-                    <strong>Grand Master</strong> en Medicina y Cirugía de Aves y Animales Exóticos
+                    <strong>Grand Master</strong> en Medicina y Cirugía de Aves
+                    y Animales Exóticos
                   </li>
                   <li>
-                    <i className="fas fa-cut"></i> <strong>Diplomado</strong> en Cirugía de Tejidos
-                    Blandos
+                    <i className="fas fa-cut"></i> <strong>Diplomado</strong> en
+                    Cirugía de Tejidos Blandos
                   </li>
                   <li>
                     <i className="fas fa-tooth"></i>
-                    <strong>Especialización</strong> en Odontología Veterinaria de Mascotas No
-                    Convencionales
+                    <strong>Especialización</strong> en Odontología Veterinaria
+                    de Mascotas No Convencionales
                   </li>
                   <li>
-                    <i className="fas fa-dove"></i> <strong>Diplomado</strong> en Medicina de Aves
+                    <i className="fas fa-dove"></i> <strong>Diplomado</strong>{" "}
+                    en Medicina de Aves
                   </li>
                 </ul>
               </div>
@@ -212,20 +245,28 @@ export default function HomePage() {
                 <div className="experience-item">
                   <h4>Cirujano de Mascotas No Convencionales</h4>
                   <p>
-                    Más de 6 años realizando cirugías especializadas en tejidos blandos y odontológicas
+                    Más de 7 años realizando cirugías especializadas en tejidos
+                    blandos y odontológicas
                   </p>
                 </div>
                 <div className="experience-item">
                   <h4>Docente Universitaria</h4>
                   <p>
-                    Universidad Andrés Bello (UMEX) - Medicina Exótica y Cirugía de Mamíferos Exóticos
+                    <strong>Pregrado:</strong> Universidad Andrés Bello (sedes
+                    Colina, Viña del Mar y Concepción) y Universidad Bernardo
+                    O'Higgins - Medicina y Cirugía de Pequeños Mamíferos
+                    Exóticos
+                  </p>
+                  <p style={{ marginTop: "0.5rem" }}>
+                    <strong>Postgrado:</strong> Universidad de Chile - Diplomado
+                    en Medicina de Animales Exóticos
                   </p>
                 </div>
                 <div className="experience-item">
                   <h4>Investigación Científica</h4>
                   <p>
-                    Publicaciones en revistas científicas sobre resistencia antimicrobiana en animales
-                    exóticos
+                    Participación continua en estudios clínicos y publicaciones
+                    en revistas científicas sobre medicina de animales exóticos
                   </p>
                 </div>
               </div>
@@ -240,7 +281,7 @@ export default function HomePage() {
               />
               <div className="about-stats">
                 <div className="stat">
-                  <span className="stat-number">8+</span>
+                  <span className="stat-number">7+</span>
                   <span className="stat-label">Años de Experiencia</span>
                 </div>
                 <div className="stat">
@@ -261,10 +302,13 @@ export default function HomePage() {
       <section id="galeria" className="gallery">
         <div className="container">
           <div className="section-header">
-            <h2>Galería de Animales Exóticos que Atendemos</h2>
+            <h2>Pequeños Mamíferos que Atendemos</h2>
             <p>
-              <strong>Especialistas en conejos, hurones, chinchillas, erizos y más</strong> - Atención
-              veterinaria de excelencia
+              <strong>
+                Especialistas en conejos, cobayos, chinchillas, miomorfos y
+                hurones
+              </strong>{" "}
+              - Atención veterinaria de excelencia
             </p>
           </div>
 
@@ -294,22 +338,8 @@ export default function HomePage() {
               <div className="gallery-overlay">
                 <h3>Chinchillas</h3>
                 <p>
-                  <strong>Odontología especializada</strong> en chinchillas y cuidado dental
-                </p>
-              </div>
-            </div>
-
-            <div className="gallery-item">
-              <Image
-                src="/images/1.png"
-                alt="Veterinario erizos domésticos Chile - atención especializada para erizos"
-                width={300}
-                height={300}
-              />
-              <div className="gallery-overlay">
-                <h3>Erizos</h3>
-                <p>
-                  <strong>Cuidado veterinario especializado</strong> para erizos domésticos
+                  <strong>Odontología especializada</strong> en chinchillas y
+                  cuidado dental
                 </p>
               </div>
             </div>
@@ -317,14 +347,30 @@ export default function HomePage() {
             <div className="gallery-item">
               <Image
                 src="/images/2.png"
-                alt="Veterinario cuyes y cobayas Chile - medicina preventiva y tratamiento especializado"
+                alt="Veterinario cobayos y cuyes Chile - medicina preventiva y tratamiento especializado"
                 width={300}
                 height={300}
               />
               <div className="gallery-overlay">
-                <h3>Cuyes y Cobayas</h3>
+                <h3>Cobayos (Cuyes)</h3>
                 <p>
-                  <strong>Atención especializada</strong> para cuyes domésticos
+                  <strong>Atención especializada</strong> para cobayos
+                </p>
+              </div>
+            </div>
+
+            <div className="gallery-item">
+              <Image
+                src="/images/1.png"
+                alt="Veterinario conejos Chile - cirugía y odontología especializada"
+                width={300}
+                height={300}
+              />
+              <div className="gallery-overlay">
+                <h3>Conejos</h3>
+                <p>
+                  <strong>Cirugía y odontología especializada</strong> para
+                  conejos
                 </p>
               </div>
             </div>
@@ -337,24 +383,29 @@ export default function HomePage() {
         <div className="container">
           <div className="promo-content">
             <div className="promo-text">
-              <h2>¿Eres Veterinario?</h2>
-              <h3>Especialízate en Medicina de Animales Exóticos</h3>
+              <h2>¿Eres Veterinario o Estudiante?</h2>
+              <h3>Capacitación y Cursos de Especialización</h3>
               <p>
-                Únete a nuestros cursos especializados y amplía tus conocimientos en medicina y cirugía
-                de animales exóticos. Formación práctica con casos reales.
+                La Dra. Sibo ofrece instancias de formación para colegas
+                interesados en profundizar en el área de pequeños mamíferos
+                exóticos. Formación práctica con casos reales.
               </p>
               <ul className="promo-features">
                 <li>
-                  <i className="fas fa-graduation-cap"></i> Certificación profesional
+                  <i className="fas fa-graduation-cap"></i> Certificación
+                  profesional
                 </li>
                 <li>
-                  <i className="fas fa-users"></i> Grupos reducidos (máx. 10 alumnos)
+                  <i className="fas fa-users"></i> Grupos reducidos y atención
+                  personalizada
                 </li>
                 <li>
-                  <i className="fas fa-microscope"></i> Práctica con casos reales
+                  <i className="fas fa-microscope"></i> Práctica con casos
+                  reales
                 </li>
                 <li>
-                  <i className="fas fa-award"></i> Instructor certificada internacionalmente
+                  <i className="fas fa-award"></i> Instructora certificada
+                  internacionalmente
                 </li>
               </ul>
               <div className="promo-buttons">
@@ -385,12 +436,19 @@ export default function HomePage() {
       {/* Derivación Section */}
       <section
         className="courses-promo"
-        style={{ background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" }}
+        style={{
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        }}
       >
         <div className="container">
-          <div className="promo-content" style={{ gridTemplateColumns: "1fr", textAlign: "center" }}>
+          <div
+            className="promo-content"
+            style={{ gridTemplateColumns: "1fr", textAlign: "center" }}
+          >
             <div className="promo-text">
-              <h2 style={{ color: "white" }}>¿Quieres Atenderte con la Dra. Siboney Pérez?</h2>
+              <h2 style={{ color: "white" }}>
+                ¿Quieres Atenderte con la Dra. Sibo?
+              </h2>
               <h3 style={{ color: "rgba(255, 255, 255, 0.95)" }}>
                 Solicita tu Derivación a Nuestros Centros de Excelencia
               </h3>
@@ -402,9 +460,10 @@ export default function HomePage() {
                   fontSize: "1.1rem",
                 }}
               >
-                La Dra. Siboney Pérez atiende en prestigiosos centros veterinarios equipados con
-                tecnología de última generación y personal altamente calificado. Todos nuestros centros
-                cuentan con los más altos estándares de calidad en cirugía y medicina veterinaria.
+                La Dra. Sibo atiende en prestigiosos centros veterinarios
+                equipados con tecnología de última generación y personal
+                altamente calificado. Todos nuestros centros cuentan con los más
+                altos estándares de calidad en cirugía y medicina veterinaria.
               </p>
               <div
                 style={{
@@ -429,23 +488,25 @@ export default function HomePage() {
                   }}
                 >
                   <div>
-                    <i className="fas fa-check-circle" style={{ color: "#e67e22" }}></i> Exoticare
-                    Maipú
+                    <i
+                      className="fas fa-check-circle"
+                      style={{ color: "#e67e22" }}
+                    ></i>{" "}
+                    Exotic Care
                   </div>
                   <div>
-                    <i className="fas fa-check-circle" style={{ color: "#e67e22" }}></i> Centro Vet.
-                    República
-                  </div>
-                  <div>
-                    <i className="fas fa-check-circle" style={{ color: "#e67e22" }}></i> Centro Vet.
-                    Italia
-                  </div>
-                  <div>
-                    <i className="fas fa-check-circle" style={{ color: "#e67e22" }}></i> UNAB Colina
+                    <i
+                      className="fas fa-check-circle"
+                      style={{ color: "#e67e22" }}
+                    ></i>{" "}
+                    Clínica Veterinaria UBO
                   </div>
                 </div>
               </div>
-              <div className="promo-buttons" style={{ justifyContent: "center", marginTop: "2rem" }}>
+              <div
+                className="promo-buttons"
+                style={{ justifyContent: "center", marginTop: "2rem" }}
+              >
                 <Link
                   href="/clinicas"
                   className="btn"
@@ -494,7 +555,9 @@ export default function HomePage() {
         <div className="container">
           <div className="section-header">
             <h2>Contáctanos</h2>
-            <p>Agenda tu cita o solicita información sobre nuestros servicios</p>
+            <p>
+              Agenda tu cita o solicita información sobre nuestros servicios
+            </p>
           </div>
 
           <div className="contact-content">
@@ -555,7 +618,10 @@ export default function HomePage() {
                   </select>
                 </div>
                 <div className="form-group">
-                  <textarea placeholder="Describe la consulta o motivo de la cita" rows={4}></textarea>
+                  <textarea
+                    placeholder="Describe la consulta o motivo de la cita"
+                    rows={4}
+                  ></textarea>
                 </div>
                 <button type="submit" className="btn btn-primary">
                   Enviar Consulta

@@ -1,39 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://vetexoticapp.cl/index.html</loc>
-    <lastmod>2025-11-25</lastmod>
+    <loc>https://vetexoticapp.cl/</loc>
+    <lastmod>2025-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://vetexoticapp.cl/curriculum.html</loc>
-    <lastmod>2025-11-25</lastmod>
+    <loc>https://vetexoticapp.cl/curriculum</loc>
+    <lastmod>2025-11-27</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://vetexoticapp.cl/casos-clinicos.html</loc>
-    <lastmod>2025-11-25</lastmod>
+    <loc>https://vetexoticapp.cl/casos-clinicos</loc>
+    <lastmod>2025-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://vetexoticapp.cl/cursos.html</loc>
-    <lastmod>2025-11-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://vetexoticapp.cl/clinicas.html</loc>
-    <lastmod>2025-11-25</lastmod>
+    <loc>https://vetexoticapp.cl/cursos</loc>
+    <lastmod>2025-11-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://vetexoticapp.cl/docencia.html</loc>
-    <lastmod>2025-11-25</lastmod>
+    <loc>https://vetexoticapp.cl/clinicas</loc>
+    <lastmod>2025-11-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://vetexoticapp.cl/docencia</loc>
+    <lastmod>2025-11-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vetexoticapp.cl/blog</loc>
+    <lastmod>2025-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://vetexoticapp.cl/docentes</loc>
+    <lastmod>2025-11-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
   </url>
 </urlset>

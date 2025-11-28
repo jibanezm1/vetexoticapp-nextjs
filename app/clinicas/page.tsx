@@ -1,25 +1,36 @@
 import Link from "next/link";
 import ScrollAnimations from "@/components/ScrollAnimations";
+import type { Metadata } from "next";
 
-export const metadata = {
-  title:
-    "Clínicas Veterinarias Animales Exóticos Santiago | Exoticare, República, Italia",
+export const metadata: Metadata = {
+  title: "Clínicas Veterinarias Animales Exóticos Santiago | Exotic Care Maipú & UBO",
   description:
-    "Clínicas veterinarias especializadas en animales exóticos en Santiago: Exoticare Maipú, Centro Veterinario República, Centro Veterinario Italia, UNAB Colina. Cirugía y odontología especializada.",
-  keywords:
-    "exoticare maipu, centro veterinario república, veterinaria italia santiago, veterinaria animales exóticos santiago, clínica conejos santiago, veterinaria hurones santiago",
+    "🏥 Clínicas veterinarias especializadas en pequeños mamíferos exóticos en Santiago. Exotic Care Maipú y Clínica Veterinaria UBO. Cirugía, odontología y medicina interna con Dra. Siboney Pérez. Atención especializada para conejos, hurones, chinchillas.",
+  keywords: [
+    "exotic care maipú",
+    "veterinaria ubo santiago",
+    "clínica animales exóticos santiago",
+    "veterinaria conejos maipú",
+    "veterinaria hurones santiago",
+    "clínica pequeños mamíferos chile",
+    "centro veterinario exóticos",
+    "veterinaria chinchillas santiago",
+  ],
   openGraph: {
     type: "website",
     url: "https://vetexoticapp.cl/clinicas",
-    title: "Clínicas Veterinarias Animales Exóticos Santiago",
+    title: "Clínicas Veterinarias Animales Exóticos Santiago | Exotic Care & UBO",
     description:
-      "Centros veterinarios de excelencia donde atiende la Dra. Siboney Pérez en Santiago de Chile.",
+      "Centros veterinarios de excelencia especializados en animales exóticos donde atiende la Dra. Siboney Pérez en Santiago.",
     images: [
       {
         url: "https://vetexoticapp.cl/images/dra-siboney-real.jpg",
-        alt: "Clínicas Veterinarias Exóticos",
+        alt: "Clínicas Veterinarias Exóticos Santiago",
       },
     ],
+  },
+  alternates: {
+    canonical: "https://vetexoticapp.cl/clinicas",
   },
 };
 
@@ -36,9 +47,10 @@ export default function ClinicasPage() {
               <h1>Centros Veterinarios de Excelencia</h1>
               <h2>Atención Profesional con los Más Altos Estándares</h2>
               <p>
-                La Dra. Siboney Pérez atiende en prestigiosos centros veterinarios
-                equipados con tecnología de última generación y personal altamente
-                calificado, garantizando el mejor cuidado para su mascota exótica.
+                La Dra. Sibo atiende en prestigiosos centros veterinarios
+                equipados con tecnología de última generación y personal
+                altamente calificado, garantizando el mejor cuidado para tu
+                pequeño mamífero exótico.
               </p>
             </div>
           </div>
@@ -61,25 +73,35 @@ export default function ClinicasPage() {
                 margin: "0 auto",
               }}
             >
-              Si deseas atenderte con la Dra. Siboney Pérez, puedes solicitar una
-              derivación a cualquiera de estos centros veterinarios de excelencia.
-              Todos cuentan con equipamiento quirúrgico de última generación y
-              personal especializado.
+              Si deseas atenderte con la Dra. Sibo, puedes solicitar una
+              derivación a cualquiera de estos centros veterinarios de
+              excelencia. Todos cuentan con equipamiento quirúrgico de última
+              generación y personal especializado.
             </p>
           </div>
 
-          <div className="courses-grid" style={{ marginTop: "3rem" }}>
-            {/* Exoticare Maipú */}
+          <div
+            className="courses-grid"
+            style={{
+              marginTop: "3rem",
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              gap: "2rem",
+              maxWidth: "1200px",
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            {/* Exotic Care */}
             <div className="course-card featured">
-              <div className="course-badge">Especializado</div>
               <div className="course-content">
                 <h3>
-                  <i className="fas fa-hospital"></i> Exoticare Maipú
+                  <i className="fas fa-hospital"></i> Exotic Care
                 </h3>
                 <p className="course-description">
-                  Centro veterinario especializado en animales exóticos con
-                  equipamiento de última generación para cirugías complejas y
-                  diagnóstico avanzado.
+                  Centro veterinario especializado en pequeños mamíferos
+                  exóticos con equipamiento de última generación para cirugías
+                  complejas y diagnóstico avanzado.
                 </p>
 
                 <div className="course-highlights">
@@ -103,11 +125,11 @@ export default function ClinicasPage() {
                       className="fas fa-map-marker-alt"
                       style={{ color: "#e67e22" }}
                     ></i>
-                    <strong>Ubicación:</strong> Maipú, Santiago
+                    <strong>Ubicación:</strong> Santiago
                   </p>
                   <p>
                     <i className="fas fa-star" style={{ color: "#e67e22" }}></i>
-                    <strong>Especialidad:</strong> Animales Exóticos
+                    <strong>Especialidad:</strong> Pequeños Mamíferos Exóticos
                   </p>
                 </div>
 
@@ -119,78 +141,30 @@ export default function ClinicasPage() {
               </div>
             </div>
 
-            {/* Centro Veterinario República */}
+            {/* Clínica Veterinaria UBO */}
             <div className="course-card">
               <div className="course-content">
                 <h3>
-                  <i className="fas fa-hospital"></i> Centro Veterinario República
+                  <i className="fas fa-hospital"></i> Clínica Veterinaria UBO
                 </h3>
                 <p className="course-description">
-                  Clínica veterinaria de excelencia con sala quirúrgica equipada
-                  con tecnología de punta y equipo médico altamente capacitado.
+                  Centro veterinario universitario con tecnología de vanguardia
+                  y equipo profesional altamente calificado para atención
+                  integral de pequeños mamíferos.
                 </p>
 
                 <div className="course-highlights">
                   <div className="highlight">
                     <i className="fas fa-heartbeat"></i>
-                    <span>Monitoreo Anestésico</span>
+                    <span>Medicina Interna</span>
                   </div>
                   <div className="highlight">
                     <i className="fas fa-procedures"></i>
-                    <span>UCI Veterinaria</span>
+                    <span>Atención Especializada</span>
                   </div>
                   <div className="highlight">
                     <i className="fas fa-user-md"></i>
-                    <span>Personal Especializado</span>
-                  </div>
-                </div>
-
-                <div className="course-details" style={{ marginTop: "1.5rem" }}>
-                  <p>
-                    <i
-                      className="fas fa-map-marker-alt"
-                      style={{ color: "#e67e22" }}
-                    ></i>
-                    <strong>Ubicación:</strong> Santiago Centro
-                  </p>
-                  <p>
-                    <i className="fas fa-award" style={{ color: "#e67e22" }}></i>
-                    <strong>Servicios:</strong> Cirugía y Medicina Interna
-                  </p>
-                </div>
-
-                <div className="course-actions" style={{ marginTop: "1.5rem" }}>
-                  <Link href="/#contacto" className="btn btn-primary">
-                    Solicitar Derivación
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* Centro Veterinario Italia */}
-            <div className="course-card">
-              <div className="course-content">
-                <h3>
-                  <i className="fas fa-hospital"></i> Centro Veterinario Italia
-                </h3>
-                <p className="course-description">
-                  Centro veterinario integral con instalaciones modernas y
-                  equipamiento quirúrgico de última generación para procedimientos
-                  complejos.
-                </p>
-
-                <div className="course-highlights">
-                  <div className="highlight">
-                    <i className="fas fa-clinic-medical"></i>
-                    <span>Instalaciones Modernas</span>
-                  </div>
-                  <div className="highlight">
-                    <i className="fas fa-tools"></i>
-                    <span>Equipamiento Avanzado</span>
-                  </div>
-                  <div className="highlight">
-                    <i className="fas fa-ambulance"></i>
-                    <span>Atención de Urgencias</span>
+                    <span>Personal Capacitado</span>
                   </div>
                 </div>
 
@@ -204,62 +178,10 @@ export default function ClinicasPage() {
                   </p>
                   <p>
                     <i
-                      className="fas fa-check-circle"
-                      style={{ color: "#e67e22" }}
-                    ></i>
-                    <strong>Servicios:</strong> Atención Integral
-                  </p>
-                </div>
-
-                <div className="course-actions" style={{ marginTop: "1.5rem" }}>
-                  <Link href="/#contacto" className="btn btn-primary">
-                    Solicitar Derivación
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* UNAB Colina */}
-            <div className="course-card">
-              <div className="course-content">
-                <h3>
-                  <i className="fas fa-university"></i> UNAB Colina - Unidad de
-                  Animales Pequeños
-                </h3>
-                <p className="course-description">
-                  Hospital clínico veterinario universitario con tecnología de
-                  vanguardia y equipo docente de excelencia académica.
-                </p>
-
-                <div className="course-highlights">
-                  <div className="highlight">
-                    <i className="fas fa-graduation-cap"></i>
-                    <span>Hospital Universitario</span>
-                  </div>
-                  <div className="highlight">
-                    <i className="fas fa-microscope"></i>
-                    <span>Investigación Clínica</span>
-                  </div>
-                  <div className="highlight">
-                    <i className="fas fa-hospital-alt"></i>
-                    <span>Equipamiento de Vanguardia</span>
-                  </div>
-                </div>
-
-                <div className="course-details" style={{ marginTop: "1.5rem" }}>
-                  <p>
-                    <i
-                      className="fas fa-map-marker-alt"
-                      style={{ color: "#e67e22" }}
-                    ></i>
-                    <strong>Ubicación:</strong> Colina, Santiago
-                  </p>
-                  <p>
-                    <i
                       className="fas fa-university"
                       style={{ color: "#e67e22" }}
                     ></i>
-                    <strong>Institución:</strong> Universidad Andrés Bello
+                    <strong>Institución:</strong> Universidad Bernardo O'Higgins
                   </p>
                 </div>
 
@@ -302,9 +224,9 @@ export default function ClinicasPage() {
                   textAlign: "center",
                 }}
               >
-                Todos los centros veterinarios donde la Dra. Siboney Pérez atiende
-                cuentan con los <strong>más altos estándares de calidad</strong> en
-                cirugía veterinaria:
+                Todos los centros veterinarios donde la Dra. Sibo atiende
+                cuentan con los <strong>más altos estándares de calidad</strong>{" "}
+                en cirugía veterinaria:
               </p>
               <div
                 style={{
@@ -326,7 +248,10 @@ export default function ClinicasPage() {
                   <h4 style={{ color: "white", marginBottom: "0.5rem" }}>
                     Equipamiento Quirúrgico
                   </h4>
-                  <p>Tecnología de última generación para procedimientos complejos</p>
+                  <p>
+                    Tecnología de última generación para procedimientos
+                    complejos
+                  </p>
                 </div>
                 <div style={{ textAlign: "center" }}>
                   <i
@@ -367,14 +292,17 @@ export default function ClinicasPage() {
         <div className="container">
           <div className="promo-content" style={{ gridTemplateColumns: "1fr" }}>
             <div className="promo-text" style={{ textAlign: "center" }}>
-              <h2>¿Quieres Atenderte con la Dra. Siboney Pérez?</h2>
+              <h2>¿Quieres Atenderte con la Dra. Sibo?</h2>
               <h3>Solicita tu Derivación Ahora</h3>
               <p style={{ maxWidth: "700px", margin: "0 auto 2rem" }}>
                 Contacta con nosotros para agendar tu consulta en cualquiera de
-                nuestros centros veterinarios de excelencia. Tu mascota exótica
-                recibirá la mejor atención profesional.
+                nuestros centros veterinarios de excelencia. Tu pequeño mamífero
+                exótico recibirá la mejor atención profesional.
               </p>
-              <div className="promo-buttons" style={{ justifyContent: "center" }}>
+              <div
+                className="promo-buttons"
+                style={{ justifyContent: "center" }}
+              >
                 <Link href="/#contacto" className="btn btn-primary">
                   Contactar Ahora
                 </Link>

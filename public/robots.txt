@@ -1,11 +1,30 @@
+# Permitir todos los bots
 User-agent: *
 Allow: /
 
+# Sitemap
 Sitemap: https://vetexoticapp.cl/sitemap.xml
+
+# Optimizaciones para Google
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Googlebot-Image
+Allow: /
 
 # Bloquear archivos innecesarios
 User-agent: *
-Disallow: /js/
-Disallow: /css/
+Disallow: /api/
+Disallow: /_next/static/
 Disallow: /*.json$
-Disallow: /*.php$
+Disallow: /js/scripts.js
+Disallow: /js/courses.js
+Disallow: /js/cases.js
+
+# Permitir recursos importantes para SEO
+Allow: /images/
+Allow: /css/styles.css
+Allow: /*.jpg$
+Allow: /*.png$
+Allow: /*.webp$

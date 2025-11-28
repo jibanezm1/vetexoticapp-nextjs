@@ -120,6 +120,10 @@ body {
     grid-template-columns: 1fr;
   }
 
+  .meta-item {
+    padding: 12px 15px;
+  }
+
   .meta-item:nth-child(odd) {
     border-right: none;
   }
@@ -129,9 +133,51 @@ body {
   }
 
   .modal-content {
-    margin: 10% auto;
-    padding: 30px 20px;
+    margin: 5% auto;
+    padding: 25px 15px;
     width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .case-detail-meta {
+    padding: 15px;
+  }
+
+  .case-detail-content {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    margin: 2% auto;
+    padding: 20px 12px;
+    width: 98%;
+  }
+
+  .case-detail-meta {
+    padding: 12px;
+  }
+
+  .meta-item {
+    padding: 10px 12px;
+  }
+
+  .meta-item strong {
+    font-size: 0.9rem;
+  }
+
+  .case-detail-content {
+    font-size: 0.9rem;
+  }
+
+  .blog-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .blog-content h3 {
+    font-size: 1.2rem;
   }
 }
 

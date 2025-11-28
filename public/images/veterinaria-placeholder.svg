@@ -1,0 +1,48 @@
+<svg width="400" height="250" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="250" fill="#E8F4F8"/>
+  <g transform="translate(125, 30)">
+    <!-- Cabeza -->
+    <ellipse cx="75" cy="45" rx="35" ry="40" fill="#F4A460"/>
+    
+    <!-- Cabello -->
+    <path d="M 40 45 Q 40 10, 75 5 Q 110 10, 110 45 L 110 55 L 40 55 Z" fill="#2C3E50"/>
+    <path d="M 85 55 Q 90 75, 95 90 Q 95 95, 90 95 Q 85 95, 85 90 Z" fill="#2C3E50"/>
+    
+    <!-- Ojos -->
+    <circle cx="60" cy="50" r="4" fill="#5DADE2"/>
+    <circle cx="90" cy="50" r="4" fill="#5DADE2"/>
+    <circle cx="61" cy="49" r="2" fill="#000"/>
+    <circle cx="91" cy="49" r="2" fill="#000"/>
+    
+    <!-- Sonrisa -->
+    <path d="M 60 65 Q 75 72, 90 65" stroke="#000" stroke-width="2" fill="none"/>
+    
+    <!-- Cuerpo (uniforme veterinario) -->
+    <path d="M 40 85 L 40 180 L 60 180 L 60 140 L 90 140 L 90 180 L 110 180 L 110 85 Z" fill="#17A2B8"/>
+    
+    <!-- Cuello en V -->
+    <path d="M 40 85 L 65 100 L 75 95 L 85 100 L 110 85 L 110 90 L 85 105 L 75 100 L 65 105 L 40 90 Z" fill="#138496"/>
+    
+    <!-- Estetoscopio -->
+    <circle cx="95" cy="105" r="8" fill="#ECF0F1" stroke="#000" stroke-width="1"/>
+    <path d="M 95 105 Q 85 100, 75 105" stroke="#ECF0F1" stroke-width="3" fill="none"/>
+    <path d="M 75 105 L 70 90" stroke="#ECF0F1" stroke-width="3"/>
+    <circle cx="70" cy="85" r="3" fill="#ECF0F1"/>
+    
+    <!-- Portapapeles -->
+    <rect x="95" y="130" width="30" height="40" rx="2" fill="#E8B4B8"/>
+    <rect x="100" y="135" width="20" height="30" fill="#FFF"/>
+    <line x1="103" y1="140" x2="117" y2="140" stroke="#999" stroke-width="1"/>
+    <line x1="103" y1="145" x2="117" y2="145" stroke="#999" stroke-width="1"/>
+    <line x1="103" y1="150" x2="117" y2="150" stroke="#999" stroke-width="1"/>
+    
+    <!-- Bolsillos -->
+    <rect x="45" y="100" width="15" height="10" rx="1" fill="#138496"/>
+    <rect x="90" y="100" width="15" height="10" rx="1" fill="#138496"/>
+  </g>
+  
+  <!-- Texto opcional -->
+  <text x="200" y="230" font-family="Arial, sans-serif" font-size="14" fill="#666" text-anchor="middle">
+    Veterinaria Especialista
+  </text>
+</svg>

@@ -568,3 +568,76 @@
     font-size: 0.9rem;
   }
 }
+
+/* Estilos para Sección de Docentes */
+.teachers-section .teacher-card {
+  cursor: pointer;
+}
+
+.teachers-section .teacher-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(44, 90, 160, 0.2) !important;
+}
+
+.teachers-grid {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive para tarjetas de docentes */
+@media (max-width: 968px) {
+  .teachers-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .teachers-section h2 {
+    font-size: 2rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .teachers-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .teachers-section {
+    padding: 3rem 0 !important;
+  }
+
+  .teacher-card .teacher-image {
+    height: 250px !important;
+  }
+
+  .teachers-section h2 {
+    font-size: 1.8rem !important;
+  }
+
+  .teachers-section .section-header p {
+    font-size: 1rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .teacher-card .teacher-content {
+    padding: 1rem !important;
+  }
+
+  .teacher-card h3 {
+    font-size: 1.2rem !important;
+  }
+
+  .teacher-card .teacher-image {
+    height: 220px !important;
+  }
+}

@@ -6,13 +6,16 @@ import Link from "next/link";
 import ScrollAnimations from "@/components/ScrollAnimations";
 import blogsData from "@/data/blogs.json";
 
+// Note: metadata must be in a server component, will need to create a wrapper
+// For now, using next/head alternative for client component
+
 export default function BlogsPage() {
   const [selectedCategory, setSelectedCategory] = useState("Todos");
   const [selectedSpecies, setSelectedSpecies] = useState("Todos");
 
   // Extraer categorías y especies únicas
-  const categories = ["Todos", ...Array.from(new Set(blogsData.flatMap(blog => blog.categories)))];
-  const species = ["Todos", ...Array.from(new Set(blogsData.flatMap(blog => blog.species)))];
+  const categories = ["Todos", ...Array.from(new Set(blogsData.flatMap(blog => blog.categories))).filter(c => c !== "Todos")];
+  const species = ["Todos", ...Array.from(new Set(blogsData.flatMap(blog => blog.species))).filter(s => s !== "Todos")];
 
   // Filtrar blogs
   const filteredBlogs = blogsData.filter(blog => {
@@ -94,11 +97,15 @@ export default function BlogsPage() {
               <article key={blog.id} className="case-card">
                 <div className="case-image">
                   <Image
-                    src={blog.image}
+                    src={blog.image || "/images/veterinaria-placeholder.svg"}
                     alt={blog.title}
                     width={400}
                     height={250}
                     style={{ objectFit: "cover" }}
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = "/images/veterinaria-placeholder.svg";
+                    }}
                   />
                   <div className="case-overlay">
                     <span className="case-category">{blog.specialty}</span>

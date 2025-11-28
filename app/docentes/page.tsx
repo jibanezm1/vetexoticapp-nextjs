@@ -1,13 +1,8 @@
-import { Metadata } from "next";
+"use client";
+
 import Image from "next/image";
 import docentes from "@/data/docentes.json";
 import ScrollAnimations from "@/components/ScrollAnimations";
-
-export const metadata: Metadata = {
-  title: "Equipo Docente Veterinaria Exóticos Chile | Especialistas",
-  description:
-    "Conoce a nuestro equipo de docentes especialistas en medicina veterinaria de animales exóticos. Natalia Villalobos, Macarena Hidalgo, Amparo Hidalgo y Camila Arancibia.",
-};
 
 export default function DocentesPage() {
   return (
@@ -43,6 +38,7 @@ export default function DocentesPage() {
               }}
             >
               <div
+                className="teacher-grid-layout"
                 style={{
                   display: "grid",
                   gridTemplateColumns: "250px 1fr",
@@ -50,8 +46,9 @@ export default function DocentesPage() {
                   alignItems: "start",
                 }}
               >
-                <div style={{ textAlign: "center" }}>
+                <div className="teacher-sidebar" style={{ textAlign: "center" }}>
                   <div
+                    className="teacher-photo"
                     style={{
                       width: "250px",
                       height: "250px",
@@ -62,11 +59,15 @@ export default function DocentesPage() {
                     }}
                   >
                     <Image
-                      src={docente.imagen}
+                      src={docente.imagen || "https://www.dignipets.co.uk/wp-content/uploads/2025/05/SizedPictures_Placeholder-Female.png"}
                       alt={`${docente.nombre} - ${docente.especialidad}`}
                       width={250}
                       height={250}
-                      style={{ objectFit: "cover" }}
+                      style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = "https://www.dignipets.co.uk/wp-content/uploads/2025/05/SizedPictures_Placeholder-Female.png";
+                      }}
                     />
                   </div>
                   <h3 style={{ color: "#2c5aa0", marginBottom: "10px" }}>{docente.nombre}</h3>
@@ -135,13 +136,14 @@ export default function DocentesPage() {
                     <h5 style={{ marginBottom: "15px" }}>
                       <i className="fas fa-stethoscope"></i> Áreas de Especialización
                     </h5>
-                    <div
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(2, 1fr)",
-                        gap: "10px",
-                      }}
-                    >
+                  <div
+                    className="areas-grid"
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(2, 1fr)",
+                      gap: "10px",
+                    }}
+                  >
                       {docente.areas.map((area, index) => (
                         <div key={index}>
                           <i className="fas fa-check"></i> {area}
@@ -163,6 +165,7 @@ export default function DocentesPage() {
                         <i className="fas fa-award"></i> Certificaciones Destacadas
                       </h5>
                       <div
+                        className="certifications-grid"
                         style={{
                           display: "grid",
                           gridTemplateColumns: "repeat(2, 1fr)",

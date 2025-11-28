@@ -1,18 +1,70 @@
 import { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import cursos from "@/data/cursos.json";
 import workshops from "@/data/workshops.json";
+import docentes from "@/data/docentes.json";
 import ScrollAnimations from "@/components/ScrollAnimations";
 
 export const metadata: Metadata = {
-  title: "Cursos Veterinaria Exóticos | Cirugía, Odontología y Aves",
+  title: "Cursos Veterinaria Animales Exóticos Chile | Cirugía, Odontología y Medicina de Aves",
   description:
-    "Cursos de especialización en medicina veterinaria de animales exóticos: cirugía, odontología y medicina de aves. Formación profesional con la Dra. Siboney Pérez.",
+    "📚 Cursos de especialización en medicina veterinaria de animales exóticos en Chile. Cirugía de tejidos blandos, odontología especializada y medicina de aves. Formación profesional con la Dra. Siboney Pérez, Dra. Natalia Villalobos, Dra. Macarena Hidalgo, Dra. Amparo Hidalgo y Dra. Camila Arancibia. Grupos reducidos, práctica dirigida y certificación.",
+  keywords: [
+    "cursos veterinaria exóticos chile",
+    "curso cirugía animales exóticos",
+    "curso odontología veterinaria",
+    "formación veterinaria exóticos",
+    "especialización veterinaria chile",
+    "curso medicina aves",
+    "capacitación veterinaria pequeños mamíferos",
+    "workshop veterinaria exóticos",
+    "Dra. Natalia Villalobos veterinaria",
+    "Dra. Macarena Hidalgo Pedemonte",
+    "Dra. Amparo Hidalgo Mortera",
+    "Dra. Camila Arancibia anestesista",
+    "docentes veterinaria exóticos chile",
+    "especialistas animales exóticos chile",
+    "expertos veterinaria exóticos",
+    "profesores veterinaria chile",
+  ],
+  openGraph: {
+    type: "website",
+    url: "https://vetexoticapp.cl/cursos",
+    title: "Cursos Veterinaria Animales Exóticos Chile | Especialización Profesional",
+    description: "Capacítate con especialistas en medicina veterinaria de animales exóticos. Certificación profesional y práctica dirigida.",
+  },
+  alternates: {
+    canonical: "https://vetexoticapp.cl/cursos",
+  },
 };
 
 export default function CursosPage() {
+  // Generar Schema.org para docentes
+  const teachersSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Equipo Docente - Cursos Veterinaria Exóticos Chile",
+    "description": "Profesionales especializados en medicina veterinaria de animales exóticos en Chile",
+    "itemListElement": docentes.map((docente, index) => ({
+      "@type": "Person",
+      "position": index + 1,
+      "name": docente.nombre,
+      "jobTitle": docente.especialidad,
+      "description": docente.descripcion,
+      "knowsAbout": docente.areas,
+      "alumniOf": docente.formacion,
+      "email": docente.contacto?.email,
+      "telephone": docente.contacto?.telefono,
+    })),
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(teachersSchema) }}
+      />
       <ScrollAnimations />
       <section className="courses-hero">
         <div className="container">
@@ -105,7 +157,182 @@ export default function CursosPage() {
         </div>
       </section>
 
-      <section className="workshops">
+      {/* Sección Docentes - SEO Optimizada */}
+      <section className="teachers-section" style={{ padding: "5rem 0", backgroundColor: "#f8f9fa" }}>
+        <div className="container">
+          <div className="section-header" style={{ textAlign: "center", marginBottom: "3rem" }}>
+            <h2 style={{ fontSize: "2.5rem", color: "#2c5aa0", marginBottom: "1rem" }}>
+              <i className="fas fa-chalkboard-teacher"></i> Nuestro Equipo Docente
+            </h2>
+            <p style={{ fontSize: "1.1rem", color: "#555", maxWidth: "800px", margin: "0 auto" }}>
+              Profesionales altamente especializados en medicina veterinaria de animales exóticos,
+              comprometidos con la excelencia académica y la formación continua
+            </p>
+          </div>
+
+          <div className="teachers-grid" style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: "2rem",
+            marginBottom: "3rem"
+          }}>
+            {docentes.map((docente) => (
+              <article
+                key={docente.id}
+                className="teacher-card"
+                itemScope
+                itemType="https://schema.org/Person"
+                style={{
+                  backgroundColor: "#fff",
+                  borderRadius: "12px",
+                  overflow: "hidden",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                }}
+              >
+                <div className="teacher-image" style={{ position: "relative", height: "300px", overflow: "hidden" }}>
+                  <Image
+                    src={docente.imagen || "https://www.dignipets.co.uk/wp-content/uploads/2025/05/SizedPictures_Placeholder-Female.png"}
+                    alt={`${docente.nombre} - ${docente.especialidad}`}
+                    width={400}
+                    height={300}
+                    style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                    itemProp="image"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = "https://www.dignipets.co.uk/wp-content/uploads/2025/05/SizedPictures_Placeholder-Female.png";
+                    }}
+                  />
+                  <div style={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    background: "linear-gradient(to top, rgba(0,0,0,0.8), transparent)",
+                    padding: "2rem 1.5rem 1rem",
+                    color: "#fff"
+                  }}>
+                    <h3 itemProp="name" style={{ fontSize: "1.4rem", marginBottom: "0.3rem", fontWeight: "600" }}>
+                      {docente.nombre}
+                    </h3>
+                    <p itemProp="jobTitle" style={{ fontSize: "0.95rem", opacity: 0.9, margin: 0 }}>
+                      {docente.especialidad}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="teacher-content" style={{ padding: "1.5rem" }}>
+                  <p itemProp="description" style={{ fontSize: "0.95rem", lineHeight: "1.6", color: "#555", marginBottom: "1.5rem" }}>
+                    {docente.descripcion}
+                  </p>
+
+                  {docente.areas && docente.areas.length > 0 && (
+                    <div style={{ marginBottom: "1.5rem" }}>
+                      <h4 style={{ fontSize: "0.9rem", color: "#2c5aa0", marginBottom: "0.75rem", fontWeight: "600" }}>
+                        <i className="fas fa-stethoscope"></i> Áreas de Especialización
+                      </h4>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+                        {docente.areas.map((area, idx) => (
+                          <span
+                            key={idx}
+                            itemProp="knowsAbout"
+                            style={{
+                              backgroundColor: "#e8f4f8",
+                              color: "#2c5aa0",
+                              padding: "0.4rem 0.8rem",
+                              borderRadius: "20px",
+                              fontSize: "0.85rem",
+                              fontWeight: "500"
+                            }}
+                          >
+                            {area}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {docente.formacion && docente.formacion.length > 0 && (
+                    <div style={{ marginBottom: "1.5rem" }}>
+                      <h4 style={{ fontSize: "0.9rem", color: "#2c5aa0", marginBottom: "0.75rem", fontWeight: "600" }}>
+                        <i className="fas fa-graduation-cap"></i> Formación Académica
+                      </h4>
+                      <ul style={{ margin: 0, paddingLeft: "1.2rem", fontSize: "0.9rem", color: "#666" }}>
+                        {docente.formacion.slice(0, 3).map((formacion, idx) => (
+                          <li key={idx} itemProp="alumniOf" style={{ marginBottom: "0.5rem", lineHeight: "1.5" }}>
+                            {formacion}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {docente.contacto && (docente.contacto.email || docente.contacto.telefono) && (
+                    <div style={{
+                      borderTop: "1px solid #eee",
+                      paddingTop: "1rem",
+                      marginTop: "1rem",
+                      fontSize: "0.9rem"
+                    }}>
+                      {docente.contacto.email && (
+                        <p style={{ margin: "0.3rem 0" }}>
+                          <i className="fas fa-envelope" style={{ color: "#2c5aa0", marginRight: "0.5rem" }}></i>
+                          <span itemProp="email">{docente.contacto.email}</span>
+                        </p>
+                      )}
+                      {docente.contacto.telefono && (
+                        <p style={{ margin: "0.3rem 0" }}>
+                          <i className="fas fa-phone" style={{ color: "#2c5aa0", marginRight: "0.5rem" }}></i>
+                          <a href={`tel:${docente.contacto.telefono}`} itemProp="telephone" style={{ color: "#555", textDecoration: "none" }}>
+                            {docente.contacto.telefono}
+                          </a>
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  <Link
+                    href="/docentes"
+                    style={{
+                      display: "inline-block",
+                      marginTop: "1rem",
+                      color: "#2c5aa0",
+                      textDecoration: "none",
+                      fontWeight: "600",
+                      fontSize: "0.95rem",
+                      transition: "color 0.3s ease"
+                    }}
+                  >
+                    Ver perfil completo <i className="fas fa-arrow-right"></i>
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div style={{ textAlign: "center", marginTop: "2rem" }}>
+            <Link
+              href="/docentes"
+              className="btn btn-primary"
+              style={{
+                display: "inline-block",
+                padding: "1rem 2.5rem",
+                backgroundColor: "#2c5aa0",
+                color: "#fff",
+                borderRadius: "50px",
+                textDecoration: "none",
+                fontWeight: "600",
+                fontSize: "1.1rem",
+                transition: "all 0.3s ease"
+              }}
+            >
+              <i className="fas fa-users"></i> Conoce a Todo el Equipo Docente
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="workshops-section">
         <div className="container">
           <div className="section-header">
             <h2>Próximos Workshops</h2>

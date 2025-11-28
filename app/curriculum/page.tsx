@@ -3,22 +3,34 @@ import type { Metadata } from "next";
 import ScrollAnimations from "@/components/ScrollAnimations";
 
 export const metadata: Metadata = {
-  title: "CV Dra. Siboney Pérez | Veterinaria Especialista en Animales Exóticos",
+  title: "CV Dra. Siboney Pérez | Veterinaria Especialista Animales Exóticos Chile - GPCert ExAP",
   description:
-    "Currículum de la Dra. Siboney Pérez, veterinaria especialista en cirugía y odontología de animales exóticos. Docente en UNAB y UBO. Experiencia en Exoticare y centros veterinarios de prestigio.",
-  keywords:
-    "siboney pérez veterinaria, curriculum veterinario exóticos, especialista animales exóticos chile, cirujano veterinario exóticos, odontólogo veterinario",
+    "📋 Currículum de la Dra. Siboney Pérez, veterinaria especialista en cirugía y odontología de animales exóticos en Chile. GPCert (ExAP) ISVPS. Docente en UNAB y UBO. +7 años de experiencia en Exoticare Maipú y centros veterinarios de prestigio. Especialización en lagomorfos, chinchillas y pequeños mamíferos.",
+  keywords: [
+    "siboney pérez veterinaria",
+    "curriculum veterinario exóticos",
+    "especialista animales exóticos chile",
+    "cirujano veterinario exóticos",
+    "odontólogo veterinario animales exóticos",
+    "GPCert ExAP chile",
+    "veterinaria exoticare",
+    "docente veterinaria UNAB",
+    "especialista lagomorfos chile",
+  ],
   openGraph: {
     type: "profile",
     url: "https://vetexoticapp.cl/curriculum",
-    title: "CV Dra. Siboney Pérez | Veterinaria Especialista",
-    description: "Veterinaria especialista en cirugía y odontología de animales exóticos en Chile.",
+    title: "CV Dra. Siboney Pérez | Veterinaria Especialista Animales Exóticos Chile",
+    description: "Veterinaria especialista en cirugía y odontología de animales exóticos. GPCert (ExAP) ISVPS. Docente universitaria.",
     images: [
       {
         url: "https://vetexoticapp.cl/images/dra-siboney-real.jpg",
-        alt: "Dra. Siboney Pérez",
+        alt: "Dra. Siboney Pérez - Veterinaria Especialista",
       },
     ],
+  },
+  alternates: {
+    canonical: "https://vetexoticapp.cl/curriculum",
   },
 };
 

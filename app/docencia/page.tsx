@@ -1,25 +1,37 @@
 import Image from "next/image";
 import Link from "next/link";
 import ScrollAnimations from "@/components/ScrollAnimations";
+import type { Metadata } from "next";
 
-export const metadata = {
-  title: "Docencia Veterinaria Exóticos UNAB UBO | Profesora Dra. Siboney Pérez",
+export const metadata: Metadata = {
+  title: "Docencia Veterinaria Animales Exóticos Chile | UNAB & UBO - Dra. Siboney Pérez",
   description:
-    "Docencia universitaria en medicina veterinaria de animales exóticos. Profesora en UNAB Viña del Mar, Concepción, Colina y Universidad Bernardo O'Higgins. Formación de especialistas.",
-  keywords:
-    "docencia veterinaria exóticos chile, profesor veterinaria UNAB, profesor veterinaria UBO, enseñanza cirugía exóticos, formación veterinaria animales exóticos",
+    "🎓 Docencia universitaria en medicina veterinaria de animales exóticos. Profesora en Universidad Andrés Bello (UNAB) Viña del Mar, Concepción, Colina y Universidad Bernardo O'Higgins (UBO). Formación de especialistas en cirugía y odontología de pequeños mamíferos.",
+  keywords: [
+    "docencia veterinaria exóticos chile",
+    "profesor veterinaria UNAB",
+    "profesor veterinaria UBO",
+    "enseñanza cirugía exóticos",
+    "formación veterinaria animales exóticos",
+    "universidad veterinaria chile",
+    "docente medicina exóticos",
+    "educación veterinaria pequeños mamíferos",
+  ],
   openGraph: {
     type: "website",
     url: "https://vetexoticapp.cl/docencia",
-    title: "Docencia Veterinaria Exóticos | UNAB y UBO",
+    title: "Docencia Veterinaria Animales Exóticos | UNAB y UBO",
     description:
-      "Formación de nuevos especialistas en medicina veterinaria de animales exóticos en Chile.",
+      "Formación de nuevos especialistas en medicina veterinaria de animales exóticos en universidades de Chile.",
     images: [
       {
         url: "https://vetexoticapp.cl/images/conejo-docencia.png",
-        alt: "Docencia Veterinaria Exóticos",
+        alt: "Docencia Veterinaria Exóticos Chile",
       },
     ],
+  },
+  alternates: {
+    canonical: "https://vetexoticapp.cl/docencia",
   },
 };
 
@@ -142,7 +154,7 @@ export default function DocenciaPage() {
           <div className="courses-grid" style={{ marginTop: "3rem" }}>
             {/* UNAB Viña del Mar */}
             <div className="course-card featured">
-              <div className="course-badge">Campus Principal</div>
+              {/* <div className="course-badge">Campus Principal</div> */}
               <div className="course-content">
                 <h3>
                   <i className="fas fa-university"></i> Universidad Andrés Bello -
