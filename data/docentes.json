@@ -4,7 +4,7 @@
         "nombre": "Dra. Tania Nova Riquelme",
         "especialidad": "Medicina Interna y Anestesia de Animales Exóticos",
         "imagen": "/images/tania.jpeg",
-        "descripcion": "Médica veterinaria con dedicación exclusiva a animales exóticos. En tercer año de universidad comencé a realizar una pasantía en una reconocida veterinaria de animales exóticos, donde reafirmé mi pasión por esta área. Al momento de titularme, comencé a realizar cursos y diplomados de especialización. A lo largo de mi carrera comencé a desarrollarme también en el área de anestesia. Actualmente me dedico a medicina interna y anestesia de animales exóticos (principalmente pequeños mamíferos).",
+        "descripcion": "Docente de Pre y Posgrado. Médica veterinaria con dedicación exclusiva a animales exóticos. En tercer año de universidad comencé a realizar una pasantía en una reconocida veterinaria de animales exóticos, donde reafirmé mi pasión por esta área. Al momento de titularme, comencé a realizar cursos y diplomados de especialización. A lo largo de mi carrera comencé a desarrollarme también en el área de anestesia. Actualmente me dedico a medicina interna y anestesia de animales exóticos (principalmente pequeños mamíferos).",
         "formacion": [
             "Médico Veterinario - Universidad Santo Tomás (2016)",
             "Diplomado Manejo y Medicina de Animales Exóticos - Universidad de Chile (2016-2017)",
@@ -25,7 +25,7 @@
         "certificaciones": [
             "Curso Virtual de Anestesiología Veterinaria - AVA Perú (2020-2022)",
             "Curso Emergencias y Cuidados Críticos - IMFAC 2020",
-            "Curso Manejo Clínico del Paciente Roedor - AVA Perú 2021",
+            "Curso Manejo Clínico del Paciente adolorido - AVA Perú 2021",
             "Curso ABC de Anestesia Veterinaria - AVA Perú 2021",
             "Curso Anestesia y Analgesia en Nuevos Animales de Compañía - México 2025",
             "Múltiples cursos especializados en anestesiología y medicina de exóticos"
@@ -37,15 +37,14 @@
             "Charlas de medicina y anestesia en mamíferos exóticos (2025-2026)"
         ],
         "contacto": {
-            "email": "mvet.tania@gmail.com",
-            "telefono": "+56 9 9213 7297"
+            "email": "mvet.tania@gmail.com"
         }
     },
     {
         "id": "natalia-villalobos",
         "nombre": "Dra. Natalia Villalobos",
         "especialidad": "Medicina Interna de Animales Exóticos",
-        "imagen": "/images/docente.png",
+        "imagen": "/images/nati.jpeg",
         "descripcion": "Médico Veterinaria de la Universidad de Chile. Experta en Animales Exóticos certificada por la Universidad de Valencia, España. Especialista en medicina interna de mamíferos no tradicionales, con particular experiencia en Histricomorfos.",
         "formacion": [
             "Experto en Animales Exóticos - Universidad de Valencia, España",
@@ -68,7 +67,7 @@
         "id": "macarena-hidalgo",
         "nombre": "Dra. Macarena Hidalgo Pedemonte",
         "especialidad": "Medicina y Manejo de Animales Exóticos",
-        "imagen": "/images/docente.png",
+        "imagen": "/images/macarena.jpeg",
         "descripcion": "Médico Veterinario de la Universidad Iberoamericana de Ciencias y Tecnología. Especialista en medicina y manejo de animales exóticos con formación continua en medicina interna de mascotas exóticas.",
         "formacion": [
             "Diplomado en Medicina y Manejo de Animales Exóticos - Universidad de Chile",
