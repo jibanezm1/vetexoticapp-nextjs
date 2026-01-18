@@ -5,6 +5,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Script from "next/script";
 
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
@@ -258,6 +260,7 @@ export default function RootLayout({
         <Header />
         <main>{children}</main>
         <Footer />
+        <SpeedInsights />
       </body>
     </html>
   );
