@@ -563,26 +563,10 @@ export default function HomePage() {
           <div className="contact-content">
             <div className="contact-info">
               <div className="contact-item">
-                <i className="fas fa-phone"></i>
-                <div>
-                  <h3>Teléfono</h3>
-                  <p>+56 9 3449 7035</p>
-                </div>
-              </div>
-
-              <div className="contact-item">
                 <i className="fas fa-envelope"></i>
                 <div>
                   <h3>Email</h3>
                   <p>vetexotic.app@gmail.com</p>
-                </div>
-              </div>
-
-              <div className="contact-item">
-                <i className="fas fa-map-marker-alt"></i>
-                <div>
-                  <h3>Ubicación</h3>
-                  <p>San Bernardo, Chile</p>
                 </div>
               </div>
 
