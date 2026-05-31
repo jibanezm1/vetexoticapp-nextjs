@@ -1,0 +1,636 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import { off, onValue, ref, remove, update } from "firebase/database";
+import QRCode from "@/app/quiz/components/QRCode";
+import { db } from "@/lib/firebase";
+import {
+  EXPO_SESSION_ID,
+  EXPO_TITLE,
+  SpeciesId,
+  getSpeciesImage,
+  speciesCatalog,
+} from "./data";
+
+type SessionState = "idle" | "playing";
+
+interface Participant {
+  name: string;
+  species: SpeciesId;
+  photoUrl?: string;
+  joinedAt: number;
+  finished?: boolean;
+  score?: number;
+  totalQuestions?: number;
+  tutorLevelTitle?: string;
+}
+
+interface SessionSnapshot {
+  state?: SessionState;
+  currentParticipantId?: string | null;
+  participants?: Record<string, Participant>;
+}
+
+export default function ExpomascotasPage() {
+  const [salonUrl, setSalonUrl] = useState("");
+  const [session, setSession] = useState<SessionSnapshot>({});
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const frame = window.requestAnimationFrame(() => {
+        setSalonUrl(`${window.location.origin}/expomascotas/salon?session=${EXPO_SESSION_ID}`);
+      });
+      return () => window.cancelAnimationFrame(frame);
+    }
+  }, []);
+
+  useEffect(() => {
+    const sessionRef = ref(db, `expomascotas_sessions/${EXPO_SESSION_ID}`);
+    onValue(sessionRef, (snap) => {
+      setSession((snap.val() as SessionSnapshot) || {});
+    });
+    return () => off(sessionRef);
+  }, []);
+
+  const currentParticipant = useMemo(() => {
+    const participants = session.participants || {};
+    if (session.currentParticipantId && participants[session.currentParticipantId]) {
+      return participants[session.currentParticipantId];
+    }
+
+    const activeEntries = Object.values(participants)
+      .filter((participant) => !participant.finished)
+      .sort((a, b) => b.joinedAt - a.joinedAt);
+
+    return activeEntries[0] || null;
+  }, [session]);
+
+  const isPlaying = session.state === "playing" && currentParticipant;
+  const rankingParticipants = useMemo(() => {
+    return Object.values(session.participants || {})
+      .filter((participant) => participant.finished)
+      .sort((a, b) => {
+        const scoreDiff = (b.score || 0) - (a.score || 0);
+        if (scoreDiff !== 0) return scoreDiff;
+        return b.joinedAt - a.joinedAt;
+      })
+      .slice(0, 8);
+  }, [session.participants]);
+  const activeImage = getSpeciesImage(currentParticipant?.species);
+  const backgroundImage = isPlaying && activeImage
+    ? `/images/expomascostas/${activeImage}`
+    : "/images/expomascostas/fondo.png";
+
+  const handleReset = async () => {
+    await update(ref(db, `expomascotas_sessions/${EXPO_SESSION_ID}`), {
+      state: "idle",
+      currentParticipantId: null,
+      questions: null,
+    });
+  };
+
+  const handleClearHistory = async () => {
+    await remove(ref(db, `expomascotas_sessions/${EXPO_SESSION_ID}`));
+  };
+
+  return (
+    <div className="expo">
+      <section className="expo__left">
+        <div className="expo__panel">
+          <p className="expo__eyebrow">ACTIVACIÓN EN VIVO</p>
+          {!isPlaying ? (
+            <div className="expo__introNote">
+              <h2 className="expo__introTitle">Escanea y participa</h2>
+              <p className="expo__introCopy">
+                Mientras el QR está activo, aquí al lado se irá armando el ranking con los tutores que ya respondieron.
+              </p>
+            </div>
+          ) : null}
+
+          <div className="expo__qrCard">
+            {salonUrl && <QRCode url={salonUrl} />}
+           </div>
+
+          <div className="expo__status">
+            <span className={`expo__badge ${isPlaying ? "expo__badge--live" : ""}`}>
+              {isPlaying ? "Quiz activo" : "Esperando participante"}
+            </span>
+            <span className="expo__count">
+              {Object.keys(session.participants || {}).length} registros
+            </span>
+          </div>
+
+          <div className="expo__actions">
+            <button className="expo__btn expo__btn--yellow" onClick={handleReset}>
+              Volver a estado inicial
+            </button>
+            <button className="expo__btn expo__btn--dark" onClick={handleClearHistory}>
+              Limpiar sesión
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section
+        className={`expo__stage ${isPlaying ? "expo__stage--active" : ""}`}
+        style={{ ["--expo-bg" as string]: `url(${backgroundImage})` }}
+      >
+        <div className="expo__overlay" />
+        <div className="expo__mobileIdle" />
+
+        {isPlaying && currentParticipant ? (
+          <div className="expo__participantCard">
+            <p className="expo__participantLabel">Participante actual</p>
+            <h2 className="expo__participantName">{currentParticipant.name}</h2>
+            <p className="expo__participantSpecies">
+              {speciesCatalog[currentParticipant.species]?.label}
+            </p>
+            {currentParticipant.photoUrl ? (
+              <img
+                src={currentParticipant.photoUrl}
+                alt={currentParticipant.name}
+                className="expo__participantPhoto"
+              />
+            ) : null}
+          </div>
+        ) : (
+          <div className="expo__ranking">
+            <div className="expo__rankingHeader">
+              <p className="expo__participantLabel">Ranking de tutores</p>
+              <h2 className="expo__rankingTitle">Tutores que ya respondieron</h2>
+            </div>
+
+            <div className="expo__rankingList">
+              {rankingParticipants.length > 0 ? (
+                rankingParticipants.map((participant, index) => (
+                  <article key={`${participant.name}-${participant.joinedAt}`} className="expo__rankingCard">
+                    <div className="expo__rankingPosition">{index + 1}</div>
+                    {participant.photoUrl ? (
+                      <img
+                        src={participant.photoUrl}
+                        alt={participant.name}
+                        className="expo__rankingPhoto"
+                      />
+                    ) : (
+                      <div className="expo__rankingPhoto expo__rankingPhoto--placeholder">
+                        {participant.name.charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                    <div className="expo__rankingMeta">
+                      <h3 className="expo__rankingName">{participant.name}</h3>
+                      <p className="expo__rankingSpecies">
+                        {speciesCatalog[participant.species]?.label}
+                      </p>
+                    </div>
+                    <div className="expo__rankingScore">
+                      <span>{participant.score ?? 0}</span>
+                      <small>pts</small>
+                    </div>
+                  </article>
+                ))
+              ) : (
+                <div className="expo__rankingEmpty">
+                  Aún no hay tutores en el ranking. Se llenará a medida que respondan el quiz.
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </section>
+
+      <style>{`
+        *, *::before, *::after { box-sizing: border-box; }
+
+        .expo {
+          min-height: 100vh;
+          display: grid;
+          grid-template-columns: minmax(320px, 440px) 1fr;
+          background: #0f130d;
+          color: #fff8eb;
+          font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .expo__left {
+          position: relative;
+          padding: 2rem;
+          background:
+            url("/images/expomascostas/lateral.png") center / cover no-repeat;
+          overflow: hidden;
+        }
+
+        .expo__left::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: -1px;
+          width: 18px;
+          height: 100%;
+          opacity: 0.45;
+        }
+
+        .expo__panel {
+          position: relative;
+          z-index: 1;
+          min-height: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 1.25rem;
+        }
+
+        .expo__introNote {
+          display: grid;
+          gap: 0.65rem;
+          padding: 1.1rem 1.2rem;
+          border-radius: 22px;
+          
+        }
+
+        .expo__introTitle {
+          margin: 0;
+          font-size: clamp(1.8rem, 3vw, 2.8rem);
+          line-height: 0.95;
+          letter-spacing: -0.05em;
+        }
+
+        .expo__introCopy {
+          margin: 0;
+          color: rgba(255, 248, 235, 0.78);
+          line-height: 1.45;
+        }
+
+        .expo__eyebrow {
+          margin: 0;
+          font-size: 0.75rem;
+          letter-spacing: 0.25em;
+          color: #ffca7a;
+        }
+
+        .expo__title {
+          margin: 0;
+          font-size: clamp(2rem, 4vw, 3.4rem);
+          line-height: 0.95;
+          letter-spacing: -0.04em;
+          text-shadow: 0 4px 18px rgba(0, 0, 0, 0.26);
+        }
+
+        .expo__copy, .expo__url, .expo__participantSpecies {
+          margin: 0;
+          color: rgba(255, 248, 235, 0.78);
+          line-height: 1.5;
+        }
+
+        .expo__qrCard {
+         
+          border-radius: 26px;
+          padding: 1.25rem;
+          display: grid;
+          gap: 1rem;
+ 
+        }
+
+        .expo__url {
+          font-size: 0.8rem;
+          word-break: break-word;
+        }
+
+        .expo__status, .expo__actions {
+          display: flex;
+          gap: 0.75rem;
+          flex-wrap: wrap;
+          align-items: center;
+        }
+
+        .expo__status,
+        .expo__actions {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .expo__badge, .expo__count {
+          min-height: 54px;
+          min-width: 0;
+          width: 100%;
+          max-width: 100%;
+          padding: 0.8rem 1.6rem;
+          background: transparent url("/images/botones/after.png") center / 100% 100% no-repeat;
+          color: #fff8eb;
+          font-size: clamp(0.82rem, 1.4vw, 0.95rem);
+          font-weight: 700;
+          text-align: center;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          line-height: 1.1;
+          white-space: nowrap;
+          text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .expo__badge--live {
+          filter: brightness(1.06) saturate(1.05);
+        }
+
+        .expo__btn {
+          min-height: 64px;
+          width: 100%;
+          padding: 0.9rem 1.35rem;
+          border: none;
+          background-color: transparent;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+          color: #121212;
+          font-weight: 700;
+          text-shadow: 0 1px 0 rgba(255, 255, 255, 0.18);
+          cursor: pointer;
+          transition: transform 0.18s ease, filter 0.18s ease;
+        }
+
+        .expo__btn:hover {
+          transform: translateY(-2px) scale(1.01);
+          filter: brightness(1.04);
+        }
+
+        .expo__btn--yellow {
+          background-image: url("/images/botones/parati.png");
+        }
+
+        .expo__btn--dark {
+          background-image: url("/images/botones/accesorapido.png");
+          color: #fff8eb;
+          text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .expo__stage {
+          min-height: 100vh;
+          position: relative;
+          display: flex;
+          align-items: stretch;
+          justify-content: flex-end;
+          background-image: var(--expo-bg);
+          background-size: cover;
+          background-position: center;
+          overflow: hidden;
+        }
+
+        .expo__stage::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(90deg, rgba(8, 12, 8, 0.4) 0%, rgba(8, 12, 8, 0.08) 38%, rgba(8, 12, 8, 0.68) 100%);
+        }
+
+        .expo__stage:not(.expo__stage--active) {
+          background-image: url("/images/expomascostas/fondo.png");
+        }
+
+        .expo__mobileIdle {
+          display: none;
+        }
+
+        .expo__participantCard,
+        .expo__ranking {
+          position: relative;
+          z-index: 1;
+          width: min(42vw, 560px);
+          padding: 2rem;
+          border-radius: 28px;
+          background:
+            linear-gradient(180deg, rgba(64, 48, 18, 0.92), rgba(33, 28, 22, 0.9)),
+            rgba(20, 18, 16, 0.92);
+          border: 1px solid rgba(255, 214, 138, 0.18);
+          box-shadow:
+            0 24px 60px rgba(0, 0, 0, 0.32),
+            inset 0 1px 0 rgba(255, 245, 226, 0.06);
+          overflow: hidden;
+        }
+
+        .expo__participantCard {
+          margin: auto 2.5rem 2.5rem auto;
+        }
+
+        .expo__ranking {
+          align-self: flex-start;
+          margin: 2rem auto auto 2rem;
+        }
+
+        .expo__participantCard::before,
+        .expo__ranking::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background:
+            radial-gradient(circle at 12% 18%, rgba(255, 202, 122, 0.16), transparent 24%),
+            radial-gradient(circle at 82% 78%, rgba(255, 0, 133, 0.12), transparent 22%);
+          pointer-events: none;
+        }
+
+        .expo__participantCard::after,
+        .expo__ranking::after {
+          content: "";
+          position: absolute;
+          left: 1.1rem;
+          right: 1.1rem;
+          top: 1rem;
+          height: 3px;
+          background: linear-gradient(90deg, #ffca7a, #ff4db8, #48d7ff);
+          border-radius: 999px;
+          opacity: 0.9;
+        }
+
+        .expo__participantLabel {
+          position: relative;
+          z-index: 1;
+          margin: 0 0 0.75rem;
+          font-size: 0.78rem;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: #ffca7a;
+        }
+
+        .expo__participantName {
+          position: relative;
+          z-index: 1;
+          margin: 0;
+          font-size: clamp(2rem, 4vw, 4rem);
+          line-height: 0.92;
+          letter-spacing: -0.05em;
+          text-shadow: 0 8px 22px rgba(0, 0, 0, 0.34);
+        }
+
+        .expo__participantPhoto {
+          position: relative;
+          z-index: 1;
+          width: 100%;
+          aspect-ratio: 1 / 1;
+          object-fit: cover;
+          border-radius: 22px;
+          margin-top: 1.25rem;
+          border: 2px solid rgba(255, 248, 235, 0.22);
+        }
+
+        .expo__rankingHeader,
+        .expo__rankingList {
+          position: relative;
+          z-index: 1;
+        }
+
+        .expo__rankingTitle {
+          margin: 0;
+          font-size: clamp(1.8rem, 3vw, 2.6rem);
+          line-height: 0.98;
+          letter-spacing: -0.05em;
+          max-width: 12ch;
+        }
+
+        .expo__rankingList {
+          margin-top: 1rem;
+          display: grid;
+          gap: 0.9rem;
+        }
+
+        .expo__rankingCard {
+          display: grid;
+          grid-template-columns: 42px 72px 1fr auto;
+          align-items: center;
+          gap: 0.9rem;
+          padding: 0.8rem;
+          border-radius: 22px;
+          background: rgba(255, 248, 235, 0.06);
+          border: 1px solid rgba(255, 248, 235, 0.08);
+        }
+
+        .expo__rankingPosition {
+          display: grid;
+          place-items: center;
+          width: 42px;
+          height: 42px;
+          border-radius: 999px;
+          background: linear-gradient(180deg, #ffca7a, #ff4db8);
+          color: #18130d;
+          font-weight: 800;
+        }
+
+        .expo__rankingPhoto {
+          width: 72px;
+          height: 72px;
+          object-fit: cover;
+          border-radius: 18px;
+          border: 2px solid rgba(255, 248, 235, 0.18);
+        }
+
+        .expo__rankingPhoto--placeholder {
+          display: grid;
+          place-items: center;
+          background: rgba(255, 248, 235, 0.12);
+          color: #fff8eb;
+          font-size: 1.5rem;
+          font-weight: 800;
+        }
+
+        .expo__rankingMeta {
+          min-width: 0;
+        }
+
+        .expo__rankingName {
+          margin: 0 0 0.25rem;
+          font-size: 1.1rem;
+          line-height: 1.05;
+        }
+
+        .expo__rankingSpecies {
+          margin: 0;
+          color: rgba(255, 248, 235, 0.76);
+          font-size: 0.92rem;
+        }
+
+        .expo__rankingScore {
+          display: grid;
+          justify-items: end;
+          gap: 0.1rem;
+          color: #ffca7a;
+          font-weight: 800;
+        }
+
+        .expo__rankingScore span {
+          font-size: 1.35rem;
+          line-height: 1;
+        }
+
+        .expo__rankingScore small {
+          color: rgba(255, 248, 235, 0.68);
+          font-size: 0.72rem;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+        }
+
+        .expo__rankingEmpty {
+          padding: 1rem 1.1rem;
+          border-radius: 18px;
+          background: rgba(255, 248, 235, 0.06);
+          color: rgba(255, 248, 235, 0.76);
+          line-height: 1.5;
+        }
+
+        @media (max-width: 900px) {
+          .expo {
+            grid-template-columns: 1fr;
+          }
+
+          .expo__left {
+            border-right: none;
+            border-bottom: 1px solid rgba(255, 248, 235, 0.08);
+          }
+
+          .expo__left::after {
+            display: none;
+          }
+
+          .expo__stage {
+            min-height: 60vh;
+          }
+
+          .expo__stage:not(.expo__stage--active) {
+            background-image: url("/images/expomascostas/fondomobile.png");
+          }
+
+          .expo__participantCard,
+          .expo__ranking {
+            width: calc(100% - 2rem);
+            margin: auto 1rem 1rem;
+            padding: 1.35rem;
+          }
+
+          .expo__participantName {
+            font-size: 2rem;
+          }
+
+          .expo__badge,
+          .expo__count {
+            font-size: 0.82rem;
+            padding-inline: 1.3rem;
+          }
+
+          .expo__status,
+          .expo__actions {
+            grid-template-columns: 1fr;
+          }
+
+          .expo__rankingCard {
+            grid-template-columns: 34px 56px 1fr;
+          }
+
+          .expo__rankingPhoto {
+            width: 56px;
+            height: 56px;
+          }
+
+          .expo__rankingScore {
+            grid-column: 2 / -1;
+            justify-items: start;
+          }
+        }
+      `}</style>
+    </div>
+  );
+}

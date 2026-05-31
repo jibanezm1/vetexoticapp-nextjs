@@ -8,6 +8,10 @@ export default function Header() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  if (pathname.startsWith("/expomascotas")) {
+    return null;
+  }
+
   const isActive = (path: string) => {
     if (path === "/" && pathname === "/") return true;
     if (path !== "/" && pathname.startsWith(path)) return true;

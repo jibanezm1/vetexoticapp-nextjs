@@ -18,9 +18,7 @@ export default function Footer() {
               <a href="https://www.facebook.com/vetexoticapp" className="social-link" target="_blank" rel="noopener noreferrer">
                 <i className="fab fa-facebook"></i>
               </a>
-              <a href="https://wa.me/56934497035" className="social-link" target="_blank" rel="noopener noreferrer">
-                <i className="fab fa-whatsapp"></i>
-              </a>
+             
             </div>
           </div>
 
@@ -38,9 +36,7 @@ export default function Footer() {
           <div className="footer-section">
             <h4>Contacto</h4>
             <ul>
-              <li>
-                <i className="fas fa-phone"></i> +56 9 3449 7035
-              </li>
+              
               <li>
                 <i className="fas fa-envelope"></i> vetexotic.app@gmail.com
               </li>

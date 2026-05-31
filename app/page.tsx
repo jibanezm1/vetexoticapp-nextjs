@@ -437,7 +437,7 @@ export default function HomePage() {
       <section
         className="courses-promo"
         style={{
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          background: "linear-gradient(135deg, #0f2942 0%, #1e6fa5 60%, #2a9d8f 100%)",
         }}
       >
         <div className="container">
@@ -467,12 +467,13 @@ export default function HomePage() {
               </p>
               <div
                 style={{
-                  background: "rgba(255, 255, 255, 0.1)",
-                  padding: "2rem",
-                  borderRadius: "15px",
-                  margin: "2rem auto",
-                  maxWidth: "700px",
-                  backdropFilter: "blur(10px)",
+                  background: "rgba(255, 255, 255, 0.09)",
+                  padding: "1.5rem 2rem",
+                  borderRadius: "10px",
+                  margin: "1.75rem auto",
+                  maxWidth: "680px",
+                  backdropFilter: "blur(12px)",
+                  border: "1px solid rgba(255,255,255,0.15)",
                 }}
               >
                 <h4 style={{ color: "white", marginBottom: "1rem" }}>
@@ -512,15 +513,9 @@ export default function HomePage() {
                   className="btn"
                   style={{
                     background: "white",
-                    color: "#667eea",
-                    padding: "15px 35px",
-                    borderRadius: "50px",
+                    color: "#1e6fa5",
                     fontWeight: "600",
                     textDecoration: "none",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "10px",
-                    transition: "all 0.3s ease",
                   }}
                 >
                   Ver Todas las Clínicas
@@ -529,17 +524,11 @@ export default function HomePage() {
                   href="#contacto"
                   className="btn"
                   style={{
-                    background: "rgba(255, 255, 255, 0.2)",
+                    background: "rgba(255, 255, 255, 0.12)",
                     color: "white",
-                    border: "2px solid white",
-                    padding: "15px 35px",
-                    borderRadius: "50px",
-                    fontWeight: "600",
+                    border: "1.5px solid rgba(255,255,255,0.5)",
+                    fontWeight: "500",
                     textDecoration: "none",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "10px",
-                    transition: "all 0.3s ease",
                   }}
                 >
                   Contactar Ahora
