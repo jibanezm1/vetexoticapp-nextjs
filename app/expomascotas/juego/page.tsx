@@ -342,61 +342,63 @@ async function generateStoryImage({
   ctx.fillStyle = glow;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+  const centerX = canvas.width / 2;
+
   ctx.save();
   ctx.beginPath();
-  ctx.roundRect(120, 180, 840, 440, 44);
+  ctx.roundRect(130, 180, 820, 1120, 52);
   ctx.fillStyle = "rgba(25, 20, 16, 0.62)";
   ctx.fill();
   ctx.restore();
 
   ctx.save();
   ctx.beginPath();
-  ctx.roundRect(150, 250, 300, 300, 42);
+  ctx.roundRect(350, 250, 380, 380, 48);
   ctx.clip();
   if (photo) {
-    ctx.drawImage(photo, 150, 250, 300, 300);
+    drawImageCover(ctx, photo, 350, 250, 380, 380);
   } else {
     ctx.fillStyle = "#ffca7a";
-    ctx.fillRect(150, 250, 300, 300);
+    ctx.fillRect(350, 250, 380, 380);
     ctx.fillStyle = "#35210f";
-    ctx.font = "700 110px Arial";
+    ctx.font = "700 150px Arial";
     ctx.textAlign = "center";
-    ctx.fillText(getInitials(participantName), 300, 425);
-    ctx.textAlign = "left";
+    ctx.fillText(getInitials(participantName), centerX, 475);
   }
   ctx.restore();
 
   ctx.strokeStyle = "rgba(255,248,235,0.18)";
   ctx.lineWidth = 6;
   ctx.beginPath();
-  ctx.roundRect(150, 250, 300, 300, 42);
+  ctx.roundRect(350, 250, 380, 380, 48);
   ctx.stroke();
 
   ctx.fillStyle = "#ffca7a";
   ctx.font = "700 38px Arial";
-  ctx.fillText("RESULTADO EXPOMASCOTAS", 120, 120);
+  ctx.textAlign = "center";
+  ctx.fillText("RESULTADO EXPOMASCOTAS", centerX, 120);
 
   ctx.fillStyle = "#fff8eb";
-  ctx.font = "700 74px Arial";
-  wrapText(ctx, participantName, 500, 330, 380, 84);
+  ctx.font = "700 78px Arial";
+  wrapText(ctx, participantName, centerX, 750, 760, 88, "center");
 
   ctx.fillStyle = "rgba(255,248,235,0.85)";
-  ctx.font = "600 40px Arial";
-  ctx.fillText(speciesLabel, 500, 470);
+  ctx.font = "600 46px Arial";
+  wrapText(ctx, speciesLabel, centerX, 840, 620, 54, "center");
 
   ctx.fillStyle = "#ffca7a";
-  ctx.font = "700 130px Arial";
-  ctx.fillText(`${score}/${total}`, 120, 800);
+  ctx.font = "700 138px Arial";
+  ctx.fillText(`${score}/${total}`, centerX, 1020);
 
   ctx.fillStyle = "#fff8eb";
   ctx.font = "700 56px Arial";
-  wrapText(ctx, levelTitle, 120, 900, 840, 64);
+  wrapText(ctx, levelTitle, centerX, 1135, 860, 64, "center");
 
   ctx.fillStyle = "rgba(255,248,235,0.82)";
   ctx.font = "500 40px Arial";
-  wrapText(ctx, levelDescription, 120, 1030, 840, 54);
+  wrapText(ctx, levelDescription, centerX, 1280, 860, 54, "center");
 
-  drawImageContain(ctx, universityLogo, 100, 1560, 360, 220);
+  drawImageContain(ctx, universityLogo, 40, 1510, 470, 290);
   drawImageContain(ctx, expoLogo, 635, 1525, 280, 280);
 
   return new Promise<File>((resolve, reject) => {
@@ -464,6 +466,23 @@ function drawImageContain(
   ctx.drawImage(image, offsetX, offsetY, width, height);
 }
 
+function drawImageCover(
+  ctx: CanvasRenderingContext2D,
+  image: HTMLImageElement,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+) {
+  const scale = Math.max(width / image.width, height / image.height);
+  const drawWidth = image.width * scale;
+  const drawHeight = image.height * scale;
+  const offsetX = x + (width - drawWidth) / 2;
+  const offsetY = y + (height - drawHeight) / 2;
+
+  ctx.drawImage(image, offsetX, offsetY, drawWidth, drawHeight);
+}
+
 function wrapText(
   ctx: CanvasRenderingContext2D,
   text: string,
@@ -471,10 +490,13 @@ function wrapText(
   y: number,
   maxWidth: number,
   lineHeight: number,
+  align: CanvasTextAlign = "left",
 ) {
   const words = text.split(" ");
   let line = "";
   let currentY = y;
+  const previousAlign = ctx.textAlign;
+  ctx.textAlign = align;
 
   for (const word of words) {
     const testLine = `${line}${word} `;
@@ -491,6 +513,8 @@ function wrapText(
   if (line) {
     ctx.fillText(line.trim(), x, currentY);
   }
+
+  ctx.textAlign = previousAlign;
 }
 
 function Shell({

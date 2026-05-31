@@ -37,6 +37,12 @@ function createAvatar(name: string, bg: string, fg: string, initials: string) {
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
 
+function showAlert(message: string) {
+  if (typeof window !== "undefined") {
+    window.alert(message);
+  }
+}
+
 function SalonContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -49,7 +55,6 @@ function SalonContent() {
   const [photoDataUrl, setPhotoDataUrl] = useState("");
   const [imageMode, setImageMode] = useState<"camera" | "avatar">("camera");
   const [selectedAvatar, setSelectedAvatar] = useState(avatarOptions[0].id);
-  const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cameraReady, setCameraReady] = useState(false);
   const [cameraAvailable, setCameraAvailable] = useState(true);
@@ -84,7 +89,6 @@ function SalonContent() {
         setCameraAvailable(false);
         setCameraReady(false);
         setImageMode("avatar");
-        setError("");
       }
     };
 
@@ -115,7 +119,6 @@ function SalonContent() {
   const handleCapture = () => {
     if (photoDataUrl) {
       setPhotoDataUrl("");
-      setError("");
       return;
     }
 
@@ -123,7 +126,7 @@ function SalonContent() {
     const canvas = canvasRef.current;
 
     if (!video || !canvas || !video.videoWidth || !video.videoHeight) {
-      setError("La cámara aún no está lista.");
+      showAlert("La cámara aún no está lista.");
       return;
     }
 
@@ -132,13 +135,12 @@ function SalonContent() {
 
     const ctx = canvas.getContext("2d");
     if (!ctx) {
-      setError("No se pudo generar la foto.");
+      showAlert("No se pudo generar la foto.");
       return;
     }
 
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     setPhotoDataUrl(canvas.toDataURL("image/jpeg", 0.92));
-    setError("");
   };
 
   const uploadPhoto = async () => {
@@ -165,15 +167,24 @@ function SalonContent() {
     avatarOptions.find((avatar) => avatar.id === selectedAvatar)?.url || avatarOptions[0].url;
 
   const handleStart = async () => {
-    if (!name.trim()) return setError("Ingresa tu nombre.");
-    if (name.trim().length < 2) return setError("Tu nombre debe tener al menos 2 caracteres.");
-    if (!species) return setError("Selecciona una especie.");
+    if (!name.trim()) {
+      showAlert("Ingresa tu nombre.");
+      return;
+    }
+    if (name.trim().length < 2) {
+      showAlert("Tu nombre debe tener al menos 2 caracteres.");
+      return;
+    }
+    if (!species) {
+      showAlert("Selecciona una especie.");
+      return;
+    }
     if (imageMode === "camera" && !photoDataUrl) {
-      return setError("Toma una foto o cambia a avatar para continuar.");
+      showAlert("Toma una foto o cambia a avatar para continuar.");
+      return;
     }
 
     setIsSubmitting(true);
-    setError("");
 
     try {
       const sessionRef = ref(db, `${EXPO_SESSION_ROOT}/${sessionId}`);
@@ -181,7 +192,7 @@ function SalonContent() {
       const sessionData = sessionSnapshot.val();
 
       if (sessionData?.state === "playing" && sessionData?.currentParticipantId) {
-        setError("Hay otro participante respondiendo en este momento. Intenta en unos segundos.");
+        showAlert("Hay otro participante respondiendo en este momento. Intenta en unos segundos.");
         setIsSubmitting(false);
         return;
       }
@@ -229,10 +240,10 @@ function SalonContent() {
 
       router.push(`/expomascotas/juego?session=${sessionId}&pid=${participantId.current}`);
     } catch (submissionError) {
-      setError(
+      showAlert(
         submissionError instanceof Error
           ? submissionError.message
-          : "No pudimos iniciar el quiz. Intenta nuevamente."
+          : "No pudimos iniciar el quiz. Intenta nuevamente.",
       );
       setIsSubmitting(false);
     }
@@ -351,8 +362,6 @@ function SalonContent() {
             {isSubmitting ? "Iniciando..." : "Comenzar quiz"}
           </button>
         </div>
-
-        {error ? <p className="salon__error">{error}</p> : null}
       </div>
 
       <style>{`
@@ -360,7 +369,7 @@ function SalonContent() {
 
         .salon {
           min-height: 100vh;
-          padding: 1.25rem;
+          padding: 1.25rem 1.25rem 3rem;
           display: grid;
           place-items: center;
           background:
@@ -376,9 +385,9 @@ function SalonContent() {
           background: rgba(12, 15, 13, 0.78);
           backdrop-filter: blur(18px);
           border: 1px solid rgba(255, 248, 235, 0.14);
-          padding: 1.35rem;
+          padding: 1.35rem 1.35rem 1.9rem;
           display: grid;
-          gap: 1rem;
+          gap: 1.05rem;
           box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
         }
 
@@ -396,7 +405,7 @@ function SalonContent() {
           line-height: 0.95;
         }
 
-        .salon__copy, .salon__error {
+        .salon__copy {
           margin: 0;
           line-height: 1.5;
         }
@@ -539,10 +548,6 @@ function SalonContent() {
           background-image: url("/images/botones/accesorapido.png");
           color: #fff8eb;
           text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
-        }
-
-        .salon__error {
-          color: #ffb4b4;
         }
       `}</style>
     </div>
