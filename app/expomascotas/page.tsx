@@ -16,6 +16,7 @@ import {
 type SessionState = "idle" | "playing";
 
 interface Participant {
+  id?: string;
   name: string;
   species: SpeciesId;
   photoUrl?: string;
@@ -80,20 +81,25 @@ export default function ExpomascotasPage() {
   const currentParticipant = useMemo(() => {
     const participants = session.participants || {};
     if (session.currentParticipantId && participants[session.currentParticipantId]) {
-      return participants[session.currentParticipantId];
+      return {
+        id: session.currentParticipantId,
+        ...participants[session.currentParticipantId],
+      };
     }
 
-    const activeEntries = Object.values(participants)
-      .filter((participant) => !participant.finished)
-      .sort((a, b) => b.joinedAt - a.joinedAt);
+    const activeEntries = Object.entries(participants)
+      .filter(([, participant]) => !participant.finished)
+      .sort(([, a], [, b]) => b.joinedAt - a.joinedAt)
+      .map(([id, participant]) => ({ id, ...participant }));
 
     return activeEntries[0] || null;
   }, [session]);
 
   const isPlaying = session.state === "playing" && currentParticipant;
   const rankingParticipants = useMemo(() => {
-    return Object.values(session.participants || {})
-      .filter((participant) => participant.finished)
+    return Object.entries(session.participants || {})
+      .filter(([, participant]) => participant.finished)
+      .map(([id, participant]) => ({ id, ...participant }))
       .sort((a, b) => {
         const scoreDiff = (b.score || 0) - (a.score || 0);
         if (scoreDiff !== 0) return scoreDiff;
@@ -154,6 +160,28 @@ export default function ExpomascotasPage() {
     await remove(ref(db, `${EXPO_SESSION_ROOT}/${EXPO_SESSION_ID}`));
   };
 
+  const handleKickParticipant = async (participantId?: string) => {
+    if (!participantId) return;
+
+    const updates: Record<string, unknown> = {};
+    updates[`participants/${participantId}`] = null;
+    updates[`answers/${participantId}`] = null;
+    updates.lastKickedParticipantId = participantId;
+    updates.lastKickedAt = Date.now();
+
+    if (session.currentParticipantId === participantId) {
+      updates.state = "idle";
+      updates.currentParticipantId = null;
+      updates.currentSpecies = null;
+      updates.questions = null;
+      updates.timeoutAt = null;
+      updates.kickedAt = Date.now();
+      updates.kickedParticipantId = participantId;
+    }
+
+    await update(ref(db, `${EXPO_SESSION_ROOT}/${EXPO_SESSION_ID}`), updates);
+  };
+
   return (
     <div className="expo">
       <section className="expo__left">
@@ -176,6 +204,13 @@ export default function ExpomascotasPage() {
                   className="expo__participantPhoto expo__participantPhoto--sidebar"
                 />
               ) : null}
+              <button
+                className="expo__kickBtn"
+                type="button"
+                onClick={() => handleKickParticipant(currentParticipant.id)}
+              >
+                Patear usuario
+              </button>
               <div className="expo__actions">
                 <button className="expo__btn expo__btn--yellow" onClick={handleReset}>
                   Volver a estado inicial
@@ -259,6 +294,13 @@ export default function ExpomascotasPage() {
                       <span>{participant.score ?? 0}</span>
                       <small>pts</small>
                     </div>
+                    <button
+                      className="expo__rankingKick"
+                      type="button"
+                      onClick={() => handleKickParticipant(participant.id)}
+                    >
+                      Patear
+                    </button>
                   </article>
                 ))
               ) : (
@@ -561,6 +603,25 @@ export default function ExpomascotasPage() {
           font-size: 1.1rem;
         }
 
+        .expo__kickBtn,
+        .expo__rankingKick {
+          border: 1px solid rgba(255, 248, 235, 0.16);
+          background: rgba(255, 91, 91, 0.14);
+          color: #fff3f3;
+          border-radius: 999px;
+          padding: 0.7rem 1rem;
+          font-size: 0.9rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: background 0.18s ease, transform 0.18s ease;
+        }
+
+        .expo__kickBtn:hover,
+        .expo__rankingKick:hover {
+          background: rgba(255, 91, 91, 0.22);
+          transform: translateY(-1px);
+        }
+
         .expo__timer {
           position: relative;
           z-index: 1;
@@ -612,7 +673,7 @@ export default function ExpomascotasPage() {
 
         .expo__rankingCard {
           display: grid;
-          grid-template-columns: 42px 72px 1fr auto;
+          grid-template-columns: 42px 72px 1fr auto auto;
           align-items: center;
           gap: 0.9rem;
           padding: 0.8rem;
@@ -738,7 +799,7 @@ export default function ExpomascotasPage() {
           }
 
           .expo__rankingCard {
-            grid-template-columns: 34px 56px 1fr;
+            grid-template-columns: 34px 56px 1fr auto;
           }
 
           .expo__rankingPhoto {
@@ -747,8 +808,13 @@ export default function ExpomascotasPage() {
           }
 
           .expo__rankingScore {
-            grid-column: 2 / -1;
+            grid-column: 2 / 4;
             justify-items: start;
+          }
+
+          .expo__rankingKick {
+            grid-column: 4;
+            align-self: center;
           }
         }
       `}</style>
