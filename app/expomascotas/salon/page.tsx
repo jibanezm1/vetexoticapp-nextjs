@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useId, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { get, ref, set, update } from "firebase/database";
 import { db } from "@/lib/firebase";
@@ -43,12 +43,23 @@ function showAlert(message: string) {
   }
 }
 
+function createParticipantId() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return `expo_${crypto.randomUUID()}`;
+  }
+
+  return `expo_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
 function SalonContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const sessionId = searchParams.get("session") || EXPO_SESSION_ID;
-  const reactId = useId().replace(/:/g, "");
-  const participantId = useRef(`expo_${reactId}`);
+  const participantId = useRef("");
+
+  if (!participantId.current) {
+    participantId.current = createParticipantId();
+  }
 
   const [name, setName] = useState("");
   const [species, setSpecies] = useState<SpeciesId | "">("");
