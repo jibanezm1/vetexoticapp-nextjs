@@ -4,11 +4,17 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
-const endpoint = process.env.SPACES_ENDPOINT;
-const bucket = process.env.SPACES_BUCKET;
-const accessKeyId = process.env.SPACES_ACCESS_KEY_ID;
-const secretAccessKey = process.env.SPACES_SECRET_ACCESS_KEY;
-const region = process.env.SPACES_REGION || "sfo3";
+function cleanEnvValue(value?: string) {
+  if (!value) return "";
+
+  return value.trim().replace(/^=+/, "").replace(/^['"]|['"]$/g, "");
+}
+
+const endpoint = cleanEnvValue(process.env.SPACES_ENDPOINT);
+const bucket = cleanEnvValue(process.env.SPACES_BUCKET);
+const accessKeyId = cleanEnvValue(process.env.SPACES_ACCESS_KEY_ID);
+const secretAccessKey = cleanEnvValue(process.env.SPACES_SECRET_ACCESS_KEY);
+const region = cleanEnvValue(process.env.SPACES_REGION) || "sfo3";
 
 const spacesClient =
   endpoint && bucket && accessKeyId && secretAccessKey

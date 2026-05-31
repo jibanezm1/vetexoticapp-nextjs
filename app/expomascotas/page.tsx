@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { off, onValue, ref, update } from "firebase/database";
 import QRCode from "@/app/quiz/components/QRCode";
@@ -119,9 +120,16 @@ export default function ExpomascotasPage() {
         const scoreDiff = (b.score || 0) - (a.score || 0);
         if (scoreDiff !== 0) return scoreDiff;
         return b.joinedAt - a.joinedAt;
-      })
-      .slice(0, 8);
+      });
   }, [session.participants]);
+  const shouldAutoScrollRanking = rankingParticipants.length > 6;
+  const rankingTrack = shouldAutoScrollRanking
+    ? [...rankingParticipants, ...rankingParticipants]
+    : rankingParticipants;
+  const rankingDurationSeconds = Math.max(
+    26,
+    rankingParticipants.length * 3.8,
+  );
   const activeSpecies =
     session.currentSpecies || currentParticipant?.species || null;
   const activeImage = getSpeciesImage(activeSpecies);
@@ -235,14 +243,25 @@ export default function ExpomascotasPage() {
               <p className="expo__participantLabel">Ranking de tutores</p>
             </div>
 
-            <div className="expo__rankingList">
+            <div className="expo__rankingViewport">
+              <div
+                className={`expo__rankingTrack ${shouldAutoScrollRanking ? "expo__rankingTrack--animated" : ""}`}
+                style={
+                  {
+                    ["--ranking-duration" as string]: `${rankingDurationSeconds}s`,
+                  } as CSSProperties
+                }
+              >
               {rankingParticipants.length > 0 ? (
-                rankingParticipants.map((participant, index) => (
+                rankingTrack.map((participant, index) => (
                   <article
-                    key={`${participant.name}-${participant.joinedAt}`}
+                    key={`${participant.id || participant.name}-${participant.joinedAt}-${index}`}
                     className="expo__rankingCard"
+                    aria-hidden={shouldAutoScrollRanking && index >= rankingParticipants.length}
                   >
-                    <div className="expo__rankingPosition">{index + 1}</div>
+                    <div className="expo__rankingPosition">
+                      {(index % rankingParticipants.length) + 1}
+                    </div>
                     {participant.photoUrl ? (
                       <img
                         src={participant.photoUrl}
@@ -277,6 +296,7 @@ export default function ExpomascotasPage() {
                   respondan el quiz.
                 </div>
               )}
+              </div>
             </div>
           </div>
         ) : null}
@@ -595,7 +615,8 @@ export default function ExpomascotasPage() {
         }
 
         .expo__rankingHeader,
-        .expo__rankingList {
+        .expo__rankingViewport,
+        .expo__rankingTrack {
           position: relative;
           z-index: 1;
         }
@@ -608,10 +629,46 @@ export default function ExpomascotasPage() {
           max-width: 12ch;
         }
 
-        .expo__rankingList {
+        .expo__rankingViewport {
           margin-top: 1rem;
+          position: relative;
+          max-height: min(68vh, 760px);
+          overflow: hidden;
+        }
+
+        .expo__rankingViewport::before,
+        .expo__rankingViewport::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          right: 0;
+          height: 48px;
+          z-index: 2;
+          pointer-events: none;
+        }
+
+        .expo__rankingViewport::before {
+          top: 0;
+          background: linear-gradient(180deg, rgba(55, 41, 17, 0.96), rgba(55, 41, 17, 0));
+        }
+
+        .expo__rankingViewport::after {
+          bottom: 0;
+          background: linear-gradient(0deg, rgba(35, 29, 21, 0.98), rgba(35, 29, 21, 0));
+        }
+
+        .expo__rankingTrack {
           display: grid;
           gap: 0.9rem;
+        }
+
+        .expo__rankingTrack--animated {
+          animation: expoRankingScroll var(--ranking-duration) linear infinite;
+          will-change: transform;
+        }
+
+        .expo__ranking:hover .expo__rankingTrack--animated {
+          animation-play-state: paused;
         }
 
         .expo__rankingCard {
@@ -697,6 +754,15 @@ export default function ExpomascotasPage() {
           line-height: 1.5;
         }
 
+        @keyframes expoRankingScroll {
+          from {
+            transform: translateY(0);
+          }
+          to {
+            transform: translateY(calc(-50% - 0.45rem));
+          }
+        }
+
         @media (max-width: 900px) {
           .expo {
             grid-template-columns: 1fr;
@@ -752,6 +818,20 @@ export default function ExpomascotasPage() {
           .expo__rankingScore {
             grid-column: 2 / -1;
             justify-items: start;
+          }
+
+          .expo__rankingViewport {
+            max-height: none;
+            overflow: visible;
+          }
+
+          .expo__rankingViewport::before,
+          .expo__rankingViewport::after {
+            display: none;
+          }
+
+          .expo__rankingTrack--animated {
+            animation: none;
           }
         }
       `}</style>

@@ -47,6 +47,22 @@ function JuegoContent() {
   const [timedOut, setTimedOut] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isSharing, setIsSharing] = useState(false);
+  const [shareImageUrl, setShareImageUrl] = useState<string>();
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !participantId) return;
+
+    try {
+      const raw = window.sessionStorage.getItem(`expomascotas-share:${participantId}`);
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as { imageUrl?: string };
+      if (parsed.imageUrl) {
+        setShareImageUrl(parsed.imageUrl);
+      }
+    } catch {
+      setShareImageUrl(undefined);
+    }
+  }, [participantId]);
 
   useEffect(() => {
     if (!participantId) return;
@@ -164,6 +180,7 @@ function JuegoContent() {
         levelTitle: level.title,
         levelDescription: level.description,
         photoUrl: participant.photoUrl,
+        fallbackImageUrl: shareImageUrl,
       });
 
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -379,19 +396,8 @@ async function generateStoryImage({
   ctx.font = "500 40px Arial";
   wrapText(ctx, levelDescription, 120, 1030, 840, 54);
 
-  ctx.fillStyle = "rgba(255,255,255,0.08)";
-  ctx.beginPath();
-  ctx.roundRect(120, 1200, 840, 260, 42);
-  ctx.fill();
-
-  ctx.fillStyle = "#fff8eb";
-  ctx.font = "700 46px Arial";
-  ctx.fillText("Compartí tu resultado", 170, 1290);
-  ctx.font = "500 34px Arial";
-  wrapText(ctx, "Historias, WhatsApp o donde quieras mostrar tu nivel de tutor.", 170, 1368, 740, 44);
-
-  ctx.drawImage(universityLogo, 90, 1625, 360, 150);
-  ctx.drawImage(expoLogo, 610, 1565, 300, 240);
+  drawImageContain(ctx, universityLogo, 100, 1560, 360, 220);
+  drawImageContain(ctx, expoLogo, 635, 1525, 280, 280);
 
   return new Promise<File>((resolve, reject) => {
     canvas.toBlob((blob) => {
@@ -407,11 +413,21 @@ async function generateStoryImage({
 function loadImage(src: string) {
   return new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new Image();
-    image.crossOrigin = "anonymous";
+    if (!src.startsWith("data:") && !src.startsWith("blob:")) {
+      image.crossOrigin = "anonymous";
+    }
     image.onload = () => resolve(image);
     image.onerror = reject;
-    image.src = src;
+    image.src = normalizeCanvasImageSource(src);
   });
+}
+
+function normalizeCanvasImageSource(src: string) {
+  if (src.startsWith("http://") || src.startsWith("https://")) {
+    return `/api/expomascotas/image?url=${encodeURIComponent(src)}`;
+  }
+
+  return src;
 }
 
 async function loadFirstImage(sources: Array<string | undefined>) {
@@ -429,6 +445,23 @@ async function loadFirstImage(sources: Array<string | undefined>) {
 function getInitials(name: string) {
   const parts = name.trim().split(/\s+/).slice(0, 2);
   return parts.map((part) => part.charAt(0).toUpperCase()).join("") || "?";
+}
+
+function drawImageContain(
+  ctx: CanvasRenderingContext2D,
+  image: HTMLImageElement,
+  x: number,
+  y: number,
+  maxWidth: number,
+  maxHeight: number,
+) {
+  const scale = Math.min(maxWidth / image.width, maxHeight / image.height);
+  const width = image.width * scale;
+  const height = image.height * scale;
+  const offsetX = x + (maxWidth - width) / 2;
+  const offsetY = y + (maxHeight - height) / 2;
+
+  ctx.drawImage(image, offsetX, offsetY, width, height);
 }
 
 function wrapText(
