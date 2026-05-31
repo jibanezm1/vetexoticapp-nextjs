@@ -46,6 +46,7 @@ function JuegoContent() {
   const [finished, setFinished] = useState(false);
   const [timedOut, setTimedOut] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isSharing, setIsSharing] = useState(false);
 
   useEffect(() => {
     if (!participantId) return;
@@ -148,6 +149,44 @@ function JuegoContent() {
     }).length;
   }, [answers, questions]);
 
+  const handleShare = async () => {
+    if (!participant) return;
+
+    setIsSharing(true);
+    try {
+      const level = getTutorLevel(score);
+      const speciesLabel = speciesCatalog[participant.species]?.label || "Especie";
+      const file = await generateStoryImage({
+        participantName: participant.name,
+        speciesLabel,
+        score,
+        total: questions.length,
+        levelTitle: level.title,
+        levelDescription: level.description,
+        photoUrl: participant.photoUrl,
+      });
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          title: "Mi resultado en Expomascotas",
+          text: `${participant.name} obtuvo ${score}/${questions.length} en Expomascotas`,
+          files: [file],
+        });
+      } else {
+        const url = URL.createObjectURL(file);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = file.name;
+        anchor.click();
+        URL.revokeObjectURL(url);
+      }
+    } catch (error) {
+      console.error("No se pudo compartir la story", error);
+    } finally {
+      setIsSharing(false);
+    }
+  };
+
   if (loading) {
     return <Shell backgroundImage="/images/expomascostas/fondomobile.png">Cargando quiz...</Shell>;
   }
@@ -187,6 +226,9 @@ function JuegoContent() {
           </div>
           <h2 className="expoQuiz__level">{level.title}</h2>
           <p className="expoQuiz__message">{level.description}</p>
+          <button className="expoQuiz__share" onClick={handleShare} disabled={isSharing}>
+            {isSharing ? "Preparando story..." : "Compartir"}
+          </button>
         </div>
       </Shell>
     );
@@ -239,6 +281,183 @@ function JuegoContent() {
       </div>
     </Shell>
   );
+}
+
+async function generateStoryImage({
+  participantName,
+  speciesLabel,
+  score,
+  total,
+  levelTitle,
+  levelDescription,
+  photoUrl,
+  fallbackImageUrl,
+}: {
+  participantName: string;
+  speciesLabel: string;
+  score: number;
+  total: number;
+  levelTitle: string;
+  levelDescription: string;
+  photoUrl?: string;
+  fallbackImageUrl?: string;
+}) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1080;
+  canvas.height = 1920;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("No se pudo crear la imagen");
+
+  const background = await loadImage("/images/expomascostas/fondomobile.png");
+  const universityLogo = await loadImage("/images/expomascostas/logosansebastian.png");
+  const expoLogo = await loadImage("/images/expomascostas/logoexpomasctoas.png");
+  const photo = await loadFirstImage([fallbackImageUrl, photoUrl]);
+
+  ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "rgba(14, 10, 8, 0.58)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const glow = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+  glow.addColorStop(0, "rgba(255, 184, 87, 0.22)");
+  glow.addColorStop(0.55, "rgba(18, 15, 10, 0.1)");
+  glow.addColorStop(1, "rgba(255, 0, 133, 0.22)");
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect(120, 180, 840, 440, 44);
+  ctx.fillStyle = "rgba(25, 20, 16, 0.62)";
+  ctx.fill();
+  ctx.restore();
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect(150, 250, 300, 300, 42);
+  ctx.clip();
+  if (photo) {
+    ctx.drawImage(photo, 150, 250, 300, 300);
+  } else {
+    ctx.fillStyle = "#ffca7a";
+    ctx.fillRect(150, 250, 300, 300);
+    ctx.fillStyle = "#35210f";
+    ctx.font = "700 110px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(getInitials(participantName), 300, 425);
+    ctx.textAlign = "left";
+  }
+  ctx.restore();
+
+  ctx.strokeStyle = "rgba(255,248,235,0.18)";
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.roundRect(150, 250, 300, 300, 42);
+  ctx.stroke();
+
+  ctx.fillStyle = "#ffca7a";
+  ctx.font = "700 38px Arial";
+  ctx.fillText("RESULTADO EXPOMASCOTAS", 120, 120);
+
+  ctx.fillStyle = "#fff8eb";
+  ctx.font = "700 74px Arial";
+  wrapText(ctx, participantName, 500, 330, 380, 84);
+
+  ctx.fillStyle = "rgba(255,248,235,0.85)";
+  ctx.font = "600 40px Arial";
+  ctx.fillText(speciesLabel, 500, 470);
+
+  ctx.fillStyle = "#ffca7a";
+  ctx.font = "700 130px Arial";
+  ctx.fillText(`${score}/${total}`, 120, 800);
+
+  ctx.fillStyle = "#fff8eb";
+  ctx.font = "700 56px Arial";
+  wrapText(ctx, levelTitle, 120, 900, 840, 64);
+
+  ctx.fillStyle = "rgba(255,248,235,0.82)";
+  ctx.font = "500 40px Arial";
+  wrapText(ctx, levelDescription, 120, 1030, 840, 54);
+
+  ctx.fillStyle = "rgba(255,255,255,0.08)";
+  ctx.beginPath();
+  ctx.roundRect(120, 1200, 840, 260, 42);
+  ctx.fill();
+
+  ctx.fillStyle = "#fff8eb";
+  ctx.font = "700 46px Arial";
+  ctx.fillText("Compartí tu resultado", 170, 1290);
+  ctx.font = "500 34px Arial";
+  wrapText(ctx, "Historias, WhatsApp o donde quieras mostrar tu nivel de tutor.", 170, 1368, 740, 44);
+
+  ctx.drawImage(universityLogo, 90, 1625, 360, 150);
+  ctx.drawImage(expoLogo, 610, 1565, 300, 240);
+
+  return new Promise<File>((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (!blob) {
+        reject(new Error("No se pudo exportar la imagen"));
+        return;
+      }
+      resolve(new File([blob], "resultado-expomascotas-story.png", { type: "image/png" }));
+    }, "image/png");
+  });
+}
+
+function loadImage(src: string) {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
+    const image = new Image();
+    image.crossOrigin = "anonymous";
+    image.onload = () => resolve(image);
+    image.onerror = reject;
+    image.src = src;
+  });
+}
+
+async function loadFirstImage(sources: Array<string | undefined>) {
+  for (const source of sources) {
+    if (!source) continue;
+    try {
+      return await loadImage(source);
+    } catch {
+      continue;
+    }
+  }
+  return null;
+}
+
+function getInitials(name: string) {
+  const parts = name.trim().split(/\s+/).slice(0, 2);
+  return parts.map((part) => part.charAt(0).toUpperCase()).join("") || "?";
+}
+
+function wrapText(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  y: number,
+  maxWidth: number,
+  lineHeight: number,
+) {
+  const words = text.split(" ");
+  let line = "";
+  let currentY = y;
+
+  for (const word of words) {
+    const testLine = `${line}${word} `;
+    const metrics = ctx.measureText(testLine);
+    if (metrics.width > maxWidth && line) {
+      ctx.fillText(line.trim(), x, currentY);
+      line = `${word} `;
+      currentY += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+
+  if (line) {
+    ctx.fillText(line.trim(), x, currentY);
+  }
 }
 
 function Shell({
@@ -388,6 +607,22 @@ function Shell({
         .expoQuiz__level {
           margin: 0;
           font-size: clamp(1.4rem, 6vw, 2.3rem);
+        }
+
+        .expoQuiz__share {
+          margin-top: 0.75rem;
+          min-height: 64px;
+          border: none;
+          border-radius: 999px;
+          background: #ffca7a;
+          color: #2b1c05;
+          font-size: 1rem;
+          font-weight: 800;
+          cursor: pointer;
+        }
+
+        .expoQuiz__share:disabled {
+          opacity: 0.6;
         }
       `}</style>
     </div>

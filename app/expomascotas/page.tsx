@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { off, onValue, ref, remove, update } from "firebase/database";
+import { off, onValue, ref, update } from "firebase/database";
 import QRCode from "@/app/quiz/components/QRCode";
 import { db } from "@/lib/firebase";
 import {
@@ -43,14 +43,25 @@ export default function ExpomascotasPage() {
   const [salonUrl, setSalonUrl] = useState("");
   const [session, setSession] = useState<SessionSnapshot>({});
   const [now, setNow] = useState(0);
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const frame = window.requestAnimationFrame(() => {
-        setSalonUrl(`${window.location.origin}/expomascotas/salon?session=${EXPO_SESSION_ID}`);
+        setSalonUrl(
+          `${window.location.origin}/expomascotas/salon?session=${EXPO_SESSION_ID}`,
+        );
       });
       return () => window.cancelAnimationFrame(frame);
     }
+  }, []);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      setHydrated(true);
+    });
+
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {
@@ -80,7 +91,10 @@ export default function ExpomascotasPage() {
 
   const currentParticipant = useMemo(() => {
     const participants = session.participants || {};
-    if (session.currentParticipantId && participants[session.currentParticipantId]) {
+    if (
+      session.currentParticipantId &&
+      participants[session.currentParticipantId]
+    ) {
       return {
         id: session.currentParticipantId,
         ...participants[session.currentParticipantId],
@@ -96,6 +110,7 @@ export default function ExpomascotasPage() {
   }, [session]);
 
   const isPlaying = session.state === "playing" && currentParticipant;
+  const displayIsPlaying = hydrated && Boolean(isPlaying);
   const rankingParticipants = useMemo(() => {
     return Object.entries(session.participants || {})
       .filter(([, participant]) => participant.finished)
@@ -107,19 +122,28 @@ export default function ExpomascotasPage() {
       })
       .slice(0, 8);
   }, [session.participants]);
-  const activeSpecies = session.currentSpecies || currentParticipant?.species || null;
+  const activeSpecies =
+    session.currentSpecies || currentParticipant?.species || null;
   const activeImage = getSpeciesImage(activeSpecies);
-  const backgroundImage = isPlaying && activeImage
-    ? `/images/expomascostas/${activeImage}`
-    : "/images/expomascostas/fondo.png";
-  const remainingMs = session.timeoutAt ? Math.max(0, session.timeoutAt - now) : EXPO_QUIZ_TIMEOUT_MS;
+  const backgroundImage =
+    displayIsPlaying && activeImage
+      ? `/images/expomascostas/${activeImage}`
+      : "/images/expomascostas/fondo.png";
+  const remainingMs = session.timeoutAt
+    ? Math.max(0, session.timeoutAt - now)
+    : EXPO_QUIZ_TIMEOUT_MS;
   const remainingSeconds = Math.ceil(remainingMs / 1000);
   const countdownLabel = `${String(Math.floor(remainingSeconds / 60)).padStart(2, "0")}:${String(
-    remainingSeconds % 60
+    remainingSeconds % 60,
   ).padStart(2, "0")}`;
 
   useEffect(() => {
-    if (session.state !== "playing" || !session.timeoutAt || now < session.timeoutAt) return;
+    if (
+      session.state !== "playing" ||
+      !session.timeoutAt ||
+      now < session.timeoutAt
+    )
+      return;
 
     const participantId = session.currentParticipantId;
     const timedOutAt = Date.now();
@@ -137,8 +161,11 @@ export default function ExpomascotasPage() {
 
       if (participantId) {
         await update(
-          ref(db, `${EXPO_SESSION_ROOT}/${EXPO_SESSION_ID}/participants/${participantId}`),
-          { timedOut: true, timedOutAt }
+          ref(
+            db,
+            `${EXPO_SESSION_ROOT}/${EXPO_SESSION_ID}/participants/${participantId}`,
+          ),
+          { timedOut: true, timedOutAt },
         );
       }
     };
@@ -146,50 +173,16 @@ export default function ExpomascotasPage() {
     void resetForTimeout();
   }, [now, session.currentParticipantId, session.state, session.timeoutAt]);
 
-  const handleReset = async () => {
-    await update(ref(db, `${EXPO_SESSION_ROOT}/${EXPO_SESSION_ID}`), {
-      state: "idle",
-      currentParticipantId: null,
-      currentSpecies: null,
-      questions: null,
-      timeoutAt: null,
-    });
-  };
-
-  const handleClearHistory = async () => {
-    await remove(ref(db, `${EXPO_SESSION_ROOT}/${EXPO_SESSION_ID}`));
-  };
-
-  const handleKickParticipant = async (participantId?: string) => {
-    if (!participantId) return;
-
-    const updates: Record<string, unknown> = {};
-    updates[`participants/${participantId}`] = null;
-    updates[`answers/${participantId}`] = null;
-    updates.lastKickedParticipantId = participantId;
-    updates.lastKickedAt = Date.now();
-
-    if (session.currentParticipantId === participantId) {
-      updates.state = "idle";
-      updates.currentParticipantId = null;
-      updates.currentSpecies = null;
-      updates.questions = null;
-      updates.timeoutAt = null;
-      updates.kickedAt = Date.now();
-      updates.kickedParticipantId = participantId;
-    }
-
-    await update(ref(db, `${EXPO_SESSION_ROOT}/${EXPO_SESSION_ID}`), updates);
-  };
-
   return (
     <div className="expo">
       <section className="expo__left">
         <div className="expo__panel">
-          {isPlaying && currentParticipant ? (
+          {displayIsPlaying && currentParticipant ? (
             <div className="expo__sidebarLive">
               <p className="expo__eyebrow">PARTICIPANTE ACTUAL</p>
-              <h2 className="expo__introTitle expo__introTitle--live">{currentParticipant.name}</h2>
+              <h2 className="expo__introTitle expo__introTitle--live">
+                {currentParticipant.name}
+              </h2>
               <p className="expo__participantSpecies expo__participantSpecies--sidebar">
                 {speciesCatalog[currentParticipant.species]?.label}
               </p>
@@ -204,50 +197,25 @@ export default function ExpomascotasPage() {
                   className="expo__participantPhoto expo__participantPhoto--sidebar"
                 />
               ) : null}
-              <button
-                className="expo__kickBtn"
-                type="button"
-                onClick={() => handleKickParticipant(currentParticipant.id)}
-              >
-                Patear usuario
-              </button>
-              <div className="expo__actions">
-                <button className="expo__btn expo__btn--yellow" onClick={handleReset}>
-                  Volver a estado inicial
-                </button>
-                <button className="expo__btn expo__btn--dark" onClick={handleClearHistory}>
-                  Limpiar sesión
-                </button>
-              </div>
             </div>
           ) : (
             <>
               <p className="expo__eyebrow">ACTIVACIÓN EN VIVO</p>
               <div className="expo__introNote">
-                <h2 className="expo__introTitle">Escanea y participa</h2>
-                <p className="expo__introCopy">
-                  Mientras el QR está activo, aquí al lado se irá armando el ranking con los tutores que ya respondieron.
-                </p>
+                <h3 className="expo__introTitle">Escanea y participa</h3>
               </div>
 
               <div className="expo__qrCard">
                 {salonUrl && <QRCode url={salonUrl} />}
+                <img
+                  src="/images/expomascostas/logosansebastian.png"
+                  alt="Logo San Sebastián"
+                  className="expo__qrLogo"
+                />
               </div>
 
               <div className="expo__status">
                 <span className="expo__badge">Esperando participante</span>
-                <span className="expo__count">
-                  {Object.keys(session.participants || {}).length} registros
-                </span>
-              </div>
-
-              <div className="expo__actions">
-                <button className="expo__btn expo__btn--yellow" onClick={handleReset}>
-                  Volver a estado inicial
-                </button>
-                <button className="expo__btn expo__btn--dark" onClick={handleClearHistory}>
-                  Limpiar sesión
-                </button>
               </div>
             </>
           )}
@@ -261,17 +229,19 @@ export default function ExpomascotasPage() {
         <div className="expo__overlay" />
         <div className="expo__mobileIdle" />
 
-        {!isPlaying ? (
+        {!displayIsPlaying ? (
           <div className="expo__ranking">
             <div className="expo__rankingHeader">
               <p className="expo__participantLabel">Ranking de tutores</p>
-              <h2 className="expo__rankingTitle">Tutores que ya respondieron</h2>
             </div>
 
             <div className="expo__rankingList">
               {rankingParticipants.length > 0 ? (
                 rankingParticipants.map((participant, index) => (
-                  <article key={`${participant.name}-${participant.joinedAt}`} className="expo__rankingCard">
+                  <article
+                    key={`${participant.name}-${participant.joinedAt}`}
+                    className="expo__rankingCard"
+                  >
                     <div className="expo__rankingPosition">{index + 1}</div>
                     {participant.photoUrl ? (
                       <img
@@ -281,31 +251,30 @@ export default function ExpomascotasPage() {
                       />
                     ) : (
                       <div className="expo__rankingPhoto expo__rankingPhoto--placeholder">
-                        {participant.name.charAt(0).toUpperCase()}
+                        {(
+                          participant.name?.trim()?.charAt(0) || "?"
+                        ).toUpperCase()}
                       </div>
                     )}
                     <div className="expo__rankingMeta">
-                      <h3 className="expo__rankingName">{participant.name}</h3>
+                      <h3 className="expo__rankingName">
+                        {participant.name || "Participante"}
+                      </h3>
                       <p className="expo__rankingSpecies">
-                        {speciesCatalog[participant.species]?.label}
+                        {speciesCatalog[participant.species]?.label ||
+                          "Especie no indicada"}
                       </p>
                     </div>
                     <div className="expo__rankingScore">
                       <span>{participant.score ?? 0}</span>
                       <small>pts</small>
                     </div>
-                    <button
-                      className="expo__rankingKick"
-                      type="button"
-                      onClick={() => handleKickParticipant(participant.id)}
-                    >
-                      Patear
-                    </button>
                   </article>
                 ))
               ) : (
                 <div className="expo__rankingEmpty">
-                  Aún no hay tutores en el ranking. Se llenará a medida que respondan el quiz.
+                  Aún no hay tutores en el ranking. Se llenará a medida que
+                  respondan el quiz.
                 </div>
               )}
             </div>
@@ -363,18 +332,18 @@ export default function ExpomascotasPage() {
           gap: 0.65rem;
           padding: 1.1rem 1.2rem;
           border-radius: 22px;
-          
+
         }
 
         .expo__introTitle {
           margin: 0;
-          font-size: clamp(1.8rem, 3vw, 2.8rem);
+          font-size: clamp(1.2rem, 3vw, 2.8rem);
           line-height: 0.95;
           letter-spacing: -0.05em;
         }
 
         .expo__introTitle--live {
-          font-size: clamp(2.1rem, 3.6vw, 3.4rem);
+          font-size: clamp(1.8rem, 3.6vw, 3.4rem);
         }
 
         .expo__introCopy {
@@ -405,12 +374,18 @@ export default function ExpomascotasPage() {
         }
 
         .expo__qrCard {
-         
+
           border-radius: 26px;
           padding: 1.25rem;
           display: grid;
           gap: 1rem;
- 
+
+        }
+
+        .expo__qrLogo {
+          width: min(100%, 240px);
+          justify-self: center;
+          object-fit: contain;
         }
 
         .expo__url {
@@ -418,17 +393,16 @@ export default function ExpomascotasPage() {
           word-break: break-word;
         }
 
-        .expo__status, .expo__actions {
+        .expo__status {
           display: flex;
           gap: 0.75rem;
           flex-wrap: wrap;
           align-items: center;
         }
 
-        .expo__status,
-        .expo__actions {
+        .expo__status {
           display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-template-columns: 1fr;
         }
 
         .expo__badge, .expo__count {
@@ -452,37 +426,6 @@ export default function ExpomascotasPage() {
 
         .expo__badge--live {
           filter: brightness(1.06) saturate(1.05);
-        }
-
-        .expo__btn {
-          min-height: 64px;
-          width: 100%;
-          padding: 0.9rem 1.35rem;
-          border: none;
-          background-color: transparent;
-          background-position: center;
-          background-repeat: no-repeat;
-          background-size: 100% 100%;
-          color: #121212;
-          font-weight: 700;
-          text-shadow: 0 1px 0 rgba(255, 255, 255, 0.18);
-          cursor: pointer;
-          transition: transform 0.18s ease, filter 0.18s ease;
-        }
-
-        .expo__btn:hover {
-          transform: translateY(-2px) scale(1.01);
-          filter: brightness(1.04);
-        }
-
-        .expo__btn--yellow {
-          background-image: url("/images/botones/parati.png");
-        }
-
-        .expo__btn--dark {
-          background-image: url("/images/botones/accesorapido.png");
-          color: #fff8eb;
-          text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
         }
 
         .expo__stage {
@@ -793,8 +736,7 @@ export default function ExpomascotasPage() {
             padding-inline: 1.3rem;
           }
 
-          .expo__status,
-          .expo__actions {
+          .expo__status {
             grid-template-columns: 1fr;
           }
 
@@ -808,13 +750,8 @@ export default function ExpomascotasPage() {
           }
 
           .expo__rankingScore {
-            grid-column: 2 / 4;
+            grid-column: 2 / -1;
             justify-items: start;
-          }
-
-          .expo__rankingKick {
-            grid-column: 4;
-            align-self: center;
           }
         }
       `}</style>

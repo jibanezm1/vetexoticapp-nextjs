@@ -52,6 +52,7 @@ function SalonContent() {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cameraReady, setCameraReady] = useState(false);
+  const [cameraAvailable, setCameraAvailable] = useState(true);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -73,13 +74,17 @@ function SalonContent() {
         }
 
         streamRef.current = stream;
+        setCameraAvailable(true);
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
           await videoRef.current.play();
           setCameraReady(true);
         }
       } catch {
-        setError("No pudimos acceder a la cámara. Revisa los permisos e inténtalo de nuevo.");
+        setCameraAvailable(false);
+        setCameraReady(false);
+        setImageMode("avatar");
+        setError("");
       }
     };
 
@@ -90,6 +95,22 @@ function SalonContent() {
       streamRef.current?.getTracks().forEach((track) => track.stop());
     };
   }, []);
+
+  useEffect(() => {
+    if (imageMode !== "camera" || photoDataUrl || !streamRef.current || !videoRef.current) return;
+
+    const attachStream = async () => {
+      try {
+        videoRef.current!.srcObject = streamRef.current;
+        await videoRef.current!.play();
+        setCameraReady(true);
+      } catch {
+        setCameraReady(false);
+      }
+    };
+
+    void attachStream();
+  }, [imageMode, photoDataUrl]);
 
   const handleCapture = () => {
     if (photoDataUrl) {
@@ -194,6 +215,18 @@ function SalonContent() {
         questions: selectedQuestions,
       });
 
+      if (typeof window !== "undefined") {
+        const previewImage = imageMode === "camera" ? photoDataUrl : selectedAvatarUrl;
+        window.sessionStorage.setItem(
+          `expomascotas-share:${participantId.current}`,
+          JSON.stringify({
+            participantId: participantId.current,
+            imageUrl: previewImage,
+            mode: imageMode,
+          }),
+        );
+      }
+
       router.push(`/expomascotas/juego?session=${sessionId}&pid=${participantId.current}`);
     } catch (submissionError) {
       setError(
@@ -231,7 +264,16 @@ function SalonContent() {
           <select
             className="salon__input"
             value={species}
-            onChange={(event) => setSpecies(event.target.value as SpeciesId)}
+            onChange={(event) => {
+              const nextSpecies = event.target.value as SpeciesId;
+              setSpecies(nextSpecies);
+              if (nextSpecies) {
+                const matchingAvatar = avatarOptions.find((avatar) => avatar.id === nextSpecies);
+                if (matchingAvatar) {
+                  setSelectedAvatar(matchingAvatar.id);
+                }
+              }
+            }}
           >
             <option value="">Selecciona una especie</option>
             {speciesOptions.map((item) => (
@@ -243,13 +285,15 @@ function SalonContent() {
         </label>
 
         <div className="salon__modeTabs">
-          <button
-            className={`salon__modeBtn ${imageMode === "camera" ? "salon__modeBtn--active" : ""}`}
-            type="button"
-            onClick={() => setImageMode("camera")}
-          >
-            Usar cámara
-          </button>
+          {cameraAvailable ? (
+            <button
+              className={`salon__modeBtn ${imageMode === "camera" ? "salon__modeBtn--active" : ""}`}
+              type="button"
+              onClick={() => setImageMode("camera")}
+            >
+              Usar cámara
+            </button>
+          ) : null}
           <button
             className={`salon__modeBtn ${imageMode === "avatar" ? "salon__modeBtn--active" : ""}`}
             type="button"
@@ -259,8 +303,14 @@ function SalonContent() {
           </button>
         </div>
 
+        {!cameraAvailable ? (
+          <p className="salon__helper">
+            No se detectó permiso de cámara. Usaremos automáticamente un avatar según la especie elegida.
+          </p>
+        ) : null}
+
         <div className="salon__cameraWrap">
-          {imageMode === "camera" ? (
+          {imageMode === "camera" && cameraAvailable ? (
             !photoDataUrl ? (
               <video ref={videoRef} muted playsInline className="salon__video" />
             ) : (
@@ -292,10 +342,10 @@ function SalonContent() {
           <button
             className="salon__secondary salon__actionBtn salon__actionBtn--dark"
             onClick={handleCapture}
-            disabled={imageMode !== "camera" || !cameraReady}
+            disabled={!cameraAvailable || imageMode !== "camera" || !cameraReady}
             type="button"
           >
-            {photoDataUrl ? "Volver a camara" : "Tomar foto"}
+            {photoDataUrl ? "Tomar otra foto" : "Tomar foto"}
           </button>
           <button className="salon__primary salon__actionBtn salon__actionBtn--pink" onClick={handleStart} disabled={isSubmitting} type="button">
             {isSubmitting ? "Iniciando..." : "Comenzar quiz"}
@@ -376,7 +426,7 @@ function SalonContent() {
 
         .salon__modeTabs {
           display: grid;
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: repeat(${cameraAvailable ? 2 : 1}, 1fr);
           gap: 0.75rem;
         }
 
@@ -406,6 +456,13 @@ function SalonContent() {
 
         .salon__video--avatar {
           transform: none;
+        }
+
+        .salon__helper {
+          margin: 0;
+          color: rgba(255, 248, 235, 0.76);
+          line-height: 1.45;
+          font-size: 0.9rem;
         }
 
         .salon__avatarGrid {
