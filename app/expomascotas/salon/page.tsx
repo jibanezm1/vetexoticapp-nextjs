@@ -92,6 +92,12 @@ function SalonContent() {
   }, []);
 
   const handleCapture = () => {
+    if (photoDataUrl) {
+      setPhotoDataUrl("");
+      setError("");
+      return;
+    }
+
     const video = videoRef.current;
     const canvas = canvasRef.current;
 
@@ -289,7 +295,7 @@ function SalonContent() {
             disabled={imageMode !== "camera" || !cameraReady}
             type="button"
           >
-            {photoDataUrl ? "Tomar otra foto" : "Tomar foto"}
+            {photoDataUrl ? "Volver a camara" : "Tomar foto"}
           </button>
           <button className="salon__primary salon__actionBtn salon__actionBtn--pink" onClick={handleStart} disabled={isSubmitting} type="button">
             {isSubmitting ? "Iniciando..." : "Comenzar quiz"}
