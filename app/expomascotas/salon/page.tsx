@@ -6,6 +6,8 @@ import { get, ref, set, update } from "firebase/database";
 import { db } from "@/lib/firebase";
 import {
   EXPO_SESSION_ID,
+  EXPO_QUIZ_TIMEOUT_MS,
+  EXPO_SESSION_ROOT,
   EXPO_TITLE,
   SpeciesId,
   quizBySpecies,
@@ -117,7 +119,7 @@ function SalonContent() {
     setError("");
 
     try {
-      const sessionRef = ref(db, `expomascotas_sessions/${sessionId}`);
+      const sessionRef = ref(db, `${EXPO_SESSION_ROOT}/${sessionId}`);
       const sessionSnapshot = await get(sessionRef);
       const sessionData = sessionSnapshot.val();
 
@@ -135,7 +137,7 @@ function SalonContent() {
         correct: question.options.findIndex((option) => option.correct),
       }));
 
-      await set(ref(db, `expomascotas_sessions/${sessionId}/participants/${participantId.current}`), {
+      await set(ref(db, `${EXPO_SESSION_ROOT}/${sessionId}/participants/${participantId.current}`), {
         name: name.trim(),
         species,
         photoUrl,
@@ -143,10 +145,15 @@ function SalonContent() {
         finished: false,
       });
 
+      const startedAt = Date.now();
+
       await update(sessionRef, {
         state: "playing",
         currentParticipantId: participantId.current,
-        startedAt: Date.now(),
+        startedAt,
+        timeoutAt: startedAt + EXPO_QUIZ_TIMEOUT_MS,
+        timedOutAt: null,
+        timedOutParticipantId: null,
         currentSpecies: species,
         questions: selectedQuestions,
       });

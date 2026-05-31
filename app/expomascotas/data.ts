@@ -1,5 +1,7 @@
 export const EXPO_SESSION_ID = "expo_mascotas_live";
 export const EXPO_TITLE = "Expomascotas";
+export const EXPO_SESSION_ROOT = "quiz_sessions";
+export const EXPO_QUIZ_TIMEOUT_MS = 60_000;
 
 export type SpeciesId =
   | "erizo"

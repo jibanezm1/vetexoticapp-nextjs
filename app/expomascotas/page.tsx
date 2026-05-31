@@ -6,7 +6,8 @@ import QRCode from "@/app/quiz/components/QRCode";
 import { db } from "@/lib/firebase";
 import {
   EXPO_SESSION_ID,
-  EXPO_TITLE,
+  EXPO_QUIZ_TIMEOUT_MS,
+  EXPO_SESSION_ROOT,
   SpeciesId,
   getSpeciesImage,
   speciesCatalog,
@@ -20,6 +21,8 @@ interface Participant {
   photoUrl?: string;
   joinedAt: number;
   finished?: boolean;
+  timedOut?: boolean;
+  timedOutAt?: number;
   score?: number;
   totalQuestions?: number;
   tutorLevelTitle?: string;
@@ -28,12 +31,17 @@ interface Participant {
 interface SessionSnapshot {
   state?: SessionState;
   currentParticipantId?: string | null;
+  currentSpecies?: SpeciesId | null;
+  timeoutAt?: number | null;
+  timedOutAt?: number | null;
+  timedOutParticipantId?: string | null;
   participants?: Record<string, Participant>;
 }
 
 export default function ExpomascotasPage() {
   const [salonUrl, setSalonUrl] = useState("");
   const [session, setSession] = useState<SessionSnapshot>({});
+  const [now, setNow] = useState(0);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -45,12 +53,29 @@ export default function ExpomascotasPage() {
   }, []);
 
   useEffect(() => {
-    const sessionRef = ref(db, `expomascotas_sessions/${EXPO_SESSION_ID}`);
+    const sessionRef = ref(db, `${EXPO_SESSION_ROOT}/${EXPO_SESSION_ID}`);
     onValue(sessionRef, (snap) => {
       setSession((snap.val() as SessionSnapshot) || {});
     });
     return () => off(sessionRef);
   }, []);
+
+  useEffect(() => {
+    if (session.state !== "playing") return;
+
+    const frame = window.requestAnimationFrame(() => {
+      setNow(Date.now());
+    });
+
+    const timer = window.setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearInterval(timer);
+    };
+  }, [session.state]);
 
   const currentParticipant = useMemo(() => {
     const participants = session.participants || {};
@@ -76,58 +101,121 @@ export default function ExpomascotasPage() {
       })
       .slice(0, 8);
   }, [session.participants]);
-  const activeImage = getSpeciesImage(currentParticipant?.species);
+  const activeSpecies = session.currentSpecies || currentParticipant?.species || null;
+  const activeImage = getSpeciesImage(activeSpecies);
   const backgroundImage = isPlaying && activeImage
     ? `/images/expomascostas/${activeImage}`
     : "/images/expomascostas/fondo.png";
+  const remainingMs = session.timeoutAt ? Math.max(0, session.timeoutAt - now) : EXPO_QUIZ_TIMEOUT_MS;
+  const remainingSeconds = Math.ceil(remainingMs / 1000);
+  const countdownLabel = `${String(Math.floor(remainingSeconds / 60)).padStart(2, "0")}:${String(
+    remainingSeconds % 60
+  ).padStart(2, "0")}`;
+
+  useEffect(() => {
+    if (session.state !== "playing" || !session.timeoutAt || now < session.timeoutAt) return;
+
+    const participantId = session.currentParticipantId;
+    const timedOutAt = Date.now();
+
+    const resetForTimeout = async () => {
+      await update(ref(db, `${EXPO_SESSION_ROOT}/${EXPO_SESSION_ID}`), {
+        state: "idle",
+        currentParticipantId: null,
+        currentSpecies: null,
+        questions: null,
+        timeoutAt: null,
+        timedOutAt,
+        timedOutParticipantId: participantId || null,
+      });
+
+      if (participantId) {
+        await update(
+          ref(db, `${EXPO_SESSION_ROOT}/${EXPO_SESSION_ID}/participants/${participantId}`),
+          { timedOut: true, timedOutAt }
+        );
+      }
+    };
+
+    void resetForTimeout();
+  }, [now, session.currentParticipantId, session.state, session.timeoutAt]);
 
   const handleReset = async () => {
-    await update(ref(db, `expomascotas_sessions/${EXPO_SESSION_ID}`), {
+    await update(ref(db, `${EXPO_SESSION_ROOT}/${EXPO_SESSION_ID}`), {
       state: "idle",
       currentParticipantId: null,
+      currentSpecies: null,
       questions: null,
+      timeoutAt: null,
     });
   };
 
   const handleClearHistory = async () => {
-    await remove(ref(db, `expomascotas_sessions/${EXPO_SESSION_ID}`));
+    await remove(ref(db, `${EXPO_SESSION_ROOT}/${EXPO_SESSION_ID}`));
   };
 
   return (
     <div className="expo">
       <section className="expo__left">
         <div className="expo__panel">
-          <p className="expo__eyebrow">ACTIVACIÓN EN VIVO</p>
-          {!isPlaying ? (
-            <div className="expo__introNote">
-              <h2 className="expo__introTitle">Escanea y participa</h2>
-              <p className="expo__introCopy">
-                Mientras el QR está activo, aquí al lado se irá armando el ranking con los tutores que ya respondieron.
+          {isPlaying && currentParticipant ? (
+            <div className="expo__sidebarLive">
+              <p className="expo__eyebrow">PARTICIPANTE ACTUAL</p>
+              <h2 className="expo__introTitle expo__introTitle--live">{currentParticipant.name}</h2>
+              <p className="expo__participantSpecies expo__participantSpecies--sidebar">
+                {speciesCatalog[currentParticipant.species]?.label}
               </p>
+              <div className="expo__timer expo__timer--sidebar">
+                <span className="expo__timerLabel">Tiempo restante</span>
+                <strong className="expo__timerValue">{countdownLabel}</strong>
+              </div>
+              {currentParticipant.photoUrl ? (
+                <img
+                  src={currentParticipant.photoUrl}
+                  alt={currentParticipant.name}
+                  className="expo__participantPhoto expo__participantPhoto--sidebar"
+                />
+              ) : null}
+              <div className="expo__actions">
+                <button className="expo__btn expo__btn--yellow" onClick={handleReset}>
+                  Volver a estado inicial
+                </button>
+                <button className="expo__btn expo__btn--dark" onClick={handleClearHistory}>
+                  Limpiar sesión
+                </button>
+              </div>
             </div>
-          ) : null}
+          ) : (
+            <>
+              <p className="expo__eyebrow">ACTIVACIÓN EN VIVO</p>
+              <div className="expo__introNote">
+                <h2 className="expo__introTitle">Escanea y participa</h2>
+                <p className="expo__introCopy">
+                  Mientras el QR está activo, aquí al lado se irá armando el ranking con los tutores que ya respondieron.
+                </p>
+              </div>
 
-          <div className="expo__qrCard">
-            {salonUrl && <QRCode url={salonUrl} />}
-           </div>
+              <div className="expo__qrCard">
+                {salonUrl && <QRCode url={salonUrl} />}
+              </div>
 
-          <div className="expo__status">
-            <span className={`expo__badge ${isPlaying ? "expo__badge--live" : ""}`}>
-              {isPlaying ? "Quiz activo" : "Esperando participante"}
-            </span>
-            <span className="expo__count">
-              {Object.keys(session.participants || {}).length} registros
-            </span>
-          </div>
+              <div className="expo__status">
+                <span className="expo__badge">Esperando participante</span>
+                <span className="expo__count">
+                  {Object.keys(session.participants || {}).length} registros
+                </span>
+              </div>
 
-          <div className="expo__actions">
-            <button className="expo__btn expo__btn--yellow" onClick={handleReset}>
-              Volver a estado inicial
-            </button>
-            <button className="expo__btn expo__btn--dark" onClick={handleClearHistory}>
-              Limpiar sesión
-            </button>
-          </div>
+              <div className="expo__actions">
+                <button className="expo__btn expo__btn--yellow" onClick={handleReset}>
+                  Volver a estado inicial
+                </button>
+                <button className="expo__btn expo__btn--dark" onClick={handleClearHistory}>
+                  Limpiar sesión
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </section>
 
@@ -138,22 +226,7 @@ export default function ExpomascotasPage() {
         <div className="expo__overlay" />
         <div className="expo__mobileIdle" />
 
-        {isPlaying && currentParticipant ? (
-          <div className="expo__participantCard">
-            <p className="expo__participantLabel">Participante actual</p>
-            <h2 className="expo__participantName">{currentParticipant.name}</h2>
-            <p className="expo__participantSpecies">
-              {speciesCatalog[currentParticipant.species]?.label}
-            </p>
-            {currentParticipant.photoUrl ? (
-              <img
-                src={currentParticipant.photoUrl}
-                alt={currentParticipant.name}
-                className="expo__participantPhoto"
-              />
-            ) : null}
-          </div>
-        ) : (
+        {!isPlaying ? (
           <div className="expo__ranking">
             <div className="expo__rankingHeader">
               <p className="expo__participantLabel">Ranking de tutores</p>
@@ -195,7 +268,7 @@ export default function ExpomascotasPage() {
               )}
             </div>
           </div>
-        )}
+        ) : null}
       </section>
 
       <style>{`
@@ -237,6 +310,12 @@ export default function ExpomascotasPage() {
           gap: 1.25rem;
         }
 
+        .expo__sidebarLive {
+          display: grid;
+          gap: 1rem;
+          align-content: start;
+        }
+
         .expo__introNote {
           display: grid;
           gap: 0.65rem;
@@ -250,6 +329,10 @@ export default function ExpomascotasPage() {
           font-size: clamp(1.8rem, 3vw, 2.8rem);
           line-height: 0.95;
           letter-spacing: -0.05em;
+        }
+
+        .expo__introTitle--live {
+          font-size: clamp(2.1rem, 3.6vw, 3.4rem);
         }
 
         .expo__introCopy {
@@ -467,6 +550,44 @@ export default function ExpomascotasPage() {
           border-radius: 22px;
           margin-top: 1.25rem;
           border: 2px solid rgba(255, 248, 235, 0.22);
+        }
+
+        .expo__participantPhoto--sidebar {
+          margin-top: 0;
+          max-width: 100%;
+        }
+
+        .expo__participantSpecies--sidebar {
+          font-size: 1.1rem;
+        }
+
+        .expo__timer {
+          position: relative;
+          z-index: 1;
+          margin-top: 1rem;
+          display: inline-grid;
+          gap: 0.22rem;
+          padding: 0.9rem 1rem;
+          border-radius: 18px;
+          background: rgba(255, 248, 235, 0.08);
+          border: 1px solid rgba(255, 248, 235, 0.12);
+        }
+
+        .expo__timer--sidebar {
+          width: fit-content;
+        }
+
+        .expo__timerLabel {
+          color: rgba(255, 248, 235, 0.74);
+          font-size: 0.7rem;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+        }
+
+        .expo__timerValue {
+          color: #ffca7a;
+          font-size: clamp(1.8rem, 4vw, 2.7rem);
+          line-height: 1;
         }
 
         .expo__rankingHeader,

@@ -6,6 +6,7 @@ import { off, onValue, ref, set, update } from "firebase/database";
 import { db } from "@/lib/firebase";
 import {
   EXPO_SESSION_ID,
+  EXPO_SESSION_ROOT,
   SpeciesId,
   getSpeciesImage,
   getTutorLevel,
@@ -25,6 +26,12 @@ interface Participant {
   photoUrl?: string;
 }
 
+interface SessionSnapshot {
+  state?: "idle" | "playing";
+  timedOutAt?: number | null;
+  timedOutParticipantId?: string | null;
+}
+
 function JuegoContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session") || EXPO_SESSION_ID;
@@ -37,11 +44,12 @@ function JuegoContent() {
   const [selected, setSelected] = useState<number | null>(null);
   const [confirmed, setConfirmed] = useState(false);
   const [finished, setFinished] = useState(false);
+  const [timedOut, setTimedOut] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!participantId) return;
-    const participantRef = ref(db, `expomascotas_sessions/${sessionId}/participants/${participantId}`);
+    const participantRef = ref(db, `${EXPO_SESSION_ROOT}/${sessionId}/participants/${participantId}`);
     onValue(participantRef, (snap) => {
       setParticipant((snap.val() as Participant) || null);
     });
@@ -49,7 +57,7 @@ function JuegoContent() {
   }, [participantId, sessionId]);
 
   useEffect(() => {
-    const questionsRef = ref(db, `expomascotas_sessions/${sessionId}/questions`);
+    const questionsRef = ref(db, `${EXPO_SESSION_ROOT}/${sessionId}/questions`);
     onValue(questionsRef, (snap) => {
       const data = snap.val();
       if (data) {
@@ -60,6 +68,22 @@ function JuegoContent() {
     return () => off(questionsRef);
   }, [sessionId]);
 
+  useEffect(() => {
+    const sessionRef = ref(db, `${EXPO_SESSION_ROOT}/${sessionId}`);
+    onValue(sessionRef, (snap) => {
+      const data = (snap.val() as SessionSnapshot) || {};
+      if (
+        !finished &&
+        data.state === "idle" &&
+        data.timedOutParticipantId === participantId &&
+        Boolean(data.timedOutAt)
+      ) {
+        setTimedOut(true);
+      }
+    });
+    return () => off(sessionRef);
+  }, [finished, participantId, sessionId]);
+
   const handleConfirm = async () => {
     if (selected === null || !participantId) return;
 
@@ -67,7 +91,7 @@ function JuegoContent() {
     setAnswers(nextAnswers);
     setConfirmed(true);
 
-    await set(ref(db, `expomascotas_sessions/${sessionId}/answers/${participantId}/${current}`), selected);
+    await set(ref(db, `${EXPO_SESSION_ROOT}/${sessionId}/answers/${participantId}/${current}`), selected);
 
     window.setTimeout(() => {
       if (current + 1 < questions.length) {
@@ -90,7 +114,7 @@ function JuegoContent() {
 
     setFinished(true);
 
-    await update(ref(db, `expomascotas_sessions/${sessionId}/participants/${participantId}`), {
+    await update(ref(db, `${EXPO_SESSION_ROOT}/${sessionId}/participants/${participantId}`), {
       finished: true,
       finishedAt: Date.now(),
       score,
@@ -100,11 +124,12 @@ function JuegoContent() {
       tutorLevelDescription: level.description,
     });
 
-    await update(ref(db, `expomascotas_sessions/${sessionId}`), {
+    await update(ref(db, `${EXPO_SESSION_ROOT}/${sessionId}`), {
       state: "idle",
       currentParticipantId: null,
       currentSpecies: null,
       questions: null,
+      timeoutAt: null,
       completedAt: Date.now(),
       lastResult: {
         participantId,
@@ -125,6 +150,24 @@ function JuegoContent() {
 
   if (loading) {
     return <Shell backgroundImage="/images/expomascostas/fondomobile.png">Cargando quiz...</Shell>;
+  }
+
+  if (timedOut) {
+    const backgroundImage = participant && getSpeciesImage(participant.species)
+      ? `/images/expomascostas/${getSpeciesImage(participant.species)}`
+      : "/images/expomascostas/fondomobile.png";
+
+    return (
+      <Shell backgroundImage={backgroundImage}>
+        <div className="expoQuiz__result">
+          <p className="expoQuiz__eyebrow">Tiempo agotado</p>
+          <h1 className="expoQuiz__name">{participant?.name || "Participante"}</h1>
+          <p className="expoQuiz__message">
+            Se cumplió el minuto disponible para responder. Vuelve a escanear el QR si quieres intentarlo otra vez.
+          </p>
+        </div>
+      </Shell>
+    );
   }
 
   if (finished && participant) {
