@@ -14,6 +14,14 @@ import {
   speciesCatalog,
 } from "./data";
 
+function createParticipantId() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return `expo_${crypto.randomUUID()}`;
+  }
+
+  return `expo_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
 type SessionState = "idle" | "playing";
 
 interface Participant {
@@ -45,17 +53,24 @@ export default function ExpomascotasPage() {
   const [session, setSession] = useState<SessionSnapshot>({});
   const [now, setNow] = useState(0);
   const [hydrated, setHydrated] = useState(false);
+  const [pendingParticipantId, setPendingParticipantId] = useState("");
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (!pendingParticipantId) {
+      setPendingParticipantId(createParticipantId());
+    }
+  }, [pendingParticipantId]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && pendingParticipantId) {
       const frame = window.requestAnimationFrame(() => {
         setSalonUrl(
-          `${window.location.origin}/expomascotas/salon?session=${EXPO_SESSION_ID}`,
+          `${window.location.origin}/expomascotas/salon?session=${EXPO_SESSION_ID}&pid=${pendingParticipantId}`,
         );
       });
       return () => window.cancelAnimationFrame(frame);
     }
-  }, []);
+  }, [pendingParticipantId]);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -89,6 +104,12 @@ export default function ExpomascotasPage() {
       window.clearInterval(timer);
     };
   }, [session.state]);
+
+  useEffect(() => {
+    if (session.state === "playing" && pendingParticipantId) {
+      setPendingParticipantId(createParticipantId());
+    }
+  }, [pendingParticipantId, session.state]);
 
   const currentParticipant = useMemo(() => {
     const participants = session.participants || {};
@@ -210,7 +231,7 @@ export default function ExpomascotasPage() {
             <>
               <p className="expo__eyebrow">ACTIVACIÓN EN VIVO</p>
               <div className="expo__introNote">
-                <h3 className="expo__introTitle">Escanea y participa</h3>
+                <h3 className="expo__introTitle">Cuánto conoces de tu mascota</h3>
               </div>
 
               <div className="expo__qrCard">

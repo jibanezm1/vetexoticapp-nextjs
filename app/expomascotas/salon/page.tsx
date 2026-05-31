@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { get, ref, set, update } from "firebase/database";
+import { get, ref, runTransaction, set, update } from "firebase/database";
 import { db } from "@/lib/firebase";
 import {
   EXPO_SESSION_ID,
@@ -51,11 +51,46 @@ function createParticipantId() {
   return `expo_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
 }
 
+async function claimParticipantId(sessionId: string, requestedId: string) {
+  let nextId = requestedId || createParticipantId();
+
+  for (let attempt = 0; attempt < 6; attempt += 1) {
+    const candidateRef = ref(
+      db,
+      `${EXPO_SESSION_ROOT}/${sessionId}/participants/${nextId}`,
+    );
+
+    const result = await runTransaction(
+      candidateRef,
+      (currentValue) => {
+        if (currentValue) {
+          return;
+        }
+
+        return {
+          pending: true,
+          reservedAt: Date.now(),
+        };
+      },
+      { applyLocally: false },
+    );
+
+    if (result.committed) {
+      return nextId;
+    }
+
+    nextId = createParticipantId();
+  }
+
+  throw new Error("No pudimos reservar tu acceso. Intenta nuevamente.");
+}
+
 function SalonContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const sessionId = searchParams.get("session") || EXPO_SESSION_ID;
-  const participantId = useRef("");
+  const requestedParticipantId = searchParams.get("pid") || "";
+  const participantId = useRef(requestedParticipantId);
 
   if (!participantId.current) {
     participantId.current = createParticipantId();
@@ -208,6 +243,11 @@ function SalonContent() {
         return;
       }
 
+      participantId.current = await claimParticipantId(
+        sessionId,
+        participantId.current,
+      );
+
       const photoUrl = imageMode === "camera" ? await uploadPhoto() : selectedAvatarUrl;
       const selectedQuestions = quizBySpecies[species].map((question) => ({
         id: question.id,
@@ -251,6 +291,17 @@ function SalonContent() {
 
       router.push(`/expomascotas/juego?session=${sessionId}&pid=${participantId.current}`);
     } catch (submissionError) {
+      if (participantId.current) {
+        const participantRef = ref(
+          db,
+          `${EXPO_SESSION_ROOT}/${sessionId}/participants/${participantId.current}`,
+        );
+        const participantSnapshot = await get(participantRef);
+        if (participantSnapshot.exists() && participantSnapshot.val()?.pending) {
+          await set(participantRef, null);
+        }
+      }
+
       showAlert(
         submissionError instanceof Error
           ? submissionError.message
