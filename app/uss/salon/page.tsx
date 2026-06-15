@@ -1,40 +1,41 @@
 "use client";
 
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { get, ref, runTransaction, set, update } from "firebase/database";
+import { get, off, onValue, ref, runTransaction, set } from "firebase/database";
 import { db } from "@/lib/firebase";
 import {
-  EXPO_SESSION_ID,
-  EXPO_QUIZ_TIMEOUT_MS,
-  EXPO_SESSION_ROOT,
-  EXPO_TITLE,
-  SpeciesId,
-  quizBySpecies,
-  speciesOptions,
+  USS_SESSION_ID,
+  USS_SESSION_ROOT,
+  USS_TITLE,
+  groupCatalog,
+  peerCriteria,
+  selfAssessmentQuestions,
 } from "../data";
 
-const avatarOptions = [
-  { id: "zoonosis", label: "Zoonosis", url: createAvatar("Zoonosis", "#9ff5b2", "#08361d", "ZO") },
-  { id: "pinguinos", label: "Pingüinos", url: createAvatar("Pingüinos", "#ffb857", "#5b2a00", "PI") },
-  { id: "mascotas", label: "Mascotas", url: createAvatar("Mascotas", "#ff7ab6", "#3e1028", "MA") },
-  { id: "hogar", label: "Fauna en casa", url: createAvatar("Fauna en casa", "#bfa4ff", "#26124f", "HO") },
-  { id: "polluelos", label: "Polluelos", url: createAvatar("Polluelos", "#8fe0ff", "#032c3a", "PO") },
-  { id: "hidro", label: "Hidrocarburos", url: createAvatar("Hidrocarburos", "#ffd84d", "#4a3200", "HI") },
-];
+type ScaleValue = 1 | 2 | 3 | 4;
 
-function createAvatar(name: string, bg: string, fg: string, initials: string) {
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-      <rect width="512" height="512" rx="96" fill="${bg}"/>
-      <circle cx="256" cy="188" r="92" fill="rgba(255,255,255,0.3)"/>
-      <path d="M116 438c24-88 92-134 140-134s116 46 140 134" fill="rgba(255,255,255,0.28)"/>
-      <text x="256" y="228" text-anchor="middle" font-size="76" font-family="Arial, Helvetica, sans-serif" font-weight="700" fill="${fg}">${initials}</text>
-      <text x="256" y="472" text-anchor="middle" font-size="34" font-family="Arial, Helvetica, sans-serif" fill="${fg}">${name}</text>
-    </svg>
-  `;
+interface UssSessionSnapshot {
+  activeGroupId?: string | null;
+  activeRoundId?: string | null;
+  state?: "idle" | "collecting";
+  responses?: Record<string, Record<string, StudentResponse>>;
+}
 
-  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+interface StudentResponse {
+  studentId: string;
+  studentName: string;
+  groupId: string;
+  roundId: string;
+  submittedAt: number;
+  selfEvaluation: {
+    mainContribution: string;
+    learning: string;
+    groupDecision: string;
+    improvement: string;
+    commitment: ScaleValue;
+  };
+  peerEvaluations: Record<string, Record<string, ScaleValue>>;
 }
 
 function showAlert(message: string) {
@@ -43,417 +44,391 @@ function showAlert(message: string) {
   }
 }
 
-function createParticipantId() {
-  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
-    return `expo_${crypto.randomUUID()}`;
-  }
+async function claimStudentResponseSlot(
+  sessionId: string,
+  groupId: string,
+  studentId: string,
+  roundId: string,
+) {
+  const responseRef = ref(
+    db,
+    `${USS_SESSION_ROOT}/${sessionId}/responses/${groupId}/${studentId}`,
+  );
 
-  return `expo_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+  const result = await runTransaction(
+    responseRef,
+    (currentValue) => {
+      if (currentValue?.roundId === roundId && currentValue?.submittedAt) {
+        return;
+      }
+
+      return {
+        pending: true,
+        roundId,
+        reservedAt: Date.now(),
+      };
+    },
+    { applyLocally: false },
+  );
+
+  return { committed: result.committed, responseRef };
 }
 
-async function claimParticipantId(sessionId: string, requestedId: string) {
-  let nextId = requestedId || createParticipantId();
-
-  for (let attempt = 0; attempt < 6; attempt += 1) {
-    const candidateRef = ref(
-      db,
-      `${EXPO_SESSION_ROOT}/${sessionId}/participants/${nextId}`,
-    );
-
-    const result = await runTransaction(
-      candidateRef,
-      (currentValue) => {
-        if (currentValue) {
-          return;
-        }
-
-        return {
-          pending: true,
-          reservedAt: Date.now(),
-        };
-      },
-      { applyLocally: false },
-    );
-
-    if (result.committed) {
-      return nextId;
-    }
-
-    nextId = createParticipantId();
-  }
-
-  throw new Error("No pudimos reservar tu acceso. Intenta nuevamente.");
-}
-
-function SalonContent() {
+function UssSalonContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const sessionId = searchParams.get("session") || EXPO_SESSION_ID;
-  const requestedParticipantId = searchParams.get("pid") || "";
-  const participantId = useRef(requestedParticipantId);
+  const sessionId = searchParams.get("session") || USS_SESSION_ID;
+  const groupId = searchParams.get("group") || "";
+  const roundId = searchParams.get("token") || "";
 
-  if (!participantId.current) {
-    participantId.current = createParticipantId();
-  }
-
-  const [name, setName] = useState("");
-  const [species, setSpecies] = useState<SpeciesId | "">("");
-  const [photoDataUrl, setPhotoDataUrl] = useState("");
-  const [imageMode, setImageMode] = useState<"camera" | "avatar">("camera");
-  const [selectedAvatar, setSelectedAvatar] = useState(avatarOptions[0].id);
+  const [session, setSession] = useState<UssSessionSnapshot>({});
+  const [studentId, setStudentId] = useState("");
+  const [selfAnswers, setSelfAnswers] = useState({
+    mainContribution: "",
+    learning: "",
+    groupDecision: "",
+    improvement: "",
+    commitment: "" as "" | ScaleValue,
+  });
+  const [peerAnswers, setPeerAnswers] = useState<Record<string, Record<string, "" | ScaleValue>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [cameraReady, setCameraReady] = useState(false);
-  const [cameraAvailable, setCameraAvailable] = useState(true);
-
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const streamRef = useRef<MediaStream | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let cancelled = false;
+    const sessionRef = ref(db, `${USS_SESSION_ROOT}/${sessionId}`);
+    onValue(sessionRef, (snapshot) => {
+      setSession((snapshot.val() as UssSessionSnapshot) || {});
+      setLoading(false);
+    });
+    return () => off(sessionRef);
+  }, [sessionId]);
 
-    const startCamera = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "user", width: { ideal: 1080 }, height: { ideal: 1080 } },
-          audio: false,
-        });
+  const activeGroup = useMemo(() => groupCatalog[groupId] || null, [groupId]);
+  const groupResponses = session.responses?.[groupId] || {};
+  const submittedStudentIds = new Set(Object.keys(groupResponses));
 
-        if (cancelled) {
-          stream.getTracks().forEach((track) => track.stop());
+  const activeGroupIsValid =
+    Boolean(activeGroup) &&
+    session.activeGroupId === groupId &&
+    session.activeRoundId === roundId &&
+    session.state === "collecting";
+
+  const peerMembers = useMemo(() => {
+    if (!activeGroup || !studentId) return [];
+    return activeGroup.members.filter((member) => member.id !== studentId);
+  }, [activeGroup, studentId]);
+
+  useEffect(() => {
+    if (!peerMembers.length) {
+      setPeerAnswers({});
+      return;
+    }
+
+    setPeerAnswers((current) => {
+      const next: Record<string, Record<string, "" | ScaleValue>> = {};
+      for (const member of peerMembers) {
+        next[member.id] = current[member.id] || Object.fromEntries(
+          peerCriteria.map((criterion) => [criterion.id, ""]),
+        ) as Record<string, "" | ScaleValue>;
+      }
+      return next;
+    });
+  }, [peerMembers]);
+
+  const handleSubmit = async () => {
+    if (!activeGroup || !activeGroupIsValid) {
+      showAlert("Este acceso ya no está activo. Pide a la profesora el QR vigente.");
+      return;
+    }
+
+    if (!studentId) {
+      showAlert("Selecciona tu nombre antes de continuar.");
+      return;
+    }
+
+    if (submittedStudentIds.has(studentId)) {
+      showAlert("Este integrante ya respondió. Si necesitas corregirlo, la profesora debe reiniciar su registro.");
+      return;
+    }
+
+    for (const question of selfAssessmentQuestions) {
+      if (
+        question.type === "text" &&
+        question.id !== "commitment" &&
+        !selfAnswers[question.id].trim()
+      ) {
+        showAlert("Completa todas las respuestas de autoevaluación.");
+        return;
+      }
+      if (question.type === "scale" && !selfAnswers.commitment) {
+        showAlert("Indica tu compromiso en escala de 1 a 4.");
+        return;
+      }
+    }
+
+    for (const member of peerMembers) {
+      for (const criterion of peerCriteria) {
+        if (!peerAnswers[member.id]?.[criterion.id]) {
+          showAlert("Completa toda la pauta de coevaluación para cada compañero.");
           return;
         }
-
-        streamRef.current = stream;
-        setCameraAvailable(true);
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          await videoRef.current.play();
-          setCameraReady(true);
-        }
-      } catch {
-        setCameraAvailable(false);
-        setCameraReady(false);
-        setImageMode("avatar");
       }
-    };
-
-    startCamera();
-
-    return () => {
-      cancelled = true;
-      streamRef.current?.getTracks().forEach((track) => track.stop());
-    };
-  }, []);
-
-  useEffect(() => {
-    if (imageMode !== "camera" || photoDataUrl || !streamRef.current || !videoRef.current) return;
-
-    const attachStream = async () => {
-      try {
-        videoRef.current!.srcObject = streamRef.current;
-        await videoRef.current!.play();
-        setCameraReady(true);
-      } catch {
-        setCameraReady(false);
-      }
-    };
-
-    void attachStream();
-  }, [imageMode, photoDataUrl]);
-
-  const handleCapture = () => {
-    if (photoDataUrl) {
-      setPhotoDataUrl("");
-      return;
-    }
-
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-
-    if (!video || !canvas || !video.videoWidth || !video.videoHeight) {
-      showAlert("La cámara aún no está lista.");
-      return;
-    }
-
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) {
-      showAlert("No se pudo generar la foto.");
-      return;
-    }
-
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    setPhotoDataUrl(canvas.toDataURL("image/jpeg", 0.92));
-  };
-
-  const uploadPhoto = async () => {
-    const blob = await fetch(photoDataUrl).then((response) => response.blob());
-    const formData = new FormData();
-    formData.append("file", new File([blob], `${participantId.current}.jpg`, { type: "image/jpeg" }));
-    formData.append("participantName", name.trim());
-    formData.append("species", species);
-
-      const response = await fetch("/api/expomascotas/upload", {
-      method: "POST",
-      body: formData,
-    });
-
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.error || "No se pudo subir la foto.");
-    }
-
-    return data.url as string;
-  };
-
-  const selectedAvatarUrl =
-    avatarOptions.find((avatar) => avatar.id === selectedAvatar)?.url || avatarOptions[0].url;
-
-  const handleStart = async () => {
-    if (!name.trim()) {
-      showAlert("Ingresa tu nombre.");
-      return;
-    }
-    if (name.trim().length < 2) {
-      showAlert("Tu nombre debe tener al menos 2 caracteres.");
-      return;
-    }
-    if (!species) {
-      showAlert("Selecciona un tema.");
-      return;
-    }
-    if (imageMode === "camera" && !photoDataUrl) {
-      showAlert("Toma una foto o cambia a avatar para continuar.");
-      return;
     }
 
     setIsSubmitting(true);
 
-    try {
-      const sessionRef = ref(db, `${EXPO_SESSION_ROOT}/${sessionId}`);
-      const sessionSnapshot = await get(sessionRef);
-      const sessionData = sessionSnapshot.val();
+    const student = activeGroup.members.find((member) => member.id === studentId);
+    if (!student) {
+      showAlert("No pudimos identificar al estudiante seleccionado.");
+      setIsSubmitting(false);
+      return;
+    }
 
-      if (sessionData?.state === "playing" && sessionData?.currentParticipantId) {
-        showAlert("Hay otro participante respondiendo en este momento. Intenta en unos segundos.");
+    const { committed, responseRef } = await claimStudentResponseSlot(
+      sessionId,
+      groupId,
+      studentId,
+      roundId,
+    );
+
+    if (!committed) {
+      showAlert("Este integrante ya quedó tomado por otra respuesta. Selecciona otro nombre o pide apoyo a la profesora.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const currentSessionSnapshot = await get(ref(db, `${USS_SESSION_ROOT}/${sessionId}`));
+      const currentSession = (currentSessionSnapshot.val() as UssSessionSnapshot) || {};
+
+      if (
+        currentSession.activeGroupId !== groupId ||
+        currentSession.activeRoundId !== roundId ||
+        currentSession.state !== "collecting"
+      ) {
+        await set(responseRef, null);
+        showAlert("La profesora ya cambió de grupo o cerró esta ronda.");
         setIsSubmitting(false);
         return;
       }
 
-      participantId.current = await claimParticipantId(
-        sessionId,
-        participantId.current,
-      );
+      const responsePayload: StudentResponse = {
+        studentId: student.id,
+        studentName: student.name,
+        groupId,
+        roundId,
+        submittedAt: Date.now(),
+        selfEvaluation: {
+          mainContribution: selfAnswers.mainContribution.trim(),
+          learning: selfAnswers.learning.trim(),
+          groupDecision: selfAnswers.groupDecision.trim(),
+          improvement: selfAnswers.improvement.trim(),
+          commitment: selfAnswers.commitment as ScaleValue,
+        },
+        peerEvaluations: Object.fromEntries(
+          peerMembers.map((member) => [
+            member.id,
+            Object.fromEntries(
+              peerCriteria.map((criterion) => [
+                criterion.id,
+                peerAnswers[member.id][criterion.id] as ScaleValue,
+              ]),
+            ),
+          ]),
+        ),
+      };
 
-      const photoUrl = imageMode === "camera" ? await uploadPhoto() : selectedAvatarUrl;
-      const selectedQuestions = quizBySpecies[species].map((question) => ({
-        id: question.id,
-        prompt: question.prompt,
-        options: question.options.map((option) => option.text),
-        correct: question.options.findIndex((option) => option.correct),
-      }));
-
-      await set(ref(db, `${EXPO_SESSION_ROOT}/${sessionId}/participants/${participantId.current}`), {
-        name: name.trim(),
-        species,
-        photoUrl,
-        joinedAt: Date.now(),
-        finished: false,
-      });
-
-      const startedAt = Date.now();
-
-      await update(sessionRef, {
-        state: "playing",
-        currentParticipantId: participantId.current,
-        startedAt,
-        timeoutAt: startedAt + EXPO_QUIZ_TIMEOUT_MS,
-        timedOutAt: null,
-        timedOutParticipantId: null,
-        currentSpecies: species,
-        questions: selectedQuestions,
-      });
-
-      if (typeof window !== "undefined") {
-        const previewImage = imageMode === "camera" ? photoDataUrl : selectedAvatarUrl;
-        window.sessionStorage.setItem(
-          `uss-share:${participantId.current}`,
-          JSON.stringify({
-            participantId: participantId.current,
-            imageUrl: previewImage,
-            mode: imageMode,
-          }),
-        );
-      }
-
-      router.push(`/uss/juego?session=${sessionId}&pid=${participantId.current}`);
-    } catch (submissionError) {
-      if (participantId.current) {
-        const participantRef = ref(
-          db,
-          `${EXPO_SESSION_ROOT}/${sessionId}/participants/${participantId.current}`,
-        );
-        const participantSnapshot = await get(participantRef);
-        if (participantSnapshot.exists() && participantSnapshot.val()?.pending) {
-          await set(participantRef, null);
-        }
-      }
-
+      await set(responseRef, responsePayload);
+      router.push(`/uss/juego?session=${sessionId}&group=${groupId}&student=${studentId}`);
+    } catch (error) {
+      await set(responseRef, null);
       showAlert(
-        submissionError instanceof Error
-          ? submissionError.message
-          : "No pudimos iniciar el quiz. Intenta nuevamente.",
+        error instanceof Error
+          ? error.message
+          : "No pudimos guardar tus respuestas. Intenta nuevamente.",
       );
       setIsSubmitting(false);
     }
   };
 
+  if (loading) {
+    return <Shell>Cargando evaluación...</Shell>;
+  }
+
+  if (!activeGroup || !roundId) {
+    return (
+      <Shell>
+        <Message
+          eyebrow="Acceso inválido"
+          title="Este QR no es válido"
+          copy="Pide a la profesora Siboney que active el grupo correcto y vuelve a escanear."
+        />
+      </Shell>
+    );
+  }
+
+  if (!activeGroupIsValid) {
+    return (
+      <Shell>
+        <Message
+          eyebrow="Ronda cerrada"
+          title="Este acceso ya no está activo"
+          copy="La profesora puede haber pasado al siguiente grupo. Escanea el QR actualizado para responder."
+        />
+      </Shell>
+    );
+  }
+
   return (
-    <div className="salon">
-      <div className="salon__card">
-        <p className="salon__eyebrow">Acceso móvil</p>
-        <h1 className="salon__title">{EXPO_TITLE}</h1>
-        <p className="salon__copy">
-          Completa tus datos, elige un tema y responde el quiz de fauna silvestre.
+    <Shell>
+      <div className="ussForm">
+        <p className="ussForm__eyebrow">Autoevaluación y coevaluación</p>
+        <h1 className="ussForm__title">{USS_TITLE}</h1>
+        <p className="ussForm__copy">
+          Grupo {activeGroup.number}: {activeGroup.title}
         </p>
 
-        <label className="salon__label">
-          Nombre
-          <input
-            className="salon__input"
-            type="text"
-            value={name}
-            maxLength={40}
-            placeholder="Tu nombre"
-            onChange={(event) => setName(event.target.value)}
-          />
-        </label>
-
-        <label className="salon__label">
-          Tema
+        <label className="ussForm__label">
+          Tu nombre
           <select
-            className="salon__input"
-            value={species}
-            onChange={(event) => {
-              const nextSpecies = event.target.value as SpeciesId;
-              setSpecies(nextSpecies);
-              if (nextSpecies) {
-                const matchingAvatar = avatarOptions.find((avatar) => avatar.id === nextSpecies);
-                if (matchingAvatar) {
-                  setSelectedAvatar(matchingAvatar.id);
-                }
-              }
-            }}
+            className="ussForm__input"
+            value={studentId}
+            onChange={(event) => setStudentId(event.target.value)}
           >
-            <option value="">Selecciona un tema</option>
-            {speciesOptions.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.label}
+            <option value="">Selecciona tu nombre</option>
+            {activeGroup.members.map((member) => (
+              <option
+                key={member.id}
+                value={member.id}
+                disabled={submittedStudentIds.has(member.id)}
+              >
+                {member.name}
+                {submittedStudentIds.has(member.id) ? " · ya respondió" : ""}
               </option>
             ))}
           </select>
         </label>
 
-        <div className="salon__modeTabs">
-          {cameraAvailable ? (
-            <button
-              className={`salon__modeBtn ${imageMode === "camera" ? "salon__modeBtn--active" : ""}`}
-              type="button"
-              onClick={() => setImageMode("camera")}
-            >
-              Usar cámara
-            </button>
-          ) : null}
-          <button
-            className={`salon__modeBtn ${imageMode === "avatar" ? "salon__modeBtn--active" : ""}`}
-            type="button"
-            onClick={() => setImageMode("avatar")}
-          >
-            Elegir avatar
-          </button>
-        </div>
-
-        {!cameraAvailable ? (
-          <p className="salon__helper">
-            No se detectó permiso de cámara. Usaremos automáticamente un avatar según el tema elegido.
-          </p>
-        ) : null}
-
-        <div className="salon__cameraWrap">
-          {imageMode === "camera" && cameraAvailable ? (
-            !photoDataUrl ? (
-              <video ref={videoRef} muted playsInline className="salon__video" />
-            ) : (
-              <img src={photoDataUrl} alt="Vista previa" className="salon__video" />
-            )
-          ) : (
-            <img src={selectedAvatarUrl} alt="Avatar elegido" className="salon__video salon__video--avatar" />
-          )}
-          <canvas ref={canvasRef} hidden />
-        </div>
-
-        {imageMode === "avatar" ? (
-          <div className="salon__avatarGrid">
-            {avatarOptions.map((avatar) => (
-              <button
-                key={avatar.id}
-                type="button"
-                className={`salon__avatarCard ${selectedAvatar === avatar.id ? "salon__avatarCard--active" : ""}`}
-                onClick={() => setSelectedAvatar(avatar.id)}
-              >
-                <img src={avatar.url} alt={avatar.label} className="salon__avatarThumb" />
-                <span>{avatar.label}</span>
-              </button>
+        <section className="ussForm__section">
+          <h2 className="ussForm__sectionTitle">Pauta breve de autoevaluación</h2>
+          <div className="ussForm__stack">
+            {selfAssessmentQuestions.map((question, index) => (
+              <label key={question.id} className="ussForm__label">
+                <span>
+                  {index + 1}. {question.prompt}
+                </span>
+                {question.type === "text" ? (
+                  <textarea
+                    className="ussForm__input ussForm__textarea"
+                    value={selfAnswers[question.id]}
+                    onChange={(event) =>
+                      setSelfAnswers((current) => ({
+                        ...current,
+                        [question.id]: event.target.value,
+                      }))
+                    }
+                    rows={4}
+                  />
+                ) : (
+                  <div className="ussForm__scale">
+                    {[1, 2, 3, 4].map((value) => (
+                      <button
+                        key={value}
+                        type="button"
+                        className={`ussForm__scaleBtn ${selfAnswers.commitment === value ? "ussForm__scaleBtn--active" : ""}`}
+                        onClick={() =>
+                          setSelfAnswers((current) => ({
+                            ...current,
+                            commitment: value as ScaleValue,
+                          }))
+                        }
+                      >
+                        {value}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </label>
             ))}
           </div>
+        </section>
+
+        {studentId ? (
+          <section className="ussForm__section">
+            <h2 className="ussForm__sectionTitle">Pauta breve de coevaluación</h2>
+            <div className="ussForm__criteriaTable">
+              <div className="ussForm__criteriaHead">Criterio</div>
+              <div className="ussForm__criteriaHead">4</div>
+              <div className="ussForm__criteriaHead">3</div>
+              <div className="ussForm__criteriaHead">2</div>
+              <div className="ussForm__criteriaHead">1</div>
+              {peerCriteria.map((criterion) => (
+                <div key={criterion.id} className="ussForm__criteriaRow">
+                  <strong>{criterion.label}</strong>
+                  <span>{criterion.descriptions[4]}</span>
+                  <span>{criterion.descriptions[3]}</span>
+                  <span>{criterion.descriptions[2]}</span>
+                  <span>{criterion.descriptions[1]}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="ussForm__peerCards">
+              {peerMembers.map((member) => (
+                <article key={member.id} className="ussForm__peerCard">
+                  <h3 className="ussForm__peerName">{member.name}</h3>
+                  <div className="ussForm__stack">
+                    {peerCriteria.map((criterion) => (
+                      <div key={criterion.id} className="ussForm__criterionCard">
+                        <p className="ussForm__criterionLabel">{criterion.label}</p>
+                        <div className="ussForm__scale">
+                          {[4, 3, 2, 1].map((value) => (
+                            <button
+                              key={value}
+                              type="button"
+                              className={`ussForm__scaleBtn ${peerAnswers[member.id]?.[criterion.id] === value ? "ussForm__scaleBtn--active" : ""}`}
+                              onClick={() =>
+                                setPeerAnswers((current) => ({
+                                  ...current,
+                                  [member.id]: {
+                                    ...current[member.id],
+                                    [criterion.id]: value as ScaleValue,
+                                  },
+                                }))
+                              }
+                            >
+                              {value}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
         ) : null}
 
-        <div className="salon__actions">
-          <button
-            className="salon__secondary salon__actionBtn salon__actionBtn--dark"
-            onClick={handleCapture}
-            disabled={!cameraAvailable || imageMode !== "camera" || !cameraReady}
-            type="button"
-          >
-            {photoDataUrl ? "Tomar otra foto" : "Tomar foto"}
-          </button>
-          <button className="salon__primary salon__actionBtn salon__actionBtn--pink" onClick={handleStart} disabled={isSubmitting} type="button">
-            {isSubmitting ? "Iniciando..." : "Comenzar quiz"}
-          </button>
-        </div>
+        <button
+          type="button"
+          className="ussForm__submit"
+          disabled={!studentId || isSubmitting}
+          onClick={handleSubmit}
+        >
+          {isSubmitting ? "Enviando..." : "Enviar evaluación"}
+        </button>
       </div>
 
       <style>{`
         *, *::before, *::after { box-sizing: border-box; }
 
-        .salon {
-          min-height: 100vh;
-          padding: 1.25rem 1.25rem 3rem;
+        .ussForm {
           display: grid;
-          place-items: center;
-          background:
-            linear-gradient(180deg, rgba(12, 18, 13, 0.25), rgba(12, 18, 13, 0.85)),
-            url("/images/expomascostas/fondomobile.png") center / cover no-repeat;
-          color: #fff8eb;
-          font-family: Arial, Helvetica, sans-serif;
+          gap: 1.1rem;
         }
 
-        .salon__card {
-          width: min(100%, 520px);
-          border-radius: 28px;
-          background: rgba(12, 15, 13, 0.78);
-          backdrop-filter: blur(18px);
-          border: 1px solid rgba(255, 248, 235, 0.14);
-          padding: 1.35rem 1.35rem 1.9rem;
-          display: grid;
-          gap: 1.05rem;
-          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
-        }
-
-        .salon__eyebrow {
+        .ussForm__eyebrow {
           margin: 0;
           font-size: 0.78rem;
           letter-spacing: 0.2em;
@@ -461,155 +436,212 @@ function SalonContent() {
           color: #ffca7a;
         }
 
-        .salon__title {
+        .ussForm__title,
+        .ussForm__sectionTitle,
+        .ussForm__peerName {
           margin: 0;
+        }
+
+        .ussForm__title {
           font-size: clamp(2rem, 7vw, 3.25rem);
           line-height: 0.95;
         }
 
-        .salon__copy {
+        .ussForm__copy,
+        .ussForm__criterionLabel {
           margin: 0;
+          color: rgba(255, 248, 235, 0.82);
           line-height: 1.5;
         }
 
-        .salon__label {
+        .ussForm__section,
+        .ussForm__peerCard {
+          display: grid;
+          gap: 0.9rem;
+          border-radius: 24px;
+          padding: 1rem;
+          background: rgba(255, 248, 235, 0.05);
+          border: 1px solid rgba(255, 248, 235, 0.08);
+        }
+
+        .ussForm__label {
           display: grid;
           gap: 0.45rem;
           font-size: 0.95rem;
         }
 
-        .salon__input {
+        .ussForm__input {
           width: 100%;
           border-radius: 16px;
-          border: 1px solid rgba(255, 248, 235, 0.14);
+          border: 1px solid rgba(255, 248, 235, 0.16);
           background: rgba(255, 255, 255, 0.06);
           color: #fff8eb;
           padding: 0.95rem 1rem;
           font-size: 1rem;
         }
 
-        .salon__cameraWrap {
-          border-radius: 24px;
-          overflow: hidden;
-          background: rgba(255, 255, 255, 0.06);
-          aspect-ratio: 1 / 1;
+        .ussForm__textarea {
+          min-height: 118px;
+          resize: vertical;
         }
 
-        .salon__modeTabs {
+        .ussForm__stack,
+        .ussForm__peerCards {
           display: grid;
-          grid-template-columns: repeat(${cameraAvailable ? 2 : 1}, 1fr);
-          gap: 0.75rem;
+          gap: 0.9rem;
         }
 
-        .salon__modeBtn {
-          border: 1px solid rgba(255, 248, 235, 0.14);
-          background: rgba(255, 255, 255, 0.06);
-          color: #fff8eb;
-          border-radius: 999px;
-          padding: 0.8rem 1rem;
-          font-size: 0.95rem;
-          font-weight: 700;
-        }
-
-        .salon__modeBtn--active {
-          background: rgba(255, 202, 122, 0.18);
-          border-color: rgba(255, 202, 122, 0.42);
-          color: #ffca7a;
-        }
-
-        .salon__video {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          display: block;
-          transform: scaleX(-1);
-        }
-
-        .salon__video--avatar {
-          transform: none;
-        }
-
-        .salon__helper {
-          margin: 0;
-          color: rgba(255, 248, 235, 0.76);
-          line-height: 1.45;
-          font-size: 0.9rem;
-        }
-
-        .salon__avatarGrid {
+        .ussForm__criteriaTable {
           display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 0.75rem;
+          gap: 0.35rem;
         }
 
-        .salon__avatarCard {
-          border: 1px solid rgba(255, 248, 235, 0.12);
-          background: rgba(255, 255, 255, 0.06);
+        .ussForm__criteriaHead {
+          display: none;
+        }
+
+        .ussForm__criteriaRow {
+          display: grid;
+          gap: 0.35rem;
+          padding: 0.8rem;
           border-radius: 18px;
-          padding: 0.6rem;
+          background: rgba(255, 255, 255, 0.04);
+          font-size: 0.88rem;
+          color: rgba(255, 248, 235, 0.8);
+        }
+
+        .ussForm__criteriaRow strong {
           color: #fff8eb;
+        }
+
+        .ussForm__scale {
           display: grid;
-          gap: 0.45rem;
-          justify-items: center;
-          font-size: 0.82rem;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 0.55rem;
         }
 
-        .salon__avatarCard--active {
-          border-color: rgba(255, 202, 122, 0.48);
-          box-shadow: 0 0 0 2px rgba(255, 202, 122, 0.18);
-        }
-
-        .salon__avatarThumb {
-          width: 100%;
-          aspect-ratio: 1 / 1;
-          object-fit: cover;
-          border-radius: 16px;
-        }
-
-        .salon__actions {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 0.75rem;
-        }
-
-        .salon__primary,
-        .salon__secondary {
+        .ussForm__scaleBtn,
+        .ussForm__submit {
           border: none;
+          border-radius: 16px;
           padding: 0.95rem 1rem;
           font-size: 1rem;
           font-weight: 700;
           cursor: pointer;
         }
 
-        .salon__actionBtn {
-          min-height: 62px;
-          background-color: transparent;
-          background-position: center;
-          background-repeat: no-repeat;
-          background-size: 100% 100%;
-          transition: transform 0.18s ease, filter 0.18s ease;
+        .ussForm__scaleBtn {
+          background: rgba(255, 255, 255, 0.08);
+          color: #fff8eb;
+          border: 1px solid rgba(255, 248, 235, 0.12);
         }
 
-        .salon__actionBtn:hover:not(:disabled) {
-          transform: translateY(-2px) scale(1.01);
-          filter: brightness(1.04);
+        .ussForm__scaleBtn--active {
+          background: rgba(255, 202, 122, 0.18);
+          border-color: rgba(255, 202, 122, 0.44);
+          color: #ffca7a;
         }
 
-        .salon__actionBtn:disabled {
-          opacity: 0.45;
+        .ussForm__submit {
+          background: url("/images/botones/after.png") center / 100% 100% no-repeat;
+          color: #fff8eb;
+          min-height: 70px;
+          text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .ussForm__submit:disabled {
+          opacity: 0.5;
           cursor: not-allowed;
         }
 
-        .salon__actionBtn--pink {
-          background-image: url("/images/botones/after.png");
-          color: #fff8eb;
-          text-shadow: 0 1px 8px rgba(0, 0, 0, 0.32);
+        @media (min-width: 900px) {
+          .ussForm__peerCards {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+        }
+      `}</style>
+    </Shell>
+  );
+}
+
+function Message({
+  eyebrow,
+  title,
+  copy,
+}: {
+  eyebrow: string;
+  title: string;
+  copy: string;
+}) {
+  return (
+    <div className="ussMessage">
+      <p className="ussMessage__eyebrow">{eyebrow}</p>
+      <h1 className="ussMessage__title">{title}</h1>
+      <p className="ussMessage__copy">{copy}</p>
+
+      <style>{`
+        .ussMessage {
+          display: grid;
+          gap: 0.9rem;
         }
 
-        .salon__actionBtn--dark {
-          background-image: url("/images/botones/accesorapido.png");
+        .ussMessage__eyebrow,
+        .ussMessage__title,
+        .ussMessage__copy {
+          margin: 0;
+        }
+
+        .ussMessage__eyebrow {
+          font-size: 0.78rem;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: #ffca7a;
+        }
+
+        .ussMessage__title {
+          font-size: clamp(2rem, 7vw, 3.15rem);
+          line-height: 0.95;
+        }
+
+        .ussMessage__copy {
+          color: rgba(255, 248, 235, 0.82);
+          line-height: 1.55;
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function Shell({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="ussShell">
+      <div className="ussShell__card">{children}</div>
+
+      <style>{`
+        *, *::before, *::after { box-sizing: border-box; }
+
+        .ussShell {
+          min-height: 100vh;
+          display: grid;
+          place-items: center;
+          padding: 1.25rem 1.25rem 3rem;
           color: #fff8eb;
-          text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+          background:
+            linear-gradient(180deg, rgba(12, 18, 13, 0.28), rgba(12, 18, 13, 0.88)),
+            url("/images/expomascostas/fondomobile.png") center / cover no-repeat;
+          font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .ussShell__card {
+          width: min(100%, 860px);
+          display: grid;
+          gap: 1rem;
+          border-radius: 28px;
+          padding: 1.35rem 1.35rem 1.9rem;
+          background: rgba(12, 15, 13, 0.82);
+          backdrop-filter: blur(18px);
+          border: 1px solid rgba(255, 248, 235, 0.14);
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
         }
       `}</style>
     </div>
@@ -619,7 +651,7 @@ function SalonContent() {
 export default function UssSalonPage() {
   return (
     <Suspense fallback={null}>
-      <SalonContent />
+      <UssSalonContent />
     </Suspense>
   );
 }
