@@ -312,16 +312,18 @@ export default function InscripcionPage() {
 
           <div style={{ marginBottom: 24 }}>
             <label style={labelStyle} htmlFor="group">
-              Sección o grupo <span style={{ color: "#8a9a8a", fontWeight: 400 }}>(opcional)</span>
+              Sección <span style={{ color: "#8a9a8a", fontWeight: 400 }}>(opcional)</span>
             </label>
-            <input
+            <select
               id="group"
-              type="text"
               value={group}
               onChange={(e) => setGroup(e.target.value)}
-              placeholder="Ej: Grupo A, Sección 1"
-              style={inputStyle}
-            />
+              style={{ ...inputStyle, color: group ? "#1a1a1a" : "#9ca3af", cursor: "pointer" }}
+            >
+              <option value="">Selecciona tu sección</option>
+              <option value="Sección 1">Sección 1</option>
+              <option value="Sección 2">Sección 2</option>
+            </select>
           </div>
 
           <button
