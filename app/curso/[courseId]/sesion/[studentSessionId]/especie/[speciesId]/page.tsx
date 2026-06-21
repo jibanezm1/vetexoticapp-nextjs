@@ -42,9 +42,9 @@ export default function SpeciePracticaPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [submitLoading, setSubmitLoading] = useState(false);
-  const [submitDone, setSubmitDone] = useState(false);
 
   const debounceTimers = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
+  const textareaRefs = useRef<Record<string, HTMLTextAreaElement | null>>({});
 
   useEffect(() => {
     let mounted = true;
@@ -160,12 +160,20 @@ export default function SpeciePracticaPage() {
   async function handleSubmitAll() {
     if (!species) return;
 
-    const tooShort = Object.keys(species.questions).filter((qId) => {
-      const answer = drafts[qId]?.trim() ?? responses[qId]?.answer?.trim() ?? "";
-      return answer.length > 0 && answer.length < 50;
+    // Find first question that is empty or too short
+    const allQuestions = Object.values(species.questions).sort((a, b) => a.order - b.order);
+
+    const firstIncomplete = allQuestions.find((q) => {
+      const answer = drafts[q.id]?.trim() ?? responses[q.id]?.answer?.trim() ?? "";
+      return answer.length < 50;
     });
-    if (tooShort.length > 0) {
-      alert(`Hay ${tooShort.length} respuesta(s) con menos de 50 caracteres. Por favor amplíalas antes de enviar.`);
+
+    if (firstIncomplete) {
+      const el = textareaRefs.current[firstIncomplete.id];
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.focus();
+      }
       return;
     }
 
@@ -184,11 +192,11 @@ export default function SpeciePracticaPage() {
         };
       }
       await update(ref(db), updates);
-      setSubmitDone(true);
+      router.push(`/curso/${courseId}/sesion/${studentSessionId}`);
     } catch {
       alert("Error al enviar respuestas. Por favor, intenta de nuevo.");
+      setSubmitLoading(false);
     }
-    setSubmitLoading(false);
   }
 
   // Styles
@@ -279,27 +287,6 @@ export default function SpeciePracticaPage() {
           </p>
         </div>
 
-        {/* Submit success */}
-        {submitDone && (
-          <div style={{
-            background: "#f0fdf4",
-            border: "2px solid #86efac",
-            borderRadius: 14,
-            padding: "16px 18px",
-            marginBottom: 20,
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-          }}>
-            <span style={{ fontSize: 24 }}>✅</span>
-            <div>
-              <p style={{ fontWeight: 700, color: "#1a6b3a", margin: 0, fontSize: 15 }}>Respuestas enviadas</p>
-              <p style={{ color: "#4a7a5a", fontSize: 13, margin: "2px 0 0" }}>
-                Tus respuestas fueron guardadas. Aún puedes editarlas mientras la especie esté habilitada.
-              </p>
-            </div>
-          </div>
-        )}
 
         {/* Questions by category */}
         {questionGroups.map(([category, questions]) => {
@@ -350,6 +337,7 @@ export default function SpeciePracticaPage() {
                       {q.text}
                     </p>
                     <textarea
+                      ref={(el) => { textareaRefs.current[q.id] = el; }}
                       value={draft}
                       onChange={(e) => handleAnswerChange(q.id, e.target.value)}
                       placeholder="Escribe tu respuesta aquí... (mínimo 50 caracteres)"
