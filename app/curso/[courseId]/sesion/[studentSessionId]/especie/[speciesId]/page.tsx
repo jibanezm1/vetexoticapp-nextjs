@@ -145,16 +145,30 @@ export default function SpeciePracticaPage() {
 
   function handleAnswerChange(questionId: string, value: string) {
     setDrafts((prev) => ({ ...prev, [questionId]: value }));
-    setSaveStatus((prev) => ({ ...prev, [questionId]: "saving" }));
 
     clearTimeout(debounceTimers.current[questionId]);
-    debounceTimers.current[questionId] = setTimeout(() => {
-      saveAnswer(questionId, value);
-    }, 800);
+    if (value.trim().length >= 50) {
+      setSaveStatus((prev) => ({ ...prev, [questionId]: "saving" }));
+      debounceTimers.current[questionId] = setTimeout(() => {
+        saveAnswer(questionId, value);
+      }, 800);
+    } else {
+      setSaveStatus((prev) => ({ ...prev, [questionId]: "idle" }));
+    }
   }
 
   async function handleSubmitAll() {
     if (!species) return;
+
+    const tooShort = Object.keys(species.questions).filter((qId) => {
+      const answer = drafts[qId]?.trim() ?? responses[qId]?.answer?.trim() ?? "";
+      return answer.length > 0 && answer.length < 50;
+    });
+    if (tooShort.length > 0) {
+      alert(`Hay ${tooShort.length} respuesta(s) con menos de 50 caracteres. Por favor amplíalas antes de enviar.`);
+      return;
+    }
+
     setSubmitLoading(true);
     try {
       const now = Date.now();
@@ -222,7 +236,7 @@ export default function SpeciePracticaPage() {
 
   const questionGroups = groupQuestionsByCategory(species.questions);
   const totalQuestions = Object.keys(species.questions).length;
-  const answeredCount = Object.values(drafts).filter((v) => v?.trim()).length;
+  const answeredCount = Object.values(drafts).filter((v) => v?.trim().length >= 50).length;
   const submittedCount = Object.values(responses).filter((r) => r?.status === "submitted").length;
 
   return (
@@ -338,13 +352,20 @@ export default function SpeciePracticaPage() {
                     <textarea
                       value={draft}
                       onChange={(e) => handleAnswerChange(q.id, e.target.value)}
-                      placeholder="Escribe tu respuesta aquí..."
+                      placeholder="Escribe tu respuesta aquí... (mínimo 50 caracteres)"
                       rows={4}
+                      maxLength={500}
                       style={{
                         width: "100%",
                         padding: "12px",
                         borderRadius: 10,
-                        border: `2px solid ${draft.trim() ? catColor + "60" : "#e5e7eb"}`,
+                        border: `2px solid ${
+                          draft.trim().length > 0 && draft.trim().length < 50
+                            ? "#ef4444"
+                            : draft.trim().length >= 50
+                            ? catColor + "60"
+                            : "#e5e7eb"
+                        }`,
                         fontSize: 15,
                         lineHeight: 1.5,
                         resize: "vertical",
@@ -354,7 +375,7 @@ export default function SpeciePracticaPage() {
                         color: "#1a1a1a",
                       }}
                     />
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 8 }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 6 }}>
                       <span style={{
                         fontSize: 12,
                         color: status === "saving" ? "#d97706"
@@ -366,14 +387,17 @@ export default function SpeciePracticaPage() {
                         {status === "saved" && "✓ Guardado"}
                         {status === "error" && "Error al guardar"}
                       </span>
-                      <a
-                        href={q.citation.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{ fontSize: 11, color: catColor, textDecoration: "none", opacity: 0.7 }}
-                      >
-                        📖 {q.citation.source.split(" - ")[0]}
-                      </a>
+                      <span style={{
+                        fontSize: 12,
+                        color: draft.trim().length < 50 && draft.trim().length > 0
+                          ? "#ef4444"
+                          : "#9ca3af",
+                      }}>
+                        {draft.length}/500
+                        {draft.trim().length > 0 && draft.trim().length < 50 && (
+                          <span> · mín. 50</span>
+                        )}
+                      </span>
                     </div>
                   </div>
                 );
