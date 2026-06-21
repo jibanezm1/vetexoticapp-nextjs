@@ -8,7 +8,11 @@ export default function Header() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  if (pathname.startsWith("/expomascotas") || pathname.startsWith("/uss")) {
+  if (
+    pathname.startsWith("/expomascotas") ||
+    pathname.startsWith("/uss") ||
+    pathname.startsWith("/curso/")
+  ) {
     return null;
   }
 

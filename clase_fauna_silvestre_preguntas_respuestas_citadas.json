@@ -1,0 +1,669 @@
+{
+  "metadata": {
+    "titulo": "Clase práctica: Clínica de animales silvestres y mascotas exóticas",
+    "fecha_clase": "2026-06-22",
+    "generado_el": "2026-06-21",
+    "asignatura": "Clínica de animales silvestres y mascotas exóticas",
+    "especies": [
+      "Pingüino",
+      "Tucúquere",
+      "Pudú",
+      "Lobo marino"
+    ],
+    "conceptos_evaluados": [
+      "rehabilitación",
+      "medicina de la conservación",
+      "patologías",
+      "tratamientos",
+      "reinserción"
+    ],
+    "nota": "Material de apoyo docente. Los tratamientos están redactados a nivel de criterio clínico general, sin dosis ni protocolos farmacológicos específicos."
+  },
+  "fuentes_base_chile": [
+    {
+      "tema": "Pingüinos y lobos marinos varados",
+      "institucion": "SERNAPESCA",
+      "descripcion": "SERNAPESCA responde a varamientos de mamíferos marinos, tortugas marinas y pingüinos en Chile. Número oficial: 800 320 032.",
+      "url": "https://www.sernapesca.cl/area-trabajo/rescate-y-conservacion/"
+    },
+    {
+      "tema": "Fauna silvestre terrestre, centros de rehabilitación y mantención",
+      "institucion": "SAG",
+      "descripcion": "SAG regula aspectos de fauna silvestre terrestre, tenencia, centros de rehabilitación y criterios técnicos de mantención.",
+      "url": "https://www.sag.gob.cl/ambitos-de-accion/registro-nacional-de-tenedores-de-fauna-silvestre-rntfs"
+    }
+  ],
+  "estructura_clase": {
+    "objetivo_general": "Que los alumnos razonen clínicamente frente a casos reales de fauna silvestre, integrando rehabilitación, medicina de la conservación, patologías, tratamientos y reinserción.",
+    "apertura": {
+      "duracion_minutos": 10,
+      "mensaje_docente": "Hoy no vamos a memorizar enfermedades. Vamos a enfrentar casos. Para cada especie deberán responder: qué tengo frente a mí, qué riesgos tiene, qué haría primero, cuándo rehabilito, cuándo no, y bajo qué criterios podría liberarse.",
+      "preguntas_iniciales": [
+        "¿Quién tiene competencia institucional sobre esta especie?",
+        "¿Es un animal realmente enfermo o está en una situación normal para su especie?",
+        "¿Qué riesgos hay para el animal, para las personas y para otros animales?",
+        "¿El objetivo clínico es tratamiento, rehabilitación, derivación o eutanasia humanitaria?",
+        "¿Qué condiciones mínimas debe cumplir para reinserción?"
+      ]
+    },
+    "actividad_integradora": {
+      "duracion_minutos": "20 a 30",
+      "instrucciones": [
+        "Dividir el curso en 4 grupos.",
+        "Asignar una especie a cada grupo.",
+        "Cada grupo expone en 5 minutos diagnóstico presuntivo, primeras acciones, diferenciales, plan de rehabilitación, criterios de reinserción y riesgo de conservación.",
+        "Realizar preguntas cruzadas entre grupos."
+      ]
+    },
+    "regla_pizarra": "Estabilizar primero, diagnosticar después, rehabilitar con objetivo de liberación y liberar solo si recupera función ecológica."
+  },
+  "especies": [
+    {
+      "nombre": "Pingüino",
+      "caso_practico": "Llega aviso de un pingüino encontrado en una playa. Está quieto, no huye, tiene plumas sucias, baja condición corporal y fue manipulado por turistas. Algunos alumnos proponen hidratarlo, otros liberarlo de inmediato porque 'es normal que esté en la playa'.",
+      "bloques": {
+        "rehabilitacion": [
+          {
+            "pregunta": "Un pingüino aparece quieto en la playa. ¿Eso significa siempre que está enfermo?",
+            "respuesta_esperada": "No necesariamente. Puede estar descansando o en una etapa normal, pero si está letárgico, con baja respuesta, flaco, herido, con plumaje contaminado o sin capacidad de desplazarse, debe considerarse un posible varamiento o caso clínico que requiere evaluación especializada.",
+            "cita": {
+              "fuente": "SERNAPESCA - Rescate y conservación",
+              "url": "https://www.sernapesca.cl/area-trabajo/rescate-y-conservacion/"
+            }
+          },
+          {
+            "pregunta": "¿Qué observarías antes de tocarlo?",
+            "respuesta_esperada": "Nivel de alerta, postura, respiración, condición corporal, presencia de heridas, contaminación del plumaje, respuesta al entorno y si hay otros animales afectados en la zona. La evaluación inicial a distancia reduce estrés y ayuda a decidir si requiere intervención.",
+            "cita": {
+              "fuente": "Manual básico operacional de rescate y rehabilitación de fauna silvestre",
+              "url": "https://www.fia.cl/wp-content/uploads/2019/01/Manual_basico_Operacional_Rescate_y_rehabilitacion_silvestre.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Cuál es el primer objetivo en rehabilitación?",
+            "respuesta_esperada": "Estabilizar antes de manipular en exceso: reducir estrés, controlar temperatura, evaluar hidratación y condición general, y evitar procedimientos largos antes de que el animal esté clínicamente estable.",
+            "cita": {
+              "fuente": "Jessop & Healy - Oiled seabirds rehabilitation material",
+              "url": "https://seabirdrescue.org.au/wp-content/uploads/2022/08/olied-seabirds-jessop-and-healy.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Por qué es peligroso manipular demasiado a un pingüino silvestre?",
+            "respuesta_esperada": "Porque el estrés puede agravar su condición. Además, la manipulación inadecuada puede causar lesiones, alterar la termorregulación, empeorar la deshidratación o aumentar el riesgo de aspiración si se intenta alimentar sin criterio.",
+            "cita": {
+              "fuente": "Minimum Standards for Wildlife Rehabilitation",
+              "url": "https://myodfw.com/sites/default/files/2026-03/MinimumStandards3rdEdition.pdf"
+            }
+          }
+        ],
+        "medicina_conservacion": [
+          {
+            "pregunta": "¿Qué información de conservación puede entregar un pingüino varado?",
+            "respuesta_esperada": "Puede indicar problemas ambientales o poblacionales: contaminación, interacción con pesquerías, falta de alimento, enfermedad, eventos climáticos o mortalidad inusual. La investigación de varamientos permite detectar causas ambientales o sanitarias más amplias.",
+            "cita": {
+              "fuente": "SERNAPESCA - Investigación de varamiento masivo",
+              "url": "https://www.sernapesca.cl/noticias/sernapesca-investiga-causas-de-varamiento-masivo-en-playas-de-concon/"
+            }
+          },
+          {
+            "pregunta": "¿Por qué no basta con atender al individuo?",
+            "respuesta_esperada": "Porque un caso individual puede ser parte de un evento mayor. Registrar lugar, fecha, condición corporal, lesiones, contaminación y número de animales afectados ayuda a vigilancia sanitaria y conservación.",
+            "cita": {
+              "fuente": "SERNAPESCA - Investigación de varamiento masivo",
+              "url": "https://www.sernapesca.cl/noticias/sernapesca-investiga-causas-de-varamiento-masivo-en-playas-de-concon/"
+            }
+          },
+          {
+            "pregunta": "¿Qué amenazas humanas son relevantes para pingüinos?",
+            "respuesta_esperada": "Captura incidental en pesquerías, contaminación marina, perturbación de sitios de nidificación, competencia por alimento y eventos ambientales. Reducir la mortalidad por pesca incidental es clave para la resiliencia de poblaciones de pingüinos.",
+            "cita": {
+              "fuente": "Trathan et al. / Endangered Species Research - Penguin conservation and bycatch",
+              "url": "https://www.int-res.com/articles/esr2017/34/n034p373.pdf"
+            }
+          }
+        ],
+        "patologias": [
+          {
+            "pregunta": "¿Cuáles son los principales diagnósticos diferenciales?",
+            "respuesta_esperada": "Desnutrición, deshidratación, hipotermia, trauma, contaminación por hidrocarburos u otros aceites, neumonía, parasitismo, heridas e ingestión de cuerpos extraños.",
+            "cita": {
+              "fuente": "SANCCOB - Prognostic indicators and rehabilitation outcomes in African penguins",
+              "url": "https://sanccob.co.za/wp-content/uploads/2021/10/Prognostic_Indicators_RehabOutcomes_adultAfricanPenguuins.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Qué problema genera el plumaje contaminado con aceite?",
+            "respuesta_esperada": "El plumaje pierde impermeabilidad y capacidad aislante, lo que puede provocar pérdida de calor, agotamiento, incapacidad para nadar y dificultad para alimentarse.",
+            "cita": {
+              "fuente": "Jessop & Healy - Oiled seabirds rehabilitation material",
+              "url": "https://seabirdrescue.org.au/wp-content/uploads/2022/08/olied-seabirds-jessop-and-healy.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Qué signos harían sospechar enfermedad respiratoria?",
+            "respuesta_esperada": "Respiración con esfuerzo, decaimiento, descarga nasal, sonidos respiratorios anormales, intolerancia al manejo y postura anormal.",
+            "cita": {
+              "fuente": "Manual básico operacional de rescate y rehabilitación de fauna silvestre",
+              "url": "https://www.fia.cl/wp-content/uploads/2019/01/Manual_basico_Operacional_Rescate_y_rehabilitacion_silvestre.pdf"
+            }
+          }
+        ],
+        "tratamientos": [
+          {
+            "pregunta": "¿Qué tratamiento general priorizarías al ingreso?",
+            "respuesta_esperada": "Ambiente tranquilo, control térmico, hidratación según evaluación, analgesia si hay dolor, soporte nutricional progresivo y examen clínico completo.",
+            "cita": {
+              "fuente": "Minimum Standards for Wildlife Rehabilitation",
+              "url": "https://myodfw.com/sites/default/files/2026-03/MinimumStandards3rdEdition.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Le darías antibiótico a todos los pingüinos varados?",
+            "respuesta_esperada": "No. El antibiótico debe indicarse según hallazgos clínicos: heridas contaminadas, infección sospechada, neumonía u otra causa justificada.",
+            "cita": {
+              "fuente": "Minimum Standards for Wildlife Rehabilitation",
+              "url": "https://myodfw.com/sites/default/files/2026-03/MinimumStandards3rdEdition.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Lavarías inmediatamente a un pingüino con aceite?",
+            "respuesta_esperada": "No necesariamente. Primero se estabiliza; el lavado puede ser largo y estresante. Debe realizarse cuando el animal está en condiciones de tolerarlo y luego se debe confirmar impermeabilidad antes de liberarlo.",
+            "cita": {
+              "fuente": "Jessop & Healy - Oiled seabirds rehabilitation material",
+              "url": "https://seabirdrescue.org.au/wp-content/uploads/2022/08/olied-seabirds-jessop-and-healy.pdf"
+            }
+          }
+        ],
+        "reinsercion": [
+          {
+            "pregunta": "¿Cuándo puede liberarse?",
+            "respuesta_esperada": "Cuando tiene buena condición corporal, plumaje impermeable, capacidad de nadar, termorregular, alimentarse y responder adecuadamente al ambiente.",
+            "cita": {
+              "fuente": "Jessop & Healy - Oiled seabirds rehabilitation material",
+              "url": "https://seabirdrescue.org.au/wp-content/uploads/2022/08/olied-seabirds-jessop-and-healy.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Basta con que coma en cautiverio?",
+            "respuesta_esperada": "No. Comer en cautiverio no asegura supervivencia; debe demostrar funcionalidad para vida libre: nadar, mantener impermeabilidad, orientarse, alimentarse y no depender del humano.",
+            "cita": {
+              "fuente": "Jessop & Healy - Oiled seabirds rehabilitation material",
+              "url": "https://seabirdrescue.org.au/wp-content/uploads/2022/08/olied-seabirds-jessop-and-healy.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Qué impediría su liberación?",
+            "respuesta_esperada": "Lesiones permanentes incompatibles con nado o alimentación, enfermedad activa, mala condición corporal, plumaje no impermeable, dependencia humana o incapacidad de sobrevivir en el mar.",
+            "cita": {
+              "fuente": "Minimum Standards for Wildlife Rehabilitation",
+              "url": "https://myodfw.com/sites/default/files/2026-03/MinimumStandards3rdEdition.pdf"
+            }
+          }
+        ]
+      },
+      "idea_clave": "El pingüino no se libera porque se ve mejor; se libera cuando puede sobrevivir en el mar sin asistencia."
+    },
+    {
+      "nombre": "Tucúquere",
+      "caso_practico": "Ingresa un tucúquere encontrado al borde de una carretera. Está alerta, pero no vuela. Presenta una posible lesión en ala y se muestra agresivo al manejo.",
+      "bloques": {
+        "rehabilitacion": [
+          {
+            "pregunta": "Un tucúquere no puede volar. ¿Por qué es grave?",
+            "respuesta_esperada": "Porque una rapaz depende del vuelo para cazar, escapar y sobrevivir. La liberación exige retorno completo a condición física, vuelo y capacidad de caza.",
+            "cita": {
+              "fuente": "NSW Environment - Birds of prey initial treatment and care guidelines",
+              "url": "https://www.environment.nsw.gov.au/sites/default/files/birds-of-prey-initial-treatment-care-guidelines-210567.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Qué debe evaluarse primero?",
+            "respuesta_esperada": "Estado general, respiración, hidratación, condición corporal, alas, patas, garras, pico, ojos y signos de trauma. La evaluación inicial debe priorizar estabilización, contención segura y reducción de estrés.",
+            "cita": {
+              "fuente": "NSW Environment - Birds of prey initial treatment and care guidelines",
+              "url": "https://www.environment.nsw.gov.au/sites/default/files/birds-of-prey-initial-treatment-care-guidelines-210567.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Por qué no sirve liberarlo si se ve bien pero vuela mal?",
+            "respuesta_esperada": "Porque un vuelo deficiente impide caza, defensa territorial, escape y supervivencia. Debe volar correctamente y tener condición física completa antes de liberarse.",
+            "cita": {
+              "fuente": "NSW Environment - Birds of prey initial treatment and care guidelines",
+              "url": "https://www.environment.nsw.gov.au/sites/default/files/birds-of-prey-initial-treatment-care-guidelines-210567.pdf"
+            }
+          }
+        ],
+        "medicina_conservacion": [
+          {
+            "pregunta": "¿Qué amenazas humanas pueden explicar su ingreso?",
+            "respuesta_esperada": "Atropellos, choques, electrocución, enredo en materiales humanos, ataques de perros o gatos, pérdida de hábitat e intoxicación por rodenticidas o plaguicidas.",
+            "cita": {
+              "fuente": "PMC - Anthropogenic threats and anticoagulant exposure in owls",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10403058/"
+            }
+          },
+          {
+            "pregunta": "¿Por qué una intoxicación en una rapaz importa para conservación?",
+            "respuesta_esperada": "Porque puede revelar contaminación o uso de tóxicos en la cadena trófica. Los búhos funcionan como depredadores y también como centinelas de exposición ambiental a rodenticidas.",
+            "cita": {
+              "fuente": "PMC - Anthropogenic threats and anticoagulant exposure in owls",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10403058/"
+            }
+          },
+          {
+            "pregunta": "¿Qué rol ecológico cumple el tucúquere?",
+            "respuesta_esperada": "Es un depredador que consume principalmente pequeños y medianos vertebrados, especialmente mamíferos, por lo que participa en la regulación de poblaciones presa.",
+            "cita": {
+              "fuente": "SciELO Chile - Dieta del tucúquere en Chile",
+              "url": "https://www.scielo.cl/article_plus.php?lng=es&pid=S0718-686X2018000300067&tlng=en"
+            }
+          }
+        ],
+        "patologias": [
+          {
+            "pregunta": "¿Qué patologías sospechas si fue encontrado al borde de una carretera?",
+            "respuesta_esperada": "Trauma por atropello o golpe, fracturas, luxaciones, contusiones, trauma craneal, lesiones oculares, heridas, daño de plumas, shock o debilidad secundaria.",
+            "cita": {
+              "fuente": "NSW Environment - Birds of prey initial treatment and care guidelines",
+              "url": "https://www.environment.nsw.gov.au/sites/default/files/birds-of-prey-initial-treatment-care-guidelines-210567.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Qué sospechas si está débil, incoordinado o con sangrado?",
+            "respuesta_esperada": "Trauma neurológico, intoxicación, especialmente anticoagulantes, shock o enfermedad sistémica.",
+            "cita": {
+              "fuente": "PMC - Anthropogenic threats and anticoagulant exposure in owls",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10403058/"
+            }
+          },
+          {
+            "pregunta": "¿Por qué los ojos son críticos en una rapaz?",
+            "respuesta_esperada": "Porque la visión es esencial para cazar, orientarse, posarse y evitar obstáculos. Una lesión ocular puede impedir la reinserción aunque el resto del cuerpo se recupere.",
+            "cita": {
+              "fuente": "NSW Environment - Birds of prey initial treatment and care guidelines",
+              "url": "https://www.environment.nsw.gov.au/sites/default/files/birds-of-prey-initial-treatment-care-guidelines-210567.pdf"
+            }
+          }
+        ],
+        "tratamientos": [
+          {
+            "pregunta": "¿Cuál es el manejo inicial recomendado?",
+            "respuesta_esperada": "Contención segura, ambiente tranquilo y oscuro, mínima manipulación, estabilización, analgesia si hay dolor, hidratación si corresponde y evaluación veterinaria con imágenes si se sospecha fractura.",
+            "cita": {
+              "fuente": "NSW Environment - Birds of prey initial treatment and care guidelines",
+              "url": "https://www.environment.nsw.gov.au/sites/default/files/birds-of-prey-initial-treatment-care-guidelines-210567.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Qué puede requerir una fractura de ala?",
+            "respuesta_esperada": "Según localización y gravedad: inmovilización, vendaje, cirugía, analgesia, reposo controlado y luego rehabilitación progresiva en jaula de vuelo.",
+            "cita": {
+              "fuente": "Department of Conservation NZ - Raptors rehabilitation guide",
+              "url": "https://www.doc.govt.nz/globalassets/documents/our-work/wildlife-health/raptors-rehabilitation-guide.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Por qué la rehabilitación no termina cuando consolida la fractura?",
+            "respuesta_esperada": "Porque debe recuperar musculatura, coordinación, resistencia, vuelo simétrico, despegue, aterrizaje, maniobra y capacidad de caza.",
+            "cita": {
+              "fuente": "NSW Environment - Birds of prey initial treatment and care guidelines",
+              "url": "https://www.environment.nsw.gov.au/sites/default/files/birds-of-prey-initial-treatment-care-guidelines-210567.pdf"
+            }
+          }
+        ],
+        "reinsercion": [
+          {
+            "pregunta": "¿Qué debe demostrar antes de liberarse?",
+            "respuesta_esperada": "Vuelo fuerte, simétrico y sostenido; capacidad de despegar, aterrizar, ganar altura, maniobrar, posarse, cazar, mantener buena condición corporal y mostrar conducta silvestre.",
+            "cita": {
+              "fuente": "Department of Conservation NZ - Raptors rehabilitation guide",
+              "url": "https://www.doc.govt.nz/globalassets/documents/our-work/wildlife-health/raptors-rehabilitation-guide.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Puede liberarse si come alimento entregado por humanos pero no caza?",
+            "respuesta_esperada": "No. Debe ser capaz de forrajear y cazar de manera independiente; en rapaces, la capacidad de caza es un criterio central de liberación.",
+            "cita": {
+              "fuente": "NSW Environment - Birds of prey initial treatment and care guidelines",
+              "url": "https://www.environment.nsw.gov.au/sites/default/files/birds-of-prey-initial-treatment-care-guidelines-210567.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Qué factores impedirían la liberación?",
+            "respuesta_esperada": "Vuelo deficiente, lesión ocular relevante, fractura mal consolidada, incapacidad de cazar, habituación humana, enfermedad activa o lesión permanente incompatible con vida libre.",
+            "cita": {
+              "fuente": "Department of Conservation NZ - Raptors rehabilitation guide",
+              "url": "https://www.doc.govt.nz/globalassets/documents/our-work/wildlife-health/raptors-rehabilitation-guide.pdf"
+            }
+          }
+        ]
+      },
+      "idea_clave": "En un ave rapaz, sobrevivir no es suficiente: debe poder cazar."
+    },
+    {
+      "nombre": "Pudú",
+      "caso_practico": "Un pudú juvenil es encontrado en una zona rural. Los vecinos dicen que fue perseguido por perros. Presenta estrés marcado, heridas superficiales y dificultad para mantenerse tranquilo. Algunos alumnos quieren manipularlo para revisar todo de inmediato.",
+      "bloques": {
+        "rehabilitacion": [
+          {
+            "pregunta": "Un pudú llega después de ser perseguido por perros. ¿Qué te preocupa primero?",
+            "respuesta_esperada": "Estrés severo, shock, heridas por mordida, trauma y riesgo de miopatía por captura. La miopatía por captura es una condición inducida por estrés o esfuerzo en animales silvestres capturados, y puede ser grave o fatal.",
+            "cita": {
+              "fuente": "PMC - Capture myopathy review",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6612673/"
+            }
+          },
+          {
+            "pregunta": "¿Por qué no conviene manipularlo repetidamente?",
+            "respuesta_esperada": "Porque el estrés, la persecución y la restricción física pueden agravar el cuadro, desencadenar miopatía por captura y comprometer el pronóstico.",
+            "cita": {
+              "fuente": "PMC - Capture myopathy review",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6612673/"
+            }
+          },
+          {
+            "pregunta": "¿Qué ambiente requiere al inicio?",
+            "respuesta_esperada": "Ambiente tranquilo, con poco ruido, baja luz, mínima presencia humana, temperatura adecuada, sin perros ni estímulos, y manipulación solo cuando sea necesaria.",
+            "cita": {
+              "fuente": "SAG - Criterios técnicos para mantención de fauna silvestre en cautiverio",
+              "url": "https://www.sag.gob.cl/sites/default/files/criterios_tec_mantencion_fauna_silv_cautiverio.pdf"
+            }
+          }
+        ],
+        "medicina_conservacion": [
+          {
+            "pregunta": "¿Qué amenaza de conservación aparece claramente?",
+            "respuesta_esperada": "Los perros. En pudú, estudios en Chile identifican ataques de perros y atropellos como causas frecuentes de ingreso a centros de rehabilitación y mortalidad, además de pérdida de bosque y posible caza furtiva.",
+            "cita": {
+              "fuente": "Oryx / Cambridge - Mortality sources for Pudu puda in Chile",
+              "url": "https://www.cambridge.org/core/journals/oryx/article/evaluating-mortality-sources-for-the-vulnerable-pudu-pudu-puda-in-chile-implications-for-the-conservation-of-a-threatened-deer/388770F8DB1BC84E20873C7CFCF12415"
+            }
+          },
+          {
+            "pregunta": "¿Qué mensaje educativo deriva del caso?",
+            "respuesta_esperada": "Tenencia responsable: no dejar perros sueltos, evitar persecución de fauna, no intentar criar pudúes, avisar a la autoridad y proteger hábitats con cobertura vegetal.",
+            "cita": {
+              "fuente": "Oryx / Cambridge - Mortality sources for Pudu puda in Chile",
+              "url": "https://www.cambridge.org/core/journals/oryx/article/evaluating-mortality-sources-for-the-vulnerable-pudu-pudu-puda-in-chile-implications-for-the-conservation-of-a-threatened-deer/388770F8DB1BC84E20873C7CFCF12415"
+            }
+          },
+          {
+            "pregunta": "¿Por qué no debe transformarse en mascota?",
+            "respuesta_esperada": "Porque es fauna silvestre, tiene requerimientos biológicos específicos, puede estresarse gravemente, perder conducta natural y quedar inhabilitado para volver a vida libre. Los centros de rehabilitación son espacios de recuperación y tránsito, no de domesticación.",
+            "cita": {
+              "fuente": "SAG - Ley de Caza",
+              "url": "https://www.sag.cl/sites/default/files/ley_de_caza_2017.pdf"
+            }
+          }
+        ],
+        "patologias": [
+          {
+            "pregunta": "¿Qué patologías sospechas tras ataque de perros?",
+            "respuesta_esperada": "Heridas por mordida, infección secundaria, fracturas, trauma torácico o abdominal, shock, dolor, deshidratación y miopatía por captura.",
+            "cita": {
+              "fuente": "Universidad Andrés Bello / Oryx - Mortality sources for Pudu puda",
+              "url": "https://researchers.unab.cl/es/publications/evaluating-mortality-sources-for-the-vulnerable-pudu-pudu-puda-in/"
+            }
+          },
+          {
+            "pregunta": "¿Qué signos indicarían gravedad?",
+            "respuesta_esperada": "Decaimiento marcado, dificultad respiratoria, sangrado, incapacidad de mantenerse de pie, mucosas alteradas, hipotermia, dolor intenso, fracturas evidentes o heridas profundas.",
+            "cita": {
+              "fuente": "PMC - Capture myopathy review",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6612673/"
+            }
+          },
+          {
+            "pregunta": "¿Por qué una mordida pequeña puede ser grave?",
+            "respuesta_esperada": "Porque puede haber daño profundo, contaminación bacteriana, lesiones musculares o perforaciones no evidentes externamente.",
+            "cita": {
+              "fuente": "Universidad Andrés Bello / Oryx - Mortality sources for Pudu puda",
+              "url": "https://researchers.unab.cl/es/publications/evaluating-mortality-sources-for-the-vulnerable-pudu-pudu-puda-in/"
+            }
+          }
+        ],
+        "tratamientos": [
+          {
+            "pregunta": "¿Cuál es el tratamiento inicial general?",
+            "respuesta_esperada": "Reducir estrés, estabilizar, controlar dolor, evaluar hidratación, tratar heridas, prevenir infección cuando haya mordidas contaminadas, evaluar fracturas o trauma interno y mantenerlo en un ambiente seguro y silencioso.",
+            "cita": {
+              "fuente": "SAG - Criterios técnicos para mantención de fauna silvestre en cautiverio",
+              "url": "https://www.sag.gob.cl/sites/default/files/criterios_tec_mantencion_fauna_silv_cautiverio.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Qué error común debe evitarse?",
+            "respuesta_esperada": "Manipularlo muchas veces, alimentarlo de forma improvisada, mantenerlo cerca de personas o perros, intentar domesticarlo o liberarlo sin evaluación.",
+            "cita": {
+              "fuente": "SAG - Registro Nacional de Tenedores de Fauna Silvestre",
+              "url": "https://www.sag.gob.cl/ambitos-de-accion/registro-nacional-de-tenedores-de-fauna-silvestre-rntfs"
+            }
+          },
+          {
+            "pregunta": "¿Por qué la alimentación debe ser cuidadosa?",
+            "respuesta_esperada": "Porque una dieta inadecuada puede causar problemas digestivos, desbalance nutricional, estrés y dependencia humana. La nutrición debe respetar sus requerimientos como herbívoro silvestre.",
+            "cita": {
+              "fuente": "SAG - Criterios técnicos para mantención de fauna silvestre en cautiverio",
+              "url": "https://www.sag.gob.cl/sites/default/files/criterios_tec_mantencion_fauna_silv_cautiverio.pdf"
+            }
+          }
+        ],
+        "reinsercion": [
+          {
+            "pregunta": "¿Qué debe cumplir para ser liberado?",
+            "respuesta_esperada": "Desplazamiento normal, buena condición corporal, heridas resueltas, conducta de alerta y escape, capacidad de alimentarse solo, baja habituación humana y sitio de liberación adecuado.",
+            "cita": {
+              "fuente": "SAG - Ley de Caza",
+              "url": "https://www.sag.cl/sites/default/files/ley_de_caza_2017.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Cuándo no debería liberarse?",
+            "respuesta_esperada": "Si tiene lesiones permanentes incompatibles con vida libre, dependencia humana, incapacidad de desplazarse, enfermedad activa, conducta excesivamente dócil o si el sitio tiene riesgo inmediato alto, como perros sueltos o tránsito intenso.",
+            "cita": {
+              "fuente": "Oryx / Cambridge - Mortality sources for Pudu puda in Chile",
+              "url": "https://www.cambridge.org/core/journals/oryx/article/evaluating-mortality-sources-for-the-vulnerable-pudu-pudu-puda-in-chile-implications-for-the-conservation-of-a-threatened-deer/388770F8DB1BC84E20873C7CFCF12415"
+            }
+          },
+          {
+            "pregunta": "¿Por qué importa el lugar de liberación?",
+            "respuesta_esperada": "Porque debe ser un hábitat adecuado y seguro. Liberarlo en una zona con perros sueltos, tránsito intenso o poca cobertura vegetal aumenta el riesgo de muerte.",
+            "cita": {
+              "fuente": "Oryx / Cambridge - Mortality sources for Pudu puda in Chile",
+              "url": "https://www.cambridge.org/core/journals/oryx/article/evaluating-mortality-sources-for-the-vulnerable-pudu-pudu-puda-in-chile-implications-for-the-conservation-of-a-threatened-deer/388770F8DB1BC84E20873C7CFCF12415"
+            }
+          }
+        ]
+      },
+      "idea_clave": "En pudú, muchas veces el enemigo clínico principal no es solo la mordida: es el estrés."
+    },
+    {
+      "nombre": "Lobo marino",
+      "caso_practico": "Se reporta un lobo marino juvenil en la playa. Está solo. Personas se acercan para tomar fotos. Algunos creen que hay que devolverlo al mar de inmediato. Otros dicen que hay que capturarlo porque está varado.",
+      "bloques": {
+        "rehabilitacion": [
+          {
+            "pregunta": "Un lobo marino está acostado en la playa. ¿Eso significa que está varado?",
+            "respuesta_esperada": "No necesariamente. Los pinnípedos necesitan zonas secas de descanso o haul-out; por eso, estar en playa puede ser normal. Se debe evaluar a distancia si hay heridas, enmallamiento, debilidad extrema, alteración respiratoria o riesgo por interacción humana.",
+            "cita": {
+              "fuente": "PMC - Pinniped haul-out and disease ecology",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7152169/"
+            }
+          },
+          {
+            "pregunta": "¿Qué signos justificarían intervención?",
+            "respuesta_esperada": "Heridas, enmallamiento, sangrado, dificultad respiratoria, debilidad extrema, desorientación, incapacidad de desplazarse, cría comprometida o riesgo por ubicación.",
+            "cita": {
+              "fuente": "SERNAPESCA - Rescate y conservación",
+              "url": "https://www.sernapesca.cl/area-trabajo/rescate-y-conservacion/"
+            }
+          },
+          {
+            "pregunta": "¿Por qué no se debe empujar al mar?",
+            "respuesta_esperada": "Porque puede estar descansando, enfermo o lesionado; forzarlo al agua puede agravar estrés, impedir evaluación y comprometer su seguridad.",
+            "cita": {
+              "fuente": "DFO Canada - Marine mammal release and rehabilitation criteria",
+              "url": "https://publications.gc.ca/collections/collection_2018/mpo-dfo/fs70-5/Fs70-5-2018-030-eng.pdf"
+            }
+          }
+        ],
+        "medicina_conservacion": [
+          {
+            "pregunta": "¿Qué amenazas humanas pueden afectar a lobos marinos?",
+            "respuesta_esperada": "Enmallamiento en redes o líneas de pesca, basura marina, contaminación, interacción con pesquerías, disturbio humano y pérdida o alteración de zonas de descanso.",
+            "cita": {
+              "fuente": "NOAA Fisheries - Pinniped entanglement in marine debris",
+              "url": "https://www.fisheries.noaa.gov/alaska/marine-life-distress/pinniped-entanglement-marine-debris"
+            }
+          },
+          {
+            "pregunta": "¿Qué información debe registrarse?",
+            "respuesta_esperada": "Ubicación exacta, fecha, tamaño aproximado, conducta, presencia de heridas, enmallamiento, interacción con personas o perros, fotos a distancia y si hay más animales afectados.",
+            "cita": {
+              "fuente": "DFO Canada - Marine mammal release and rehabilitation criteria",
+              "url": "https://publications.gc.ca/collections/collection_2018/mpo-dfo/fs70-5/Fs70-5-2018-030-eng.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Por qué el público puede empeorar el caso?",
+            "respuesta_esperada": "Porque acercarse, tocar, alimentar o intentar mover al animal aumenta estrés, riesgo de mordidas, riesgo sanitario y dificulta el trabajo de equipos entrenados.",
+            "cita": {
+              "fuente": "SERNAPESCA - Rescate y conservación",
+              "url": "https://www.sernapesca.cl/area-trabajo/rescate-y-conservacion/"
+            }
+          }
+        ],
+        "patologias": [
+          {
+            "pregunta": "¿Cuáles son los problemas más probables?",
+            "respuesta_esperada": "Desnutrición, deshidratación, heridas por redes o líneas de pesca, trauma, infecciones, neumonía, lesiones cutáneas, agotamiento, parasitismo o separación materna en crías.",
+            "cita": {
+              "fuente": "NOAA - Marine mammal rehabilitation standards",
+              "url": "https://repository.library.noaa.gov/view/noaa/48555/noaa_48555_DS1.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Qué sospechas si tiene una línea de pesca alrededor del cuello?",
+            "respuesta_esperada": "Enmallamiento o constricción, con riesgo de heridas profundas, infección, dolor, dificultad para alimentarse o respirar y deterioro progresivo.",
+            "cita": {
+              "fuente": "NOAA Fisheries - Pinniped entanglement in marine debris",
+              "url": "https://www.fisheries.noaa.gov/alaska/marine-life-distress/pinniped-entanglement-marine-debris"
+            }
+          },
+          {
+            "pregunta": "¿Qué signos respiratorios serían preocupantes?",
+            "respuesta_esperada": "Respiración con esfuerzo, secreciones, tos, letargia, postura anormal, intolerancia al movimiento o sonidos respiratorios anormales.",
+            "cita": {
+              "fuente": "NOAA - Marine mammal rehabilitation standards",
+              "url": "https://repository.library.noaa.gov/view/noaa/48555/noaa_48555_DS1.pdf"
+            }
+          }
+        ],
+        "tratamientos": [
+          {
+            "pregunta": "¿Cuál es la primera medida ante un lobo marino en playa?",
+            "respuesta_esperada": "Evaluar a distancia, mantener a las personas alejadas, evitar manipulación, delimitar el área si es posible y contactar a SERNAPESCA.",
+            "cita": {
+              "fuente": "SERNAPESCA - Rescate y conservación",
+              "url": "https://www.sernapesca.cl/area-trabajo/rescate-y-conservacion/"
+            }
+          },
+          {
+            "pregunta": "¿Qué tratamientos generales podría requerir si está comprometido?",
+            "respuesta_esperada": "Estabilización, hidratación, soporte nutricional, manejo del dolor, tratamiento de heridas, retiro seguro de redes o líneas por personal capacitado, manejo de infecciones y evaluación respiratoria.",
+            "cita": {
+              "fuente": "NOAA - Marine mammal rehabilitation standards",
+              "url": "https://repository.library.noaa.gov/view/noaa/48555/noaa_48555_DS1.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Por qué no debe ser manejado por cualquier persona?",
+            "respuesta_esperada": "Porque son animales grandes y fuertes, pueden morder, estresarse gravemente y requerir técnicas de contención, bioseguridad y evaluación veterinaria especializada.",
+            "cita": {
+              "fuente": "NOAA - Marine mammal rehabilitation standards",
+              "url": "https://repository.library.noaa.gov/view/noaa/48555/noaa_48555_DS1.pdf"
+            }
+          }
+        ],
+        "reinsercion": [
+          {
+            "pregunta": "¿Qué criterios debe cumplir para volver al mar?",
+            "respuesta_esperada": "Buena condición corporal, capacidad de nadar, respiración normal, heridas resueltas o controladas, conducta alerta, capacidad de alimentarse y ausencia de dependencia humana.",
+            "cita": {
+              "fuente": "DFO Canada - Marine mammal release and rehabilitation criteria",
+              "url": "https://publications.gc.ca/collections/collection_2018/mpo-dfo/fs70-5/Fs70-5-2018-030-eng.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Puede liberarse si aún tiene una herida importante?",
+            "respuesta_esperada": "No si la herida compromete movilidad, alimentación, respiración, termorregulación o tiene riesgo alto de infección. La decisión debe basarse en examen veterinario, pronóstico y riesgo para el individuo y la población silvestre.",
+            "cita": {
+              "fuente": "DFO Canada - Marine mammal release and rehabilitation criteria",
+              "url": "https://publications.gc.ca/collections/collection_2018/mpo-dfo/fs70-5/Fs70-5-2018-030-eng.pdf"
+            }
+          },
+          {
+            "pregunta": "¿Qué factores impedirían la reinserción?",
+            "respuesta_esperada": "Debilidad extrema, enfermedad activa, incapacidad de nadar, heridas graves, enmallamiento no resuelto, dependencia humana o riesgo alto inmediato en la zona de liberación.",
+            "cita": {
+              "fuente": "DFO Canada - Marine mammal release and rehabilitation criteria",
+              "url": "https://publications.gc.ca/collections/collection_2018/mpo-dfo/fs70-5/Fs70-5-2018-030-eng.pdf"
+            }
+          }
+        ]
+      },
+      "idea_clave": "No todo lobo marino en la playa necesita rescate; muchas veces la mejor intervención inicial es distancia, evaluación y aviso a la autoridad."
+    }
+  ],
+  "preguntas_comparativas_cierre": [
+    {
+      "pregunta": "¿Cuál especie es más sensible al estrés por captura?",
+      "respuesta_esperada": "El pudú es especialmente sensible, aunque todas pueden deteriorarse por mal manejo. En cérvidos y otros animales silvestres, la miopatía por captura se asocia a estrés, persecución, restricción y puede ser fatal.",
+      "cita": {
+        "fuente": "PMC - Capture myopathy review",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6612673/"
+      }
+    },
+    {
+      "pregunta": "¿Qué tienen en común pingüino y lobo marino?",
+      "respuesta_esperada": "Ambos son especies asociadas al medio marino, pueden aparecer en playa sin requerir siempre rescate inmediato, y deben evaluarse con distancia y coordinación con SERNAPESCA si hay signos de varamiento o compromiso.",
+      "cita": {
+        "fuente": "SERNAPESCA - Rescate y conservación",
+        "url": "https://www.sernapesca.cl/area-trabajo/rescate-y-conservacion/"
+      }
+    },
+    {
+      "pregunta": "¿Qué tienen en común tucúquere y pingüino en reinserción?",
+      "respuesta_esperada": "Ambos deben recuperar función, no solo sobrevivir. El tucúquere debe volar y cazar; el pingüino debe nadar, termorregular y mantener plumaje impermeable.",
+      "cita": {
+        "fuente": "NSW Environment - Birds of prey initial treatment and care guidelines",
+        "url": "https://www.environment.nsw.gov.au/sites/default/files/birds-of-prey-initial-treatment-care-guidelines-210567.pdf"
+      }
+    },
+    {
+      "pregunta": "¿Qué tienen en común pudú y tucúquere respecto a amenazas humanas?",
+      "respuesta_esperada": "Ambos pueden verse afectados por perros, pérdida de hábitat, atropellos y actividad humana. En el tucúquere además son importantes intoxicaciones, electrocución y choques.",
+      "cita": {
+        "fuente": "Oryx / Cambridge y PMC sobre amenazas antropogénicas",
+        "url": "https://www.cambridge.org/core/journals/oryx/article/evaluating-mortality-sources-for-the-vulnerable-pudu-pudu-puda-in-chile-implications-for-the-conservation-of-a-threatened-deer/388770F8DB1BC84E20873C7CFCF12415"
+      }
+    },
+    {
+      "pregunta": "¿Cuál es el error más común en todos los casos?",
+      "respuesta_esperada": "Manipular sin necesidad, alimentar o medicar sin evaluación, liberar demasiado pronto o no contactar a la autoridad o centro competente.",
+      "cita": {
+        "fuente": "Minimum Standards for Wildlife Rehabilitation",
+        "url": "https://myodfw.com/sites/default/files/2026-03/MinimumStandards3rdEdition.pdf"
+      }
+    },
+    {
+      "pregunta": "¿Cuál es la diferencia entre salvar y rehabilitar fauna silvestre?",
+      "respuesta_esperada": "Salvar es lograr que sobreviva al evento inicial; rehabilitar es recuperar función física, conductual y ecológica para que pueda volver a vida libre de forma segura, ética y viable.",
+      "cita": {
+        "fuente": "SAG - Ley de Caza",
+        "url": "https://www.sag.cl/sites/default/files/ley_de_caza_2017.pdf"
+      }
+    }
+  ],
+  "cierre_final_docente": "La clínica de fauna silvestre no termina cuando el paciente mejora. Termina cuando tomamos una decisión ética: liberar, mantener bajo cuidado autorizado, derivar o no continuar. En fauna silvestre, el éxito no es que el animal sobreviva en una jaula; el éxito es que vuelva a vivir como especie silvestre, sin depender de nosotros y sin generar nuevos riesgos sanitarios o ecológicos."
+}
