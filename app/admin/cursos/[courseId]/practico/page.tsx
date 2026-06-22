@@ -14,13 +14,38 @@ import { seedWildlifeCourse } from "@/lib/wildlifeCourse/seed";
 import type {
   AllStudentResponses,
   Course,
+  CourseQuestion,
   CourseSpecies,
   CourseStudent,
   QuestionResponse,
 } from "@/lib/wildlifeCourse/types";
 
-type AdminTab = "alumnos" | "especies" | "respuestas";
+type AdminTab = "alumnos" | "especies" | "respuestas" | "graficos";
 
+function getMultipleChoiceQuestions(species: CourseSpecies): CourseQuestion[] {
+  return Object.values(species.questions)
+    .filter((question) => question.type === "multiple_choice" && question.options?.length)
+    .sort((a, b) => a.order - b.order);
+}
+
+function getOptionCounts(
+  speciesId: string,
+  question: CourseQuestion,
+  allResponses: AllStudentResponses
+): Record<string, number> {
+  const counts = Object.fromEntries(
+    (question.options ?? []).map((option) => [option.id, 0])
+  );
+
+  Object.values(allResponses).forEach((studentResponses) => {
+    const answer = studentResponses?.[speciesId]?.[question.id]?.answer;
+    if (answer && answer in counts) {
+      counts[answer] += 1;
+    }
+  });
+
+  return counts;
+}
 function formatDate(ts: number): string {
   return new Date(ts).toLocaleString("es-CL", {
     day: "2-digit",
@@ -67,6 +92,7 @@ export default function AdminPracticoPage() {
   const [togglingSpecies, setTogglingSpecies] = useState<Record<string, boolean>>({});
   const [resettingStudent, setResettingStudent] = useState<Record<string, boolean>>({});
   const [deletingStudent, setDeletingStudent] = useState<Record<string, boolean>>({});
+  const [revealedAnswers, setRevealedAnswers] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -185,6 +211,14 @@ export default function AdminPracticoPage() {
     });
   }
 
+  function toggleRevealAnswer(speciesId: string, questionId: string) {
+    const revealKey = `${speciesId}:${questionId}`;
+    setRevealedAnswers((prev) => ({
+      ...prev,
+      [revealKey]: !prev[revealKey],
+    }));
+  }
+
   const sortedSpecies = course
     ? Object.values(course.species).sort((a, b) => a.order - b.order)
     : [];
@@ -249,11 +283,12 @@ export default function AdminPracticoPage() {
 
         {/* Tabs */}
         <div style={{ display: "flex", gap: 4, background: "rgba(0,0,0,0.2)", borderRadius: 12, padding: 4, flexWrap: "wrap" }}>
-          {(["alumnos", "especies", "respuestas"] as AdminTab[]).map((tab) => (
+          {(["alumnos", "especies", "respuestas", "graficos"] as AdminTab[]).map((tab) => (
             <button key={tab} style={tabStyle(activeTab === tab)} onClick={() => setActiveTab(tab)}>
               {tab === "alumnos" && `👥 Alumnos (${sortedStudents.length})`}
               {tab === "especies" && "🐾 Especies"}
               {tab === "respuestas" && "📝 Respuestas"}
+              {tab === "graficos" && "📊 Gráficos"}
             </button>
           ))}
         </div>
@@ -394,6 +429,126 @@ export default function AdminPracticoPage() {
                         {isDeleting ? "Eliminando..." : "Eliminar alumno"}
                       </button>
                     </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        )}
+
+        {/* ===== TAB: GRAFICOS ===== */}
+        {activeTab === "graficos" && (
+          <div>
+            {!course ? (
+              <p style={{ color: "#9ca3af", textAlign: "center", paddingTop: 40 }}>Inicializa el curso primero.</p>
+            ) : (
+              sortedSpecies.map((species) => {
+                const multipleChoiceQuestions = getMultipleChoiceQuestions(species);
+
+                return (
+                  <div key={species.id} style={{ ...cardStyle, marginBottom: 20 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
+                      <span style={{ fontSize: 28 }}>{species.emoji}</span>
+                      <div>
+                        <h3 style={{ fontSize: 17, fontWeight: 800, color: "#1a1a1a", margin: 0 }}>{species.name}</h3>
+                        <p style={{ fontSize: 12, color: "#6b7280", margin: "2px 0 0" }}>
+                          {multipleChoiceQuestions.length} preguntas de alternativa en tiempo real
+                        </p>
+                      </div>
+                    </div>
+
+                    {multipleChoiceQuestions.length === 0 ? (
+                      <p style={{ fontSize: 13, color: "#9ca3af", margin: 0 }}>Esta especie no tiene preguntas de alternativa.</p>
+                    ) : (
+                      multipleChoiceQuestions.map((question) => {
+                        const revealKey = `${species.id}:${question.id}`;
+                        const isRevealed = revealedAnswers[revealKey] ?? false;
+                        const optionCounts = getOptionCounts(species.id, question, allResponses);
+                        const totalResponses = Object.values(optionCounts).reduce((sum, count) => sum + count, 0);
+
+                        return (
+                          <div key={question.id} style={{ borderTop: "1px solid #ecf0ec", paddingTop: 14, marginTop: 14 }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "flex-start", flexWrap: "wrap", marginBottom: 10 }}>
+                              <div>
+                                <p style={{ fontSize: 11, fontWeight: 700, color: "#1a6b3a", margin: "0 0 4px", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                                  {question.category}
+                                </p>
+                                <p style={{ fontSize: 14, fontWeight: 600, color: "#1f2937", margin: 0, lineHeight: 1.5 }}>
+                                  {question.text}
+                                </p>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => toggleRevealAnswer(species.id, question.id)}
+                                style={{
+                                  ...btnSmStyle,
+                                  background: isRevealed ? "#ecfdf5" : "#eff6ff",
+                                  border: `1px solid ${isRevealed ? "#86efac" : "#93c5fd"}`,
+                                  color: isRevealed ? "#166534" : "#1d4ed8",
+                                }}
+                              >
+                                {isRevealed ? "Ocultar correcta" : "Revelar correcta"}
+                              </button>
+                            </div>
+
+                            <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 10px" }}>
+                              {totalResponses} respuestas registradas
+                            </p>
+
+                            <div style={{ display: "grid", gap: 10 }}>
+                              {(question.options ?? []).map((option) => {
+                                const count = optionCounts[option.id] ?? 0;
+                                const percentage = totalResponses > 0 ? Math.round((count / totalResponses) * 100) : 0;
+                                const showCorrect = isRevealed && option.isCorrect;
+
+                                return (
+                                  <div
+                                    key={option.id}
+                                    style={{
+                                      border: `2px solid ${showCorrect ? "#16a34a" : "#e5e7eb"}`,
+                                      borderRadius: 12,
+                                      padding: "10px 12px",
+                                      background: showCorrect ? "#f0fdf4" : "#fafafa",
+                                    }}
+                                  >
+                                    <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "center", marginBottom: 8 }}>
+                                      <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
+                                        <span style={{ fontSize: 12, fontWeight: 800, color: "#6b7280", flexShrink: 0 }}>
+                                          {option.id.toUpperCase()}
+                                        </span>
+                                        <span style={{ fontSize: 13, color: "#1f2937", lineHeight: 1.4 }}>
+                                          {option.text}
+                                        </span>
+                                        {showCorrect && (
+                                          <span style={{ fontSize: 11, fontWeight: 700, color: "#166534", background: "#dcfce7", borderRadius: 999, padding: "2px 8px", flexShrink: 0 }}>
+                                            Correcta
+                                          </span>
+                                        )}
+                                      </div>
+                                      <span style={{ fontSize: 12, fontWeight: 700, color: showCorrect ? "#166534" : "#374151", flexShrink: 0 }}>
+                                        {count} · {percentage}%
+                                      </span>
+                                    </div>
+
+                                    <div style={{ background: "#e5e7eb", borderRadius: 999, height: 10, overflow: "hidden" }}>
+                                      <div
+                                        style={{
+                                          width: `${percentage}%`,
+                                          height: "100%",
+                                          borderRadius: 999,
+                                          background: showCorrect ? "linear-gradient(90deg, #16a34a, #22c55e)" : "linear-gradient(90deg, #1a6b3a, #34d399)",
+                                          transition: "width 0.3s ease",
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      })
+                    )}
                   </div>
                 );
               })
