@@ -28,9 +28,9 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
         category: "Rehabilitación",
         text: "Un pingüino aparece quieto en la playa. ¿Eso significa siempre que está enfermo?",
         expectedAnswer:
-          "No necesariamente. Puede estar descansando o en una etapa normal, pero si está letárgico, con baja respuesta, flaco, herido, con plumaje contaminado o sin capacidad de desplazarse, debe considerarse un posible varamiento o caso clínico que requiere evaluación especializada.",
+          "No. Un pingüino puede permanecer quieto en playa por descanso, muda u otras conductas fisiológicas, pero en rehabilitación se asume cautela clínica. Debe realizarse una evaluación a distancia obligatoria para valorar nivel de alerta, postura, esfuerzo respiratorio, condición corporal y alineación del plumaje antes de cualquier contención física, evitando manipulaciones que agraven el distrés o una descompensación metabólica.",
         citation: {
-          source: "SERNAPESCA - Rescate y conservación",
+          source: "USS PNGUINO - Rescate y primeros auxilios",
           url: "https://www.sernapesca.cl/area-trabajo/rescate-y-conservacion/",
         },
         order: 1,
@@ -38,11 +38,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       r2: {
         id: "r2",
         category: "Rehabilitación",
-        text: "¿Qué observarías antes de tocarlo?",
+        text: "¿Qué observarías a través de la evaluación a distancia antes de realizar la contención física del paciente?",
         expectedAnswer:
-          "Nivel de alerta, postura, respiración, condición corporal, presencia de heridas, contaminación del plumaje, respuesta al entorno y si hay otros animales afectados en la zona. La evaluación inicial a distancia reduce estrés y ayuda a decidir si requiere intervención.",
+          "El nivel de alerta, la postura, la búsqueda de ortopnea, el esfuerzo respiratorio, la condición corporal y el estado de alineación del plumaje, porque la inspección visual a distancia es obligatoria antes de intervenir.",
         citation: {
-          source: "Manual básico operacional de rescate y rehabilitación de fauna silvestre",
+          source: "Etapas de la rehabilitación de fauna silvestre",
           url: "https://www.fia.cl/wp-content/uploads/2019/01/Manual_basico_Operacional_Rescate_y_rehabilitacion_silvestre.pdf",
         },
         order: 2,
@@ -50,11 +50,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       r3: {
         id: "r3",
         category: "Rehabilitación",
-        text: "¿Cuál es el primer objetivo en rehabilitación?",
+        text: "¿Cuál es el objetivo principal al ingreso del paciente en el flujo de rehabilitación?",
         expectedAnswer:
-          "Estabilizar antes de manipular en exceso: reducir estrés, controlar temperatura, evaluar hidratación y condición general, y evitar procedimientos largos antes de que el animal esté clínicamente estable.",
+          "Lograr la estabilización médica inicial: mitigar el distrés, revertir el shock, controlar la temperatura y corregir el déficit estimado de deshidratación antes de cualquier procedimiento prolongado.",
         citation: {
-          source: "Jessop & Healy - Oiled seabirds rehabilitation material",
+          source: "USS PNGUINO - Rescate y primeros auxilios",
           url: "https://seabirdrescue.org.au/wp-content/uploads/2022/08/olied-seabirds-jessop-and-healy.pdf",
         },
         order: 3,
@@ -76,9 +76,9 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
         category: "Medicina de la Conservación",
         text: "¿Qué información de conservación puede entregar un pingüino varado?",
         expectedAnswer:
-          "Puede indicar problemas ambientales o poblacionales: contaminación, interacción con pesquerías, falta de alimento, enfermedad, eventos climáticos o mortalidad inusual. La investigación de varamientos permite detectar causas ambientales o sanitarias más amplias.",
+          "Un pingüino varado actúa como centinela epidemiológico de primera línea. Bajo el paradigma de Una Salud, informa sobre contaminación por hidrocarburos, variaciones en la disponibilidad de presas, pesca incidental, interacción humana y circulación de patógenos con impacto poblacional y zoonótico como H5N1.",
         citation: {
-          source: "SERNAPESCA - Investigación de varamiento masivo",
+          source: "USS PNGUINO - Medicina de Conservación en Sphenisciformes",
           url: "https://www.sernapesca.cl/noticias/sernapesca-investiga-causas-de-varamiento-masivo-en-playas-de-concon/",
         },
         order: 5,
@@ -86,11 +86,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       mc2: {
         id: "mc2",
         category: "Medicina de la Conservación",
-        text: "¿Por qué no basta con atender al individuo?",
+        text: "Desde el enfoque de \"Una Salud\" (One Health), ¿por qué es insuficiente abordar el rescate solo desde la atención clínica individual?",
         expectedAnswer:
-          "Porque un caso individual puede ser parte de un evento mayor. Registrar lugar, fecha, condición corporal, lesiones, contaminación y número de animales afectados ayuda a vigilancia sanitaria y conservación.",
+          "Porque el individuo puede alertar sobre eventos ambientales o sanitarios mayores. Como centinela epidemiológico, su evaluación permite detectar FAN, influenza aviar altamente patogénica, contaminación y otras amenazas ecosistémicas que exceden la clínica individual.",
         citation: {
-          source: "SERNAPESCA - Investigación de varamiento masivo",
+          source: "Etapas de la rehabilitación de fauna silvestre - One Health",
           url: "https://www.sernapesca.cl/noticias/sernapesca-investiga-causas-de-varamiento-masivo-en-playas-de-concon/",
         },
         order: 6,
@@ -98,11 +98,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       mc3: {
         id: "mc3",
         category: "Medicina de la Conservación",
-        text: "¿Qué amenazas humanas son relevantes para pingüinos?",
+        text: "¿Cuáles son las principales amenazas antrópicas que impactan la conservación de los Sphenisciformes en Chile?",
         expectedAnswer:
-          "Captura incidental en pesquerías, contaminación marina, perturbación de sitios de nidificación, competencia por alimento y eventos ambientales. Reducir la mortalidad por pesca incidental es clave para la resiliencia de poblaciones de pingüinos.",
+          "La sobrepesca con reducción de anchoveta, la captura incidental en redes, la contaminación por hidrocarburos y la perturbación humana de hábitats de nidificación son amenazas antrópicas clave para la conservación de los Sphenisciformes.",
         citation: {
-          source: "Trathan et al. / Endangered Species Research - Penguin conservation and bycatch",
+          source: "USS PNGUINO - Amenazas naturales y antropogénicas",
           url: "https://www.int-res.com/articles/esr2017/34/n034p373.pdf",
         },
         order: 7,
@@ -112,9 +112,9 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
         category: "Patologías",
         text: "¿Cuáles son los principales diagnósticos diferenciales?",
         expectedAnswer:
-          "Desnutrición, deshidratación, hipotermia, trauma, contaminación por hidrocarburos u otros aceites, neumonía, parasitismo, heridas e ingestión de cuerpos extraños.",
+          "Los principales diagnósticos diferenciales incluyen síndrome de emaciación o inanición, contaminación por hidrocarburos con empetrolamiento, traumatismos o heridas profundas por enmallamiento, aspergilosis u otras enfermedades respiratorias, además de parasitosis gastrointestinales o pulmonares severas.",
         citation: {
-          source: "SANCCOB - Prognostic indicators and rehabilitation outcomes in African penguins",
+          source: "USS PNGUINO - Patologías y rescate",
           url: "https://sanccob.co.za/wp-content/uploads/2021/10/Prognostic_Indicators_RehabOutcomes_adultAfricanPenguuins.pdf",
         },
         order: 8,
@@ -122,11 +122,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       p2: {
         id: "p2",
         category: "Patologías",
-        text: "¿Qué problema genera el plumaje contaminado con aceite?",
+        text: "¿Qué consecuencias fisiopatológicas críticas genera la contaminación del plumaje por petróleo crudo?",
         expectedAnswer:
-          "El plumaje pierde impermeabilidad y capacidad aislante, lo que puede provocar pérdida de calor, agotamiento, incapacidad para nadar y dificultad para alimentarse.",
+          "El plumaje pierde su estructura, aislamiento térmico e impermeabilidad, lo que desencadena hipotermia severa, toxicidad sistémica por acicalamiento e inanición secundaria.",
         citation: {
-          source: "Jessop & Healy - Oiled seabirds rehabilitation material",
+          source: "USS PNGUINO - Limpieza del plumaje",
           url: "https://seabirdrescue.org.au/wp-content/uploads/2022/08/olied-seabirds-jessop-and-healy.pdf",
         },
         order: 9,
@@ -134,11 +134,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       p3: {
         id: "p3",
         category: "Patologías",
-        text: "¿Qué signos harían sospechar enfermedad respiratoria?",
+        text: "¿Qué hallazgos clínicos te harían sospechar de una patología respiratoria severa como la Aspergilosis (Aspergillus fumigatus)?",
         expectedAnswer:
-          "Respiración con esfuerzo, decaimiento, descarga nasal, sonidos respiratorios anormales, intolerancia al manejo y postura anormal.",
+          "Disnea con esfuerzo, ortopnea, ruidos respiratorios anormales, letargia progresiva, pérdida de peso marcada y focos radiopacos en sacos aéreos hacen sospechar patología respiratoria severa como aspergilosis.",
         citation: {
-          source: "Manual básico operacional de rescate y rehabilitación de fauna silvestre",
+          source: "USS PNGUINO - Fisiología respiratoria y patología",
           url: "https://www.fia.cl/wp-content/uploads/2019/01/Manual_basico_Operacional_Rescate_y_rehabilitacion_silvestre.pdf",
         },
         order: 10,
@@ -148,9 +148,9 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
         category: "Tratamientos",
         text: "¿Qué tratamiento general priorizarías al ingreso?",
         expectedAnswer:
-          "Ambiente tranquilo, control térmico, hidratación según evaluación, analgesia si hay dolor, soporte nutricional progresivo y examen clínico completo.",
+          "Se prioriza la estabilización sistémica y hemodinámica inmediata: aislamiento acústico y visual, soporte térmico diferenciado, fluidoterapia parenteral con Ringer Lactato más dextrosa al 5% para corregir deshidratación, antes de realizar procedimientos invasivos o prolongados.",
         citation: {
-          source: "Minimum Standards for Wildlife Rehabilitation",
+          source: "USS PNGUINO - Fluidoterapia y soporte",
           url: "https://myodfw.com/sites/default/files/2026-03/MinimumStandards3rdEdition.pdf",
         },
         order: 11,
@@ -158,11 +158,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       t2: {
         id: "t2",
         category: "Tratamientos",
-        text: "¿Le darías antibiótico a todos los pingüinos varados?",
+        text: "¿Está indicada la antibioticoterapia preventiva y sistemática en todos los pingüinos que ingresan al centro?",
         expectedAnswer:
-          "No. El antibiótico debe indicarse según hallazgos clínicos: heridas contaminadas, infección sospechada, neumonía u otra causa justificada.",
+          "No. La antibioticoterapia debe aplicarse bajo criterios de medicina basada en la evidencia, ante hallazgos clínicos concretos como heridas por enmallamiento, sospecha de infección secundaria o inmunosupresión.",
         citation: {
-          source: "Minimum Standards for Wildlife Rehabilitation",
+          source: "Etapas de la rehabilitación de fauna silvestre - MBE",
           url: "https://myodfw.com/sites/default/files/2026-03/MinimumStandards3rdEdition.pdf",
         },
         order: 12,
@@ -170,11 +170,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       t3: {
         id: "t3",
         category: "Tratamientos",
-        text: "¿Lavarías inmediatamente a un pingüino con aceite?",
+        text: "¿Someterías a un lavado inmediato con detergentes especiales a un pingüino que ingresa con severa contaminación por petróleo?",
         expectedAnswer:
-          "No necesariamente. Primero se estabiliza; el lavado puede ser largo y estresante. Debe realizarse cuando el animal está en condiciones de tolerarlo y luego se debe confirmar impermeabilidad antes de liberarlo.",
+          "No siempre. Primero es mandatorio estabilizar hemodinámicamente al paciente, corregir la deshidratación y desintoxicarlo según criterio clínico antes de realizar un lavado que es prolongado y altamente estresante.",
         citation: {
-          source: "Jessop & Healy - Oiled seabirds rehabilitation material",
+          source: "USS PNGUINO - Orden del protocolo de atención a empetrolados",
           url: "https://seabirdrescue.org.au/wp-content/uploads/2022/08/olied-seabirds-jessop-and-healy.pdf",
         },
         order: 13,
@@ -184,9 +184,9 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
         category: "Reinserción",
         text: "¿Cuándo puede liberarse?",
         expectedAnswer:
-          "Cuando tiene buena condición corporal, plumaje impermeable, capacidad de nadar, termorregular, alimentarse y responder adecuadamente al ambiente.",
+          "Solo cuando recupera independencia funcional absoluta en el medio marino: simetría anatómica, impermeabilidad total del plumaje comprobada en natación controlada, condición corporal adecuada, nado competente y conducta evasiva frente al ser humano.",
         citation: {
-          source: "Jessop & Healy - Oiled seabirds rehabilitation material",
+          source: "USS PNGUINO - Criterios de liberación",
           url: "https://seabirdrescue.org.au/wp-content/uploads/2022/08/olied-seabirds-jessop-and-healy.pdf",
         },
         order: 14,
@@ -194,11 +194,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       ri2: {
         id: "ri2",
         category: "Reinserción",
-        text: "¿Basta con que coma en cautiverio?",
+        text: "¿Es suficiente que un pingüino logre alimentarse por sí solo en cautiverio para autorizar su alta médica y liberación?",
         expectedAnswer:
-          "No. Comer en cautiverio no asegura supervivencia; debe demostrar funcionalidad para vida libre: nadar, mantener impermeabilidad, orientarse, alimentarse y no depender del humano.",
+          "No. Además de alimentarse, debe demostrar comportamiento evasivo frente a humanos, competencia biomecánica de nado, acondicionamiento físico adecuado e impermeabilidad total del plumaje.",
         citation: {
-          source: "Jessop & Healy - Oiled seabirds rehabilitation material",
+          source: "USS PNGUINO - Reinserción funcional",
           url: "https://seabirdrescue.org.au/wp-content/uploads/2022/08/olied-seabirds-jessop-and-healy.pdf",
         },
         order: 15,
@@ -206,11 +206,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       ri3: {
         id: "ri3",
         category: "Reinserción",
-        text: "¿Qué impediría su liberación?",
+        text: "¿Cuál de los siguientes factores se considera un impedimento clínico absoluto para la liberación de un Sphenisciforme?",
         expectedAnswer:
-          "Lesiones permanentes incompatibles con nado o alimentación, enfermedad activa, mala condición corporal, plumaje no impermeable, dependencia humana o incapacidad de sobrevivir en el mar.",
+          "La pérdida de impermeabilidad del plumaje tras el nado, lesiones anatómicas permanentes asimétricas, mala condición corporal o pérdida de aversión al ser humano son impedimentos absolutos para su liberación.",
         citation: {
-          source: "Minimum Standards for Wildlife Rehabilitation",
+          source: "USS PNGUINO - Checklist de reinserción",
           url: "https://myodfw.com/sites/default/files/2026-03/MinimumStandards3rdEdition.pdf",
         },
         order: 16,
@@ -230,11 +230,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       r1: {
         id: "r1",
         category: "Rehabilitación",
-        text: "Un tucúquere no puede volar. ¿Por qué es grave?",
+        text: "Un tucúquere ingresa con una fractura en el ala izquierda. ¿Por qué es fundamental limitar los tiempos de vendaje prolongados y qué estructura membranosa del miembro torácico corre el riesgo de sufrir contractura irreversible?",
         expectedAnswer:
-          "Porque una rapaz depende del vuelo para cazar, escapar y sobrevivir. La liberación exige retorno completo a condición física, vuelo y capacidad de caza.",
+          "Los vendajes prolongados favorecen anquilosis y contracturas. En aves rapaces, el riesgo principal es la contractura irreversible del tendón o membrana propatagial, lo que compromete de forma definitiva la biomecánica del ala y la sustentación de vuelo.",
         citation: {
-          source: "NSW Environment - Birds of prey initial treatment and care guidelines",
+          source: "USS CLASE RAPACES - Rehabilitación traumatológica",
           url: "https://www.environment.nsw.gov.au/sites/default/files/birds-of-prey-initial-treatment-care-guidelines-210567.pdf",
         },
         order: 1,
@@ -242,11 +242,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       r2: {
         id: "r2",
         category: "Rehabilitación",
-        text: "¿Qué debe evaluarse primero?",
+        text: "Ingresa a urgencias un Tucúquere politraumatizado y agresivo. ¿Qué debe evaluarse como prioridad absoluta siguiendo los protocolos clínicos hospitalarios?",
         expectedAnswer:
-          "Estado general, respiración, hidratación, condición corporal, alas, patas, garras, pico, ojos y signos de trauma. La evaluación inicial debe priorizar estabilización, contención segura y reducción de estrés.",
+          "La prioridad es una contención física segura con mínimo distrés y una evaluación primaria ABCD: vía aérea, respiración, circulación y déficit neurológico, antes del examen traumatológico completo.",
         citation: {
-          source: "NSW Environment - Birds of prey initial treatment and care guidelines",
+          source: "Etapas de la rehabilitación de fauna silvestre - Protocolo ABCD",
           url: "https://www.environment.nsw.gov.au/sites/default/files/birds-of-prey-initial-treatment-care-guidelines-210567.pdf",
         },
         order: 2,
@@ -254,11 +254,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       r3: {
         id: "r3",
         category: "Rehabilitación",
-        text: "¿Por qué no sirve liberarlo si se ve bien pero vuela mal?",
+        text: "Si un tucúquere presenta una consolidación ósea clínicamente completa tras una fractura de ala, ¿por qué está contraindicada su liberación si aún evidencia una leve deficiencia aerodinámica?",
         expectedAnswer:
-          "Porque un vuelo deficiente impide caza, defensa territorial, escape y supervivencia. Debe volar correctamente y tener condición física completa antes de liberarse.",
+          "Porque un vuelo asimétrico impide la sustentación aerodinámica necesaria para caza silente, evasión y supervivencia; aunque el hueso consolide, una deficiencia biomecánica condena al ave a inanición en vida libre.",
         citation: {
-          source: "NSW Environment - Birds of prey initial treatment and care guidelines",
+          source: "USS CLASE RAPACES - Rehabilitación aerodinámica",
           url: "https://www.environment.nsw.gov.au/sites/default/files/birds-of-prey-initial-treatment-care-guidelines-210567.pdf",
         },
         order: 3,
@@ -266,11 +266,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       mc1: {
         id: "mc1",
         category: "Medicina de la Conservación",
-        text: "¿Qué amenazas humanas pueden explicar su ingreso?",
+        text: "¿Qué amenazas de origen antrópico explican de manera recurrente el ingreso de grandes búhos y rapaces nocturnas a los centros de rehabilitación en la zona central de Chile?",
         expectedAnswer:
-          "Atropellos, choques, electrocución, enredo en materiales humanos, ataques de perros o gatos, pérdida de hábitat e intoxicación por rodenticidas o plaguicidas.",
+          "Las amenazas recurrentes incluyen colisiones con vehículos o tendidos, intoxicación secundaria por rodenticidas anticoagulantes, disparos por caza ilegal y degradación de sitios de nidificación, todas de origen antrópico.",
         citation: {
-          source: "PMC - Anthropogenic threats and anticoagulant exposure in owls",
+          source: "USS CLASE RAPACES - Interfase rural-silvestre",
           url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC10403058/",
         },
         order: 4,
@@ -278,11 +278,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       mc2: {
         id: "mc2",
         category: "Medicina de la Conservación",
-        text: "¿Por qué una intoxicación en una rapaz importa para conservación?",
+        text: "Desde la perspectiva de la Medicina de la Conservación y el paradigma de Una Salud, ¿por qué la intoxicación de un tucúquere en la interfase rural-silvestre reviste gran importancia ecológica?",
         expectedAnswer:
-          "Porque puede revelar contaminación o uso de tóxicos en la cadena trófica. Los búhos funcionan como depredadores y también como centinelas de exposición ambiental a rodenticidas.",
+          "Porque los estrígidos, como depredadores tope, actúan como centinelas epidemiológicos de la bioacumulación y exposición ambiental a rodenticidas anticoagulantes en el ecosistema.",
         citation: {
-          source: "PMC - Anthropogenic threats and anticoagulant exposure in owls",
+          source: "USS CLASE RAPACES - Rodenticidas y conservación",
           url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC10403058/",
         },
         order: 5,
@@ -290,11 +290,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       mc3: {
         id: "mc3",
         category: "Medicina de la Conservación",
-        text: "¿Qué rol ecológico cumple el tucúquere?",
+        text: "¿Cuál es el rol ecológico fundamental que cumple el tucúquere en los ecosistemas forestales y agrícolas de Chile?",
         expectedAnswer:
-          "Es un depredador que consume principalmente pequeños y medianos vertebrados, especialmente mamíferos, por lo que participa en la regulación de poblaciones presa.",
+          "Actúa como depredador y controlador biológico clave, regulando poblaciones de pequeños y medianos vertebrados, especialmente roedores plaga y lagomorfos.",
         citation: {
-          source: "SciELO Chile - Dieta del tucúquere en Chile",
+          source: "USS CLASE RAPACES - Rol ecológico",
           url: "https://www.scielo.cl/article_plus.php?lng=es&pid=S0718-686X2018000300067&tlng=en",
         },
         order: 6,
@@ -302,11 +302,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       p1: {
         id: "p1",
         category: "Patologías",
-        text: "¿Qué patologías sospechas si fue encontrado al borde de una carretera?",
+        text: "Al monitorear la egagrópila regurgitada por un tucúquere hospitalizado, observas que los huesos de los roedores están completamente disueltos por el ácido gástrico. ¿Es este un hallazgo estándar o una alerta de divergencia anatómica o patológica?",
         expectedAnswer:
-          "Trauma por atropello o golpe, fracturas, luxaciones, contusiones, trauma craneal, lesiones oculares, heridas, daño de plumas, shock o debilidad secundaria.",
+          "Es una alerta patológica. En estrígidos, la egagrópila normal conserva esqueletos relativamente íntegros por su pH gástrico moderado; la disolución completa del hueso sugiere una divergencia anatómica o un trastorno digestivo severo.",
         citation: {
-          source: "NSW Environment - Birds of prey initial treatment and care guidelines",
+          source: "USS CLASE RAPACES - Egagrópilas y fisiología digestiva",
           url: "https://www.environment.nsw.gov.au/sites/default/files/birds-of-prey-initial-treatment-care-guidelines-210567.pdf",
         },
         order: 7,
@@ -314,11 +314,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       p2: {
         id: "p2",
         category: "Patologías",
-        text: "¿Qué sospechas si está débil, incoordinado o con sangrado?",
+        text: "Si recibes un tucúquere al borde de una carretera con debilidad extrema, hematomas generalizados y sangrado activo por la ranfoteca sin fracturas evidentes, ¿qué patología sistémica debes sospechar?",
         expectedAnswer:
-          "Trauma neurológico, intoxicación, especialmente anticoagulantes, shock o enfermedad sistémica.",
+          "Debe sospecharse coagulopatía severa por intoxicación secundaria con rodenticidas anticoagulantes, debido al bloqueo de la vitamina K epóxido reductasa.",
         citation: {
-          source: "PMC - Anthropogenic threats and anticoagulant exposure in owls",
+          source: "USS CLASE RAPACES - SGARs",
           url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC10403058/",
         },
         order: 8,
@@ -326,11 +326,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       p3: {
         id: "p3",
         category: "Patologías",
-        text: "¿Por qué los ojos son críticos en una rapaz?",
+        text: "Durante la evaluación oftalmológica de una rapaz nocturna traumatizada por colisión, ¿por qué es mandatorio inspeccionar el fondo de ojo y la integridad del pecten ocular?",
         expectedAnswer:
-          "Porque la visión es esencial para cazar, orientarse, posarse y evitar obstáculos. Una lesión ocular puede impedir la reinserción aunque el resto del cuerpo se recupere.",
+          "Porque el trauma por colisión puede lesionar el pecten, producir hemorragia vítrea o desprendimiento de retina, y un ave con visión monocular grave o ceguera es inviable en la naturaleza.",
         citation: {
-          source: "NSW Environment - Birds of prey initial treatment and care guidelines",
+          source: "USS CLASE RAPACES - Oftalmología de rapaces",
           url: "https://www.environment.nsw.gov.au/sites/default/files/birds-of-prey-initial-treatment-care-guidelines-210567.pdf",
         },
         order: 9,
@@ -338,11 +338,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       t1: {
         id: "t1",
         category: "Tratamientos",
-        text: "¿Cuál es el manejo inicial recomendado?",
+        text: "Si se confirma mediante examen de sangre que el tucúquere sufre de Saturnismo debido a la ingesta indirecta de perdigones, ¿cuál es el tratamiento médico de urgencia indicado?",
         expectedAnswer:
-          "Contención segura, ambiente tranquilo y oscuro, mínima manipulación, estabilización, analgesia si hay dolor, hidratación si corresponde y evaluación veterinaria con imágenes si se sospecha fractura.",
+          "Ante toxicosis clínica por plomo severa debe instaurarse terapia de quelación con CaEDTA por vía intramuscular en pauta repetida, con el objetivo de remover el metal acumulado y favorecer su excreción renal.",
         citation: {
-          source: "NSW Environment - Birds of prey initial treatment and care guidelines",
+          source: "USS CLASE RAPACES - Saturnismo y quelación",
           url: "https://www.environment.nsw.gov.au/sites/default/files/birds-of-prey-initial-treatment-care-guidelines-210567.pdf",
         },
         order: 10,
@@ -350,11 +350,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       t2: {
         id: "t2",
         category: "Tratamientos",
-        text: "¿Qué puede requerir una fractura de ala?",
+        text: "Ingresas al tucúquere a pabellón para resolución ortopédica. ¿Qué particularidad fisiológica de los estrígidos debes considerar bajo anestesia inhalatoria con Isoflurano?",
         expectedAnswer:
-          "Según localización y gravedad: inmovilización, vendaje, cirugía, analgesia, reposo controlado y luego rehabilitación progresiva en jaula de vuelo.",
+          "Los estrígidos tienen alta propensión a desarrollar reflejos vagales oculares durante la manipulación anestésica, con riesgo de bradicardia súbita o incluso paro cardíaco.",
         citation: {
-          source: "Department of Conservation NZ - Raptors rehabilitation guide",
+          source: "USS CLASE RAPACES - Anestesia en estrígidos",
           url: "https://www.doc.govt.nz/globalassets/documents/our-work/wildlife-health/raptors-rehabilitation-guide.pdf",
         },
         order: 11,
@@ -362,11 +362,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       t3: {
         id: "t3",
         category: "Tratamientos",
-        text: "¿Por qué la rehabilitación no termina cuando consolida la fractura?",
+        text: "¿Cuál es el abordaje clínico correcto para el manejo hospitalario de un tucúquere con pododermatitis avanzada (Bumblefoot grado III a V)?",
         expectedAnswer:
-          "Porque debe recuperar musculatura, coordinación, resistencia, vuelo simétrico, despegue, aterrizaje, maniobra y capacidad de caza.",
+          "Requiere desbridamiento quirúrgico, perlas de PMMA, antibioticoterapia sistémica y ajuste de perchas terapéuticas, porque es una lesión profunda y no un simple problema de apoyo.",
         citation: {
-          source: "NSW Environment - Birds of prey initial treatment and care guidelines",
+          source: "USS CLASE RAPACES - Manejo de Bumblefoot",
           url: "https://www.environment.nsw.gov.au/sites/default/files/birds-of-prey-initial-treatment-care-guidelines-210567.pdf",
         },
         order: 12,
@@ -374,11 +374,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       ri1: {
         id: "ri1",
         category: "Reinserción",
-        text: "¿Qué debe demostrar antes de liberarse?",
+        text: "Si un tucúquere huérfano es criado en cautiverio sin aislamiento visual, asimila al ser humano como su conspecífico. ¿Cómo se denomina este fenómeno etológico y por qué inhabilita al ejemplar para la liberación?",
         expectedAnswer:
-          "Vuelo fuerte, simétrico y sostenido; capacidad de despegar, aterrizar, ganar altura, maniobrar, posarse, cazar, mantener buena condición corporal y mostrar conducta silvestre.",
+          "Se denomina impronta humana o imprinting. Inhabilita la liberación porque el ave pierde la distancia de seguridad y la identificación normal con su especie, comprometiendo supervivencia, cortejo y reproducción silvestre.",
         citation: {
-          source: "Department of Conservation NZ - Raptors rehabilitation guide",
+          source: "USS CLASE RAPACES - Etología y liberación",
           url: "https://www.doc.govt.nz/globalassets/documents/our-work/wildlife-health/raptors-rehabilitation-guide.pdf",
         },
         order: 13,
@@ -386,11 +386,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       ri2: {
         id: "ri2",
         category: "Reinserción",
-        text: "¿Puede liberarse si come alimento entregado por humanos pero no caza?",
+        text: "Antes de autorizar el alta definitiva y la liberación de un tucúquere, ¿qué destreza conductual y biomecánica debe superar obligatoriamente en los jaulones de musculación?",
         expectedAnswer:
-          "No. Debe ser capaz de forrajear y cazar de manera independiente; en rapaces, la capacidad de caza es un criterio central de liberación.",
+          "Debe demostrar vuelo silente, simetría perfecta de batido, aterrizaje preciso y capacidad de captura activa de presas vivas, porque comer alimento entregado por humanos no equivale a aptitud de caza.",
         citation: {
-          source: "NSW Environment - Birds of prey initial treatment and care guidelines",
+          source: "USS CLASE RAPACES - Criterios de pre-liberación",
           url: "https://www.environment.nsw.gov.au/sites/default/files/birds-of-prey-initial-treatment-care-guidelines-210567.pdf",
         },
         order: 14,
@@ -398,11 +398,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       ri3: {
         id: "ri3",
         category: "Reinserción",
-        text: "¿Qué factores impedirían la liberación?",
+        text: "¿Cuál de los siguientes criterios representa un impedimento clínico y ético absoluto para un tucúquere en rehabilitación?",
         expectedAnswer:
-          "Vuelo deficiente, lesión ocular relevante, fractura mal consolidada, incapacidad de cazar, habituación humana, enfermedad activa o lesión permanente incompatible con vida libre.",
+          "Una pérdida irreversible de la visión binocular, fractura mal consolidada con asimetría alar o habituación humana severa son impedimentos absolutos y éticos para su liberación.",
         citation: {
-          source: "Department of Conservation NZ - Raptors rehabilitation guide",
+          source: "USS CLASE RAPACES - Árbol de decisiones éticas",
           url: "https://www.doc.govt.nz/globalassets/documents/our-work/wildlife-health/raptors-rehabilitation-guide.pdf",
         },
         order: 15,
@@ -422,11 +422,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       r1: {
         id: "r1",
         category: "Rehabilitación",
-        text: "Un pudú llega después de ser perseguido por perros. ¿Qué te preocupa primero?",
+        text: "Si un pudú estresado ingresa al hospital y evidencia mioglobinuria, ¿qué proceso fisiopatológico sistémico e irreversible se está instaurando en su organismo?",
         expectedAnswer:
-          "Estrés severo, shock, heridas por mordida, trauma y riesgo de miopatía por captura. La miopatía por captura es una condición inducida por estrés o esfuerzo en animales silvestres capturados, y puede ser grave o fatal.",
+          "Se está instaurando una miopatía de captura con acidosis metabólica, rabdomiólisis, liberación de mioglobina y progresión a falla renal aguda. Es una cascada sistémica potencialmente irreversible asociada a distrés intenso.",
         citation: {
-          source: "PMC - Capture myopathy review",
+          source: "USS mamíferos silvestres - Miopatía de captura",
           url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6612673/",
         },
         order: 1,
@@ -434,11 +434,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       r2: {
         id: "r2",
         category: "Rehabilitación",
-        text: "¿Por qué no conviene manipularlo repetidamente?",
+        text: "Un pudú juvenil ingresa con distrés marcado tras ser perseguido por una jauría de perros. ¿Por qué está contraindicada una manipulación física exhaustiva de inmediato?",
         expectedAnswer:
-          "Porque el estrés, la persecución y la restricción física pueden agravar el cuadro, desencadenar miopatía por captura y comprometer el pronóstico.",
+          "Porque el esfuerzo físico extremo y la activación simpática masiva pueden gatillar una cascada metabólica anaeróbica que desencadena miopatía de captura fatal.",
         citation: {
-          source: "PMC - Capture myopathy review",
+          source: "USS mamíferos silvestres - Hands-off en cérvidos",
           url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6612673/",
         },
         order: 2,
@@ -446,11 +446,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       r3: {
         id: "r3",
         category: "Rehabilitación",
-        text: "¿Qué ambiente requiere al inicio?",
+        text: "¿Qué condiciones ambientales e intrahospitalarias estrictas requiere este paciente durante su primera fase de admisión para mitigar el distrés neuroendocrino?",
         expectedAnswer:
-          "Ambiente tranquilo, con poco ruido, baja luz, mínima presencia humana, temperatura adecuada, sin perros ni estímulos, y manipulación solo cuando sea necesaria.",
+          "Requiere un ambiente ciego, de baja intensidad lumínica, con absoluto control acústico y mínima exposición visual, usando barreras opacas o capucha ocular para reducir el distrés.",
         citation: {
-          source: "SAG - Criterios técnicos para mantención de fauna silvestre en cautiverio",
+          source: "USS mamíferos silvestres - Manejo ambiental del pudú",
           url: "https://www.sag.gob.cl/sites/default/files/criterios_tec_mantencion_fauna_silv_cautiverio.pdf",
         },
         order: 3,
@@ -458,11 +458,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       mc1: {
         id: "mc1",
         category: "Medicina de la Conservación",
-        text: "¿Qué amenaza de conservación aparece claramente?",
+        text: "Explique cómo la fragmentación del hábitat y la interfaz pudú-ganado bovino u ovino vulnera la barrera sanitaria del cérvido, mencionando al menos un patógeno emergente de carácter zoonótico.",
         expectedAnswer:
-          "Los perros. En pudú, estudios en Chile identifican ataques de perros y atropellos como causas frecuentes de ingreso a centros de rehabilitación y mortalidad, además de pérdida de bosque y posible caza furtiva.",
+          "La fragmentación y el contacto con ganado rompen barreras sanitarias y favorecen transmisión horizontal de patógenos como Chlamydia abortus o Leptospira pomona, comprometiendo poblaciones aisladas de pudú desde el enfoque One Health.",
         citation: {
-          source: "Oryx / Cambridge - Mortality sources for Pudu puda in Chile",
+          source: "USS mamíferos silvestres - Interfaz sanitaria pudú-ganado",
           url: "https://www.cambridge.org/core/journals/oryx/article/evaluating-mortality-sources-for-the-vulnerable-pudu-pudu-puda-in-chile-implications-for-the-conservation-of-a-threatened-deer/388770F8DB1BC84E20873C7CFCF12415",
         },
         order: 4,
@@ -470,11 +470,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       mc2: {
         id: "mc2",
         category: "Medicina de la Conservación",
-        text: "¿Qué mensaje educativo deriva del caso?",
+        text: "Desde el enfoque de Una Salud, ¿qué disrupción sanitaria y amenaza de conservación crítica para la fauna endémica se evidencia directamente en este caso?",
         expectedAnswer:
-          "Tenencia responsable: no dejar perros sueltos, evitar persecución de fauna, no intentar criar pudúes, avisar a la autoridad y proteger hábitats con cobertura vegetal.",
+          "La depredación y ataque por perros domésticos o asilvestrados en la interfase urbano-silvestre constituye una de las amenazas críticas y principales causas de mortalidad del pudú.",
         citation: {
-          source: "Oryx / Cambridge - Mortality sources for Pudu puda in Chile",
+          source: "USS mamíferos silvestres - Amenazas antrópicas del pudú",
           url: "https://www.cambridge.org/core/journals/oryx/article/evaluating-mortality-sources-for-the-vulnerable-pudu-pudu-puda-in-chile-implications-for-the-conservation-of-a-threatened-deer/388770F8DB1BC84E20873C7CFCF12415",
         },
         order: 5,
@@ -482,11 +482,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       mc3: {
         id: "mc3",
         category: "Medicina de la Conservación",
-        text: "¿Por qué no debe transformarse en mascota?",
+        text: "¿Qué medida regulatoria y educativa prioritaria deriva del análisis de la casuística de ingresos de cérvidos nativos a los centros de rehabilitación en Chile?",
         expectedAnswer:
-          "Porque es fauna silvestre, tiene requerimientos biológicos específicos, puede estresarse gravemente, perder conducta natural y quedar inhabilitado para volver a vida libre. Los centros de rehabilitación son espacios de recuperación y tránsito, no de domesticación.",
+          "Debe promoverse la tenencia responsable con control de jaurías, eliminación de barreras antrópicas relevantes y denuncia obligatoria a la autoridad competente como el SAG.",
         citation: {
-          source: "SAG - Ley de Caza",
+          source: "USS mamíferos silvestres - Medidas regulatorias y educativas",
           url: "https://www.sag.cl/sites/default/files/ley_de_caza_2017.pdf",
         },
         order: 6,
@@ -494,11 +494,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       p1: {
         id: "p1",
         category: "Patologías",
-        text: "¿Qué patologías sospechas tras ataque de perros?",
+        text: "Al realizar el examen de un pudú mordido por perros, ¿por qué una herida punzante pequeña en la piel del dorso o abdomen representa una emergencia quirúrgica de pronóstico reservado?",
         expectedAnswer:
-          "Heridas por mordida, infección secundaria, fracturas, trauma torácico o abdominal, shock, dolor, deshidratación y miopatía por captura.",
+          "Porque puede representar el efecto iceberg: una abertura cutánea pequeña con desgarros musculares masivos subcutáneos, necrosis, inoculación bacteriana profunda y riesgo de sepsis secundaria generalizada.",
         citation: {
-          source: "Universidad Andrés Bello / Oryx - Mortality sources for Pudu puda",
+          source: "USS mamíferos silvestres - Trauma por cánidos",
           url: "https://researchers.unab.cl/es/publications/evaluating-mortality-sources-for-the-vulnerable-pudu-pudu-puda-in/",
         },
         order: 7,
@@ -506,11 +506,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       p2: {
         id: "p2",
         category: "Patologías",
-        text: "¿Qué signos indicarían gravedad?",
+        text: "Además de las lesiones por mordedura, ¿qué patología polimicrobiana de la cavidad oral asociada a osteomielitis piogranulomatosa debes vigilar en pudúes bajo cautiverio prolongado?",
         expectedAnswer:
-          "Decaimiento marcado, dificultad respiratoria, sangrado, incapacidad de mantenerse de pie, mucosas alteradas, hipotermia, dolor intenso, fracturas evidentes o heridas profundas.",
+          "Debe vigilarse la Mandíbula Grumosa o Lumpy Jaw, asociada a infección polimicrobiana con osteomielitis piogranulomatosa favorecida por microabrasiones del ramoneo abrasivo y cautiverio prolongado.",
         citation: {
-          source: "PMC - Capture myopathy review",
+          source: "USS mamíferos silvestres - Lumpy Jaw",
           url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6612673/",
         },
         order: 8,
@@ -518,11 +518,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       p3: {
         id: "p3",
         category: "Patologías",
-        text: "¿Por qué una mordida pequeña puede ser grave?",
+        text: "¿Qué alteraciones en las constantes fisiológicas y bioquímicas del pudú indicarían un estado crítico de shock e hipertermia por pánico?",
         expectedAnswer:
-          "Porque puede haber daño profundo, contaminación bacteriana, lesiones musculares o perforaciones no evidentes externamente.",
+          "Frecuencia cardíaca muy elevada, hiperglicemia marcada y creatina quinasa extremadamente alta sugieren shock e hipertermia por pánico con importante daño muscular y compromiso metabólico.",
         citation: {
-          source: "Universidad Andrés Bello / Oryx - Mortality sources for Pudu puda",
+          source: "USS mamíferos silvestres - Shock e hipertermia en cérvidos",
           url: "https://researchers.unab.cl/es/publications/evaluating-mortality-sources-for-the-vulnerable-pudu-pudu-puda-in/",
         },
         order: 9,
@@ -530,11 +530,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       t1: {
         id: "t1",
         category: "Tratamientos",
-        text: "¿Cuál es el tratamiento inicial general?",
+        text: "¿Cuál es el abordaje médico inicial inmediato que debes instaurar una vez que el pudú ha sido ingresado al área clínica bajo contención química?",
         expectedAnswer:
-          "Reducir estrés, estabilizar, controlar dolor, evaluar hidratación, tratar heridas, prevenir infección cuando haya mordidas contaminadas, evaluar fracturas o trauma interno y mantenerlo en un ambiente seguro y silencioso.",
+          "Se debe priorizar estabilización fisiológica y metabólica hands-off, analgesia multimodal agresiva, oxigenoterapia si corresponde y fluidoterapia con Ringer Lactato para proteger riñón y corregir el impacto del distrés y la mioglobina circulante.",
         citation: {
-          source: "SAG - Criterios técnicos para mantención de fauna silvestre en cautiverio",
+          source: "USS mamíferos silvestres - Abordaje médico inicial",
           url: "https://www.sag.gob.cl/sites/default/files/criterios_tec_mantencion_fauna_silv_cautiverio.pdf",
         },
         order: 10,
@@ -542,11 +542,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       t2: {
         id: "t2",
         category: "Tratamientos",
-        text: "¿Qué error común debe evitarse?",
+        text: "Para realizar procedimientos clínicos minimizando el tiempo de captura y distrés en un pudú, ¿qué pauta anestésica general y de contención química se recomienda?",
         expectedAnswer:
-          "Manipularlo muchas veces, alimentarlo de forma improvisada, mantenerlo cerca de personas o perros, intentar domesticarlo o liberarlo sin evaluación.",
+          "Se recomiendan protocolos de inducción química rápida y reversibles, con monitoreo continuo de saturación, temperatura y frecuencia cardíaca, minimizando tiempos de captura física.",
         citation: {
-          source: "SAG - Registro Nacional de Tenedores de Fauna Silvestre",
+          source: "USS mamíferos silvestres - Contención farmacológica",
           url: "https://www.sag.gob.cl/ambitos-de-accion/registro-nacional-de-tenedores-de-fauna-silvestre-rntfs",
         },
         order: 11,
@@ -554,11 +554,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       t3: {
         id: "t3",
         category: "Tratamientos",
-        text: "¿Por qué la alimentación debe ser cuidadosa?",
+        text: "¿Cómo debe estructurarse la nutrición clínica de un pudú en rehabilitación para evitar desórdenes metabólicos o disbiosis digestiva severa?",
         expectedAnswer:
-          "Porque una dieta inadecuada puede causar problemas digestivos, desbalance nutricional, estrés y dependencia humana. La nutrición debe respetar sus requerimientos como herbívoro silvestre.",
+          "Debe basarse en forraje suave y de alta calidad, propio de un ramoneador selectivo, evitando dietas monótonas o inadecuadas que favorezcan disbiosis, estrés nutricional y dependencia humana.",
         citation: {
-          source: "SAG - Criterios técnicos para mantención de fauna silvestre en cautiverio",
+          source: "USS mamíferos silvestres - Nutrición del pudú",
           url: "https://www.sag.gob.cl/sites/default/files/criterios_tec_mantencion_fauna_silv_cautiverio.pdf",
         },
         order: 12,
@@ -566,11 +566,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       ri1: {
         id: "ri1",
         category: "Reinserción",
-        text: "¿Qué debe cumplir para ser liberado?",
+        text: "Al planificar la reinserción de un pudú, ¿por qué es un requisito científico mandatorio evaluar la ecología espacial del sitio de suelta y evitar zonas con presencia ganadera activa?",
         expectedAnswer:
-          "Desplazamiento normal, buena condición corporal, heridas resueltas, conducta de alerta y escape, capacidad de alimentarse solo, baja habituación humana y sitio de liberación adecuado.",
+          "Porque debe evaluarse capacidad de carga, calidad del sotobosque, ausencia de perros y ganado, y riesgo de reinfección por patógenos pecuarios, asegurando un sitio de suelta ecológica y sanitariamente apto.",
         citation: {
-          source: "SAG - Ley de Caza",
+          source: "USS mamíferos silvestres - Sitio de liberación y bioseguridad",
           url: "https://www.sag.cl/sites/default/files/ley_de_caza_2017.pdf",
         },
         order: 13,
@@ -578,11 +578,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       ri2: {
         id: "ri2",
         category: "Reinserción",
-        text: "¿Cuándo no debería liberarse?",
+        text: "¿Qué criterios médicos, etológicos y de verificación veterinaria debe cumplir estrictamente un pudú juvenil antes de autorizar su alta definitiva y liberación?",
         expectedAnswer:
-          "Si tiene lesiones permanentes incompatibles con vida libre, dependencia humana, incapacidad de desplazarse, enfermedad activa, conducta excesivamente dócil o si el sitio tiene riesgo inmediato alto, como perros sueltos o tránsito intenso.",
+          "Debe presentar cicatrización total, ausencia de claudicación, conducta esquiva absoluta hacia humanos y mantenimiento de un presupuesto conductual silvestre compatible con vida libre.",
         citation: {
-          source: "Oryx / Cambridge - Mortality sources for Pudu puda in Chile",
+          source: "USS mamíferos silvestres - Criterios de alta del pudú",
           url: "https://www.cambridge.org/core/journals/oryx/article/evaluating-mortality-sources-for-the-vulnerable-pudu-pudu-puda-in-chile-implications-for-the-conservation-of-a-threatened-deer/388770F8DB1BC84E20873C7CFCF12415",
         },
         order: 14,
@@ -590,11 +590,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       ri3: {
         id: "ri3",
         category: "Reinserción",
-        text: "¿Por qué importa el lugar de liberación?",
+        text: "¿Bajo qué condiciones biológicas o ambientales se considera que la liberación de un pudú rehabilitado está contraindicada y debe postergarse o cancelarse?",
         expectedAnswer:
-          "Porque debe ser un hábitat adecuado y seguro. Liberarlo en una zona con perros sueltos, tránsito intenso o poca cobertura vegetal aumenta el riesgo de muerte.",
+          "Está contraindicada si presenta impronta humana irreversible, claudicación permanente por necrosis muscular o si el ecosistema receptor carece de capacidad de carga y bioseguridad adecuadas.",
         citation: {
-          source: "Oryx / Cambridge - Mortality sources for Pudu puda in Chile",
+          source: "USS mamíferos silvestres - Contraindicaciones de reinserción",
           url: "https://www.cambridge.org/core/journals/oryx/article/evaluating-mortality-sources-for-the-vulnerable-pudu-pudu-puda-in-chile-implications-for-the-conservation-of-a-threatened-deer/388770F8DB1BC84E20873C7CFCF12415",
         },
         order: 15,
@@ -615,11 +615,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       r1: {
         id: "r1",
         category: "Rehabilitación",
-        text: "Un lobo marino está acostado en la playa. ¿Eso significa que está varado?",
+        text: "Un civil intenta empujar a un lobo marino juvenil de vuelta al mar porque cree que está varado. Explica por qué esta acción es contraproducente desde la fisiología de la especie y la contención clínica.",
         expectedAnswer:
-          "No necesariamente. Los pinnípedos necesitan zonas secas de descanso o haul-out; por eso, estar en playa puede ser normal. Se debe evaluar a distancia si hay heridas, enmallamiento, debilidad extrema, alteración respiratoria o riesgo por interacción humana.",
+          "Los otáridos salen a tierra de forma fisiológica a descansar, mudar o termorregular. Forzarlo al agua incrementa el distrés, puede agravar una lesión que comprometa la natación y enmascara déficits neurológicos o respiratorios que requieren evaluación clínica previa.",
         citation: {
-          source: "PMC - Pinniped haul-out and disease ecology",
+          source: "USS mamíferos silvestres - Otaria flavescens en el litoral chileno",
           url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC7152169/",
         },
         order: 1,
@@ -627,11 +627,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       r2: {
         id: "r2",
         category: "Rehabilitación",
-        text: "¿Qué signos justificarían intervención?",
+        text: "Se reporta un lobo marino juvenil descansando solo en una playa turística. ¿Qué signos clínicos y biomecánicos justificarían una intervención inmediata de rescate en terreno?",
         expectedAnswer:
-          "Heridas, enmallamiento, sangrado, dificultad respiratoria, debilidad extrema, desorientación, incapacidad de desplazarse, cría comprometida o riesgo por ubicación.",
+          "La intervención se justifica ante heridas profundas, enmallamiento, disnea severa, postración con incapacidad de locomoción cuadrúpeda o signos neurológicos como ataxia, stargazing o convulsiones.",
         citation: {
-          source: "SERNAPESCA - Rescate y conservación",
+          source: "USS mamíferos silvestres - Rescate de pinnípedos",
           url: "https://www.sernapesca.cl/area-trabajo/rescate-y-conservacion/",
         },
         order: 2,
@@ -639,11 +639,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       r3: {
         id: "r3",
         category: "Rehabilitación",
-        text: "¿Por qué no se debe empujar al mar?",
+        text: "Si un lobo marino juvenil ingresa debilitado y requiere soporte hídrico en admisión, ¿por qué es mandatorio aplicar restricción estricta de agua libre en su recinto hasta la evaluación clínica completa?",
         expectedAnswer:
-          "Porque puede estar descansando, enfermo o lesionado; forzarlo al agua puede agravar estrés, impedir evaluación y comprometer su seguridad.",
+          "Porque los animales débiles, deshidratados o con alteración de conciencia tienen alto riesgo de broncoaspiración, por lo que no se debe permitir acceso irrestricto a agua antes de completar la evaluación clínica.",
         citation: {
-          source: "DFO Canada - Marine mammal release and rehabilitation criteria",
+          source: "USS mamíferos silvestres - Admisión clínica de otáridos",
           url: "https://publications.gc.ca/collections/collection_2018/mpo-dfo/fs70-5/Fs70-5-2018-030-eng.pdf",
         },
         order: 3,
@@ -651,11 +651,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       mc1: {
         id: "mc1",
         category: "Medicina de la Conservación",
-        text: "¿Qué amenazas humanas pueden afectar a lobos marinos?",
+        text: "¿Qué fenómeno de origen antrópico e industrial genera laceraciones profundas crónicas en cuello y aletas de los lobos marinos en Chile, y qué consecuencia sistémica provoca?",
         expectedAnswer:
-          "Enmallamiento en redes o líneas de pesca, basura marina, contaminación, interacción con pesquerías, disturbio humano y pérdida o alteración de zonas de descanso.",
+          "El entallamiento por ghost gear o artes de pesca fantasmas provoca laceraciones progresivas y puede evolucionar a sepsis secundaria severa por compromiso crónico de tejidos blandos.",
         citation: {
-          source: "NOAA Fisheries - Pinniped entanglement in marine debris",
+          source: "USS mamíferos silvestres - Ghost gear y entallamientos",
           url: "https://www.fisheries.noaa.gov/alaska/marine-life-distress/pinniped-entanglement-marine-debris",
         },
         order: 4,
@@ -663,11 +663,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       mc2: {
         id: "mc2",
         category: "Medicina de la Conservación",
-        text: "¿Qué información debe registrarse?",
+        text: "Al registrar la ficha clínica y anamnesis ambiental de un lobo marino varado, ¿por qué es vital recopilar datos epidemiológicos de la zona del hallazgo?",
         expectedAnswer:
-          "Ubicación exacta, fecha, tamaño aproximado, conducta, presencia de heridas, enmallamiento, interacción con personas o perros, fotos a distancia y si hay más animales afectados.",
+          "Porque permite geoposicionar el caso, evaluar la interfaz con la industria pesquera, monitorear brotes locales y coordinar el manejo y destino con SERNAPESCA bajo el enfoque One Health.",
         citation: {
-          source: "DFO Canada - Marine mammal release and rehabilitation criteria",
+          source: "USS mamíferos silvestres - Registro epidemiológico",
           url: "https://publications.gc.ca/collections/collection_2018/mpo-dfo/fs70-5/Fs70-5-2018-030-eng.pdf",
         },
         order: 5,
@@ -675,11 +675,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       mc3: {
         id: "mc3",
         category: "Medicina de la Conservación",
-        text: "¿Por qué el público puede empeorar el caso?",
+        text: "Desde el enfoque de Una Salud, ¿por qué los varamientos y mortalidades masivas de lobos marinos en el litoral chileno son críticos para la conservación y la salud pública?",
         expectedAnswer:
-          "Porque acercarse, tocar, alimentar o intentar mover al animal aumenta estrés, riesgo de mordidas, riesgo sanitario y dificulta el trabajo de equipos entrenados.",
+          "Porque los lobos marinos actúan como centinelas epidemiológicos de primera línea, revelando crisis como FAN o derrames zoonóticos de influenza aviar altamente patogénica H5N1 con impacto en fauna y salud pública.",
         citation: {
-          source: "SERNAPESCA - Rescate y conservación",
+          source: "USS mamíferos silvestres - One Health en pinnípedos",
           url: "https://www.sernapesca.cl/area-trabajo/rescate-y-conservacion/",
         },
         order: 6,
@@ -687,11 +687,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       p1: {
         id: "p1",
         category: "Patologías",
-        text: "¿Cuáles son los problemas más probables?",
+        text: "¿Cuál es el agente etiológico de la Influenza Aviar que provocó la muerte de miles de lobos marinos en Chile, qué signología predominante se describió y qué resguardo de bioseguridad debes adoptar?",
         expectedAnswer:
-          "Desnutrición, deshidratación, heridas por redes o líneas de pesca, trauma, infecciones, neumonía, lesiones cutáneas, agotamiento, parasitismo o separación materna en crías.",
+          "El agente es H5N1 de alta patogenicidad. La signología predominante incluye compromiso neurológico y neumónico, y exige bioseguridad estricta con EPP completo por tratarse de una zoonosis de alta letalidad.",
         citation: {
-          source: "NOAA - Marine mammal rehabilitation standards",
+          source: "USS mamíferos silvestres - IAAP H5N1 en lobos marinos",
           url: "https://repository.library.noaa.gov/view/noaa/48555/noaa_48555_DS1.pdf",
         },
         order: 7,
@@ -699,11 +699,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       p2: {
         id: "p2",
         category: "Patologías",
-        text: "¿Qué sospechas si tiene una línea de pesca alrededor del cuello?",
+        text: "Si ingresa un lobo marino proveniente de una zona afectada por FAN con letargo, descoordinación, incapacidad para nadar y convulsiones, ¿cuál es la sospecha fisiopatológica principal?",
         expectedAnswer:
-          "Enmallamiento o constricción, con riesgo de heridas profundas, infección, dolor, dificultad para alimentarse o respirar y deterioro progresivo.",
+          "Debe sospecharse daño neurológico y motor severo por intoxicación con biotoxinas marinas como saxitoxina o ácido domoico bioacumuladas en la red trófica.",
         citation: {
-          source: "NOAA Fisheries - Pinniped entanglement in marine debris",
+          source: "USS mamíferos silvestres - FAN y biotoxinas marinas",
           url: "https://www.fisheries.noaa.gov/alaska/marine-life-distress/pinniped-entanglement-marine-debris",
         },
         order: 8,
@@ -711,11 +711,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       p3: {
         id: "p3",
         category: "Patologías",
-        text: "¿Qué signos respiratorios serían preocupantes?",
+        text: "Durante la hospitalización y alimentación forzada de una cría con pescado congelado, ¿qué patología neurológica fulminante puedes inducir si omites suplementación profiláctica de Tiamina?",
         expectedAnswer:
-          "Respiración con esfuerzo, secreciones, tos, letargia, postura anormal, intolerancia al movimiento o sonidos respiratorios anormales.",
+          "Existe riesgo de polioencefalomalacia por deficiencia de vitamina B1, con ataxia cerebelosa, convulsiones y muerte rápida, asociada a la acción de tiaminasas presentes en pescado congelado.",
         citation: {
-          source: "NOAA - Marine mammal rehabilitation standards",
+          source: "USS mamíferos silvestres - Tiamina y tiaminasa",
           url: "https://repository.library.noaa.gov/view/noaa/48555/noaa_48555_DS1.pdf",
         },
         order: 9,
@@ -723,11 +723,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       t1: {
         id: "t1",
         category: "Tratamientos",
-        text: "¿Cuál es la primera medida ante un lobo marino en playa?",
+        text: "Al formular una nutrición magistral para una cría de lobo marino rescatada, ¿qué ingrediente lácteo tradicional está estrictamente prohibido y qué alteración clínica se busca prevenir?",
         expectedAnswer:
-          "Evaluar a distancia, mantener a las personas alejadas, evitar manipulación, delimitar el área si es posible y contactar a SERNAPESCA.",
+          "Está prohibida la leche con lactosa o leche entera, porque los pinípedos carecen de lactasa y se busca prevenir diarreas osmóticas severas, deshidratación aguda y disbiosis digestiva.",
         citation: {
-          source: "SERNAPESCA - Rescate y conservación",
+          source: "USS mamíferos silvestres - Nutrición de crías de otáridos",
           url: "https://www.sernapesca.cl/area-trabajo/rescate-y-conservacion/",
         },
         order: 10,
@@ -735,11 +735,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       t2: {
         id: "t2",
         category: "Tratamientos",
-        text: "¿Qué tratamientos generales podría requerir si está comprometido?",
+        text: "Ingresa un lobo marino emaciado con neumonía bacteriana secundaria por Pasteurella multocida. ¿Qué protocolo farmacológico y de soporte vital está indicado?",
         expectedAnswer:
-          "Estabilización, hidratación, soporte nutricional, manejo del dolor, tratamiento de heridas, retiro seguro de redes o líneas por personal capacitado, manejo de infecciones y evaluación respiratoria.",
+          "Se indica antibioticoterapia apropiada, fluidoterapia con Ringer Lactato, soporte calórico por sonda y suplementación antioxidante o vitamínica, dentro de un protocolo completo de estabilización respiratoria y nutricional.",
         citation: {
-          source: "NOAA - Marine mammal rehabilitation standards",
+          source: "USS mamíferos silvestres - Tratamiento hospitalario de lobos marinos",
           url: "https://repository.library.noaa.gov/view/noaa/48555/noaa_48555_DS1.pdf",
         },
         order: 11,
@@ -747,11 +747,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       t3: {
         id: "t3",
         category: "Tratamientos",
-        text: "¿Por qué no debe ser manejado por cualquier persona?",
+        text: "¿Por qué el manejo clínico e inmovilización química de Otaria flavescens debe ser ejecutado exclusivamente por personal médico veterinario capacitado y bajo estrictos protocolos de bioseguridad?",
         expectedAnswer:
-          "Porque son animales grandes y fuertes, pueden morder, estresarse gravemente y requerir técnicas de contención, bioseguridad y evaluación veterinaria especializada.",
+          "Porque son mamíferos grandes y fuertes, con contención compleja y riesgo real de transmisión de zoonosis confirmadas, por lo que requieren personal entrenado y uso estricto de EPP.",
         citation: {
-          source: "NOAA - Marine mammal rehabilitation standards",
+          source: "USS mamíferos silvestres - Bioseguridad y contención",
           url: "https://repository.library.noaa.gov/view/noaa/48555/noaa_48555_DS1.pdf",
         },
         order: 12,
@@ -759,11 +759,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       ri1: {
         id: "ri1",
         category: "Reinserción",
-        text: "¿Qué criterios debe cumplir para volver al mar?",
+        text: "¿Por qué el éxito definitivo de la rehabilitación de un lobo marino no se mide con el alta médica o su salida del hospital, y qué herramientas tecnológicas se utilizan para verificarlo?",
         expectedAnswer:
-          "Buena condición corporal, capacidad de nadar, respiración normal, heridas resueltas o controladas, conducta alerta, capacidad de alimentarse y ausencia de dependencia humana.",
+          "Porque el éxito real es su supervivencia, dispersión y reintegración en la naturaleza. Esto se verifica con monitoreo postliberación mediante tecnologías como marcas satelitales o VHF adheridas al animal.",
         citation: {
-          source: "DFO Canada - Marine mammal release and rehabilitation criteria",
+          source: "USS mamíferos silvestres - Monitoreo postliberación",
           url: "https://publications.gc.ca/collections/collection_2018/mpo-dfo/fs70-5/Fs70-5-2018-030-eng.pdf",
         },
         order: 13,
@@ -771,11 +771,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       ri2: {
         id: "ri2",
         category: "Reinserción",
-        text: "¿Puede liberarse si aún tiene una herida importante?",
+        text: "Para autorizar el alta médica definitiva y la liberación de un lobo marino rehabilitado, ¿qué evaluación conductual obligatoria debe superar con éxito en las piscinas de musculación?",
         expectedAnswer:
-          "No si la herida compromete movilidad, alimentación, respiración, termorregulación o tiene riesgo alto de infección. La decisión debe basarse en examen veterinario, pronóstico y riesgo para el individuo y la población silvestre.",
+          "Debe superar varias sesiones de prueba de pesca viva en piscina profunda, demostrando captura activa de presas y restauración de una conducta plenamente esquiva o defensiva.",
         citation: {
-          source: "DFO Canada - Marine mammal release and rehabilitation criteria",
+          source: "USS mamíferos silvestres - Prueba de pesca viva",
           url: "https://publications.gc.ca/collections/collection_2018/mpo-dfo/fs70-5/Fs70-5-2018-030-eng.pdf",
         },
         order: 14,
@@ -783,11 +783,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       ri3: {
         id: "ri3",
         category: "Reinserción",
-        text: "¿Qué factores impedirían la reinserción?",
+        text: "¿Cuál de las siguientes condiciones clínicas vigentes inhabilita de forma absoluta a un lobo marino para su reinserción?",
         expectedAnswer:
-          "Debilidad extrema, enfermedad activa, incapacidad de nadar, heridas graves, enmallamiento no resuelto, dependencia humana o riesgo alto inmediato en la zona de liberación.",
+          "La ceguera bilateral, dependencia humana irreversible o heridas crónicas que comprometan termorregulación y capacidad de buceo son impedimentos absolutos para reinserción.",
         citation: {
-          source: "DFO Canada - Marine mammal release and rehabilitation criteria",
+          source: "USS mamíferos silvestres - Criterios éticos de no liberación",
           url: "https://publications.gc.ca/collections/collection_2018/mpo-dfo/fs70-5/Fs70-5-2018-030-eng.pdf",
         },
         order: 15,
@@ -799,54 +799,54 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
 const MULTIPLE_CHOICE_OPTIONS: Record<string, Record<string, CourseQuestionOption[]>> = {
   pinguino: {
     r2: [
-      { id: "a", text: "Nivel de alerta, postura, respiración, condición corporal y estado del plumaje antes de intervenir.", isCorrect: true },
-      { id: "b", text: "Solo confirmar si pertenece a una colonia cercana y devolverlo al mar de inmediato.", isCorrect: false },
-      { id: "c", text: "Tomar temperatura cloacal y ofrecer alimento antes de observarlo a distancia.", isCorrect: false },
+      { id: "a", text: "El nivel de alerta, la postura (búsqueda de ortopnea), el esfuerzo respiratorio, la condición corporal y el estado de alineación del plumaje.", isCorrect: true },
+      { id: "b", text: "Solo confirmar si pertenece a una colonia cercana de Humboldt o Magallanes para devolverlo al mar de inmediato sin evaluación.", isCorrect: false },
+      { id: "c", text: "Realizar una aproximación directa para tomar la temperatura cloacal y ofrecer alimento de forma forzada.", isCorrect: false },
     ],
     r3: [
-      { id: "a", text: "Lavar el plumaje y alimentar de inmediato para acelerar la liberación.", isCorrect: false },
-      { id: "b", text: "Estabilizarlo primero: bajar estrés, controlar temperatura y evaluar hidratación antes de procedimientos largos.", isCorrect: true },
-      { id: "c", text: "Mantenerlo activo para comprobar rápido si aún puede nadar.", isCorrect: false },
+      { id: "a", text: "Lavar el plumaje contaminado y forzar la alimentación sólida para acelerar el alta y liberación inmediata.", isCorrect: false },
+      { id: "b", text: "Lograr la estabilización médica inicial: mitigar el distrés, revertir el shock, controlar la temperatura y corregir el déficit estimado de deshidratación.", isCorrect: true },
+      { id: "c", text: "Forzar la actividad física o el nado inmediato en piscina para comprobar su capacidad motora aerodinámica.", isCorrect: false },
     ],
     mc2: [
-      { id: "a", text: "Porque un solo individuo puede ser parte de un evento ambiental o sanitario mayor y debe registrarse.", isCorrect: true },
-      { id: "b", text: "Porque los pingüinos varados siempre indican tráfico ilegal de fauna.", isCorrect: false },
-      { id: "c", text: "Porque la conservación solo importa si el animal pertenece a una especie exótica.", isCorrect: false },
+      { id: "a", text: "Porque el individuo actúa como centinela epidemiológico de primera línea y puede alertar sobre eventos ambientales mayores, FAN o brotes zoonóticos como la Influenza Aviar H5N1.", isCorrect: true },
+      { id: "b", text: "Porque los pingüinos varados en el litoral chileno son causados única y exclusivamente por redes de tráfico ilegal de fauna exótica.", isCorrect: false },
+      { id: "c", text: "Porque la medicina de la conservación solo prioriza la atención médica cuando las especies son introducidas o invasoras.", isCorrect: false },
     ],
     mc3: [
-      { id: "a", text: "Captura incidental, contaminación marina, perturbación de nidificación y cambios en disponibilidad de presas.", isCorrect: true },
-      { id: "b", text: "Únicamente depredación natural por orcas y skúas; la acción humana no es relevante.", isCorrect: false },
-      { id: "c", text: "Solo la deshidratación durante traslados terrestres dentro de centros de rescate.", isCorrect: false },
+      { id: "a", text: "La sobrepesca, la captura incidental en redes (bycatch), la contaminación por hidrocarburos y la perturbación humana de hábitats de nidificación.", isCorrect: true },
+      { id: "b", text: "Exclusivamente la depredación natural de huevos y polluelos por parte de lobos marinos, orcas y skúas en las colonias.", isCorrect: false },
+      { id: "c", text: "Únicamente el estrés térmico provocado por el transporte terrestre en las cajas de ventilación del centro de rescate.", isCorrect: false },
     ],
     p2: [
-      { id: "a", text: "El aceite mejora la flotabilidad, pero dificulta secar el plumaje al salir del agua.", isCorrect: false },
-      { id: "b", text: "El plumaje pierde impermeabilidad y aislamiento, lo que favorece hipotermia y dificulta nadar y alimentarse.", isCorrect: true },
-      { id: "c", text: "El único problema clínico es que el ave deja de vocalizar por unas horas.", isCorrect: false },
+      { id: "a", text: "El hidrocarburo incrementa la flotabilidad y densidad ósea, pero altera la secreción de las glándulas supraorbitarias nasales.", isCorrect: false },
+      { id: "b", text: "El plumaje pierde completamente su estructura, aislamiento térmico e impermeabilidad, gatillando hipotermia severa, toxicidad sistémica por acicalamiento e inanición.", isCorrect: true },
+      { id: "c", text: "El único impacto clínico relevante es un cambio conductual transitorio que inhibe las vocalizaciones de cortejo.", isCorrect: false },
     ],
     p3: [
-      { id: "a", text: "Respiración con esfuerzo, descarga nasal, sonidos anormales y postura alterada.", isCorrect: true },
-      { id: "b", text: "Solo diarrea y aumento del apetito.", isCorrect: false },
-      { id: "c", text: "Únicamente plumaje seco y reacción agresiva al cuidador.", isCorrect: false },
+      { id: "a", text: "Disnea con esfuerzo respiratorio (ortopnea), ruidos anormales, letargia progresiva, pérdida marcada de peso y focos radiopacos en sacos aéreos.", isCorrect: true },
+      { id: "b", text: "Principalmente la presencia de diarrea verde esmeralda, hiperfagia y aumento agudo de la flotabilidad.", isCorrect: false },
+      { id: "c", text: "Únicamente el hallazgo de un plumaje seco e impermeable junto con respuestas defensivas agresivas hacia el personal médico.", isCorrect: false },
     ],
     t2: [
-      { id: "a", text: "Sí, porque todo pingüino varado debe recibir antibiótico preventivo amplio.", isCorrect: false },
-      { id: "b", text: "No; se indica según hallazgos clínicos como heridas contaminadas o sospecha de infección.", isCorrect: true },
-      { id: "c", text: "Solo si el animal ya recuperó peso y está listo para la liberación.", isCorrect: false },
+      { id: "a", text: "Sí, debido a que el ambiente marino expone a todos los pacientes a cargas bacterianas letales desde el momento del varamiento.", isCorrect: false },
+      { id: "b", text: "No; se debe aplicar bajo criterios de Medicina Basada en la Evidencia, ante hallazgos clínicos claros.", isCorrect: true },
+      { id: "c", text: "Solo se justifica administrar antibióticos de amplio espectro una vez que el animal recuperó su condición corporal idónea y está listo para el alta.", isCorrect: false },
     ],
     t3: [
-      { id: "a", text: "Sí, porque el lavado inmediato reduce el estrés aunque el paciente esté inestable.", isCorrect: false },
-      { id: "b", text: "No siempre; primero debe estabilizarse y luego comprobar impermeabilidad antes de liberarlo.", isCorrect: true },
-      { id: "c", text: "Solo si el aceite está seco y el animal ya comió por sí solo.", isCorrect: false },
+      { id: "a", text: "Sí, porque la remoción del crudo es la única manera de frenar el distrés agudo y la miopatía de captura del paciente.", isCorrect: false },
+      { id: "b", text: "No siempre; primero es mandatorio estabilizar hemodinámicamente al paciente, corregir la deshidratación y desintoxicar antes de realizar el lavado.", isCorrect: true },
+      { id: "c", text: "Solo si el petróleo se encuentra completamente seco en la zona del autopodium y el animal ya realiza forrajeo autónomo.", isCorrect: false },
     ],
     ri2: [
-      { id: "a", text: "Sí, comer en cautiverio es suficiente para asegurar supervivencia en el mar.", isCorrect: false },
-      { id: "b", text: "No; además debe nadar, mantener impermeabilidad, orientarse y no depender de humanos.", isCorrect: true },
-      { id: "c", text: "Sí, siempre que haya pasado al menos 24 horas sin vómitos.", isCorrect: false },
+      { id: "a", text: "Sí, el consumo voluntario de pescado es el único indicador metabólico necesario para asegurar la supervivencia en el medio natural.", isCorrect: false },
+      { id: "b", text: "No; además debe demostrar comportamiento evasivo ante humanos, perfecta competencia biomecánica de nado, acondicionamiento físico y una impermeabilidad total del plumaje.", isCorrect: true },
+      { id: "c", text: "Sí, siempre y cuando el hemograma y perfil bioquímico no evidencien heterofilia ni elevación de fibrinógeno en las últimas 24 horas.", isCorrect: false },
     ],
     ri3: [
-      { id: "a", text: "Plumaje no impermeable, lesiones permanentes, mala condición corporal o dependencia humana.", isCorrect: true },
-      { id: "b", text: "Haber permanecido más de una semana en rehabilitación.", isCorrect: false },
-      { id: "c", text: "Que pertenezca a una especie costera y no oceánica.", isCorrect: false },
+      { id: "a", text: "Plumaje que pierde la impermeabilidad tras el nado, lesiones anatómicas permanentes asimétricas, mala condición corporal o pérdida de aversión al ser humano.", isCorrect: true },
+      { id: "b", text: "Haber permanecido bajo cuidados hospitalarios por un período superior a una semana en el área de cuarentena estricta.", isCorrect: false },
+      { id: "c", text: "Que el ejemplar corresponda a una especie con hábitos de distribución exclusivamente oceánicos y no costeros.", isCorrect: false },
     ],
   },
   tucuquere: {
