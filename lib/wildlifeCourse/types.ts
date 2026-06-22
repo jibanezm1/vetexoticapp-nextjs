@@ -7,17 +7,6 @@ export interface CourseQuestion {
   order: number;
 }
 
-export interface CourseSupportSection {
-  title: string;
-  body: string;
-}
-
-export interface CourseGalleryImage {
-  src: string;
-  alt: string;
-  caption?: string;
-}
-
 export interface CourseSpecies {
   id: string;
   name: string;
@@ -28,8 +17,6 @@ export interface CourseSpecies {
   enabledBy: string | null;
   caseText: string;
   keyConcept: string;
-  supportSections?: CourseSupportSection[];
-  galleryImages?: CourseGalleryImage[];
   questions: Record<string, CourseQuestion>;
 }
 
