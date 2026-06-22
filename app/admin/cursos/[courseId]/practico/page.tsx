@@ -90,6 +90,7 @@ export default function AdminPracticoPage() {
   const [selectedStudent, setSelectedStudent] = useState<string | null>(null);
   const [selectedSpecies, setSelectedSpecies] = useState<string | null>(null);
   const [selectedGraphSpecies, setSelectedGraphSpecies] = useState<string | null>(null);
+  const [selectedGraphCategory, setSelectedGraphCategory] = useState<string | null>(null);
   const [togglingSpecies, setTogglingSpecies] = useState<Record<string, boolean>>({});
   const [resettingStudent, setResettingStudent] = useState<Record<string, boolean>>({});
   const [deletingStudent, setDeletingStudent] = useState<Record<string, boolean>>({});
@@ -455,7 +456,10 @@ export default function AdminPracticoPage() {
                         <button
                           key={species.id}
                           type="button"
-                          onClick={() => setSelectedGraphSpecies(species.id)}
+                          onClick={() => {
+                            setSelectedGraphSpecies(species.id);
+                            setSelectedGraphCategory(null);
+                          }}
                           style={{
                             padding: "10px 14px",
                             borderRadius: 10,
@@ -478,6 +482,13 @@ export default function AdminPracticoPage() {
                   .filter((species) => species.id === activeGraphSpecies)
                   .map((species) => {
                     const multipleChoiceQuestions = getMultipleChoiceQuestions(species);
+                    const graphCategories = Array.from(new Set(multipleChoiceQuestions.map((question) => question.category)));
+                    const activeGraphCategory = selectedGraphCategory && graphCategories.includes(selectedGraphCategory)
+                      ? selectedGraphCategory
+                      : graphCategories[0] ?? null;
+                    const filteredQuestions = activeGraphCategory
+                      ? multipleChoiceQuestions.filter((question) => question.category === activeGraphCategory)
+                      : multipleChoiceQuestions;
 
                     return (
                       <div key={species.id} style={{ ...cardStyle, marginBottom: 20 }}>
@@ -494,8 +505,36 @@ export default function AdminPracticoPage() {
                         {multipleChoiceQuestions.length === 0 ? (
                           <p style={{ fontSize: 13, color: "#9ca3af", margin: 0 }}>Esta especie no tiene preguntas de alternativa.</p>
                         ) : (
-                          <div className="admin-graphs-grid">
-                            {multipleChoiceQuestions.map((question) => {
+                          <>
+                            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
+                              {graphCategories.map((category) => {
+                                const isActive = category === activeGraphCategory;
+                                const categoryCount = multipleChoiceQuestions.filter((question) => question.category === category).length;
+
+                                return (
+                                  <button
+                                    key={category}
+                                    type="button"
+                                    onClick={() => setSelectedGraphCategory(category)}
+                                    style={{
+                                      padding: "8px 12px",
+                                      borderRadius: 999,
+                                      border: `1px solid ${isActive ? "#86efac" : "#d1d5db"}`,
+                                      background: isActive ? "#f0fdf4" : "white",
+                                      color: isActive ? "#166534" : "#4b5563",
+                                      fontSize: 12,
+                                      fontWeight: 700,
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    {category} · {categoryCount}
+                                  </button>
+                                );
+                              })}
+                            </div>
+
+                            <div className="admin-graphs-grid">
+                            {filteredQuestions.map((question) => {
                               const revealKey = `${species.id}:${question.id}`;
                               const isRevealed = revealedAnswers[revealKey] ?? false;
                               const optionCounts = getOptionCounts(species.id, question, allResponses);
@@ -583,7 +622,8 @@ export default function AdminPracticoPage() {
                                 </div>
                               );
                             })}
-                          </div>
+                            </div>
+                          </>
                         )}
                       </div>
                     );
