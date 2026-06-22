@@ -65,6 +65,8 @@ export default function AdminPracticoPage() {
   const [selectedStudent, setSelectedStudent] = useState<string | null>(null);
   const [selectedSpecies, setSelectedSpecies] = useState<string | null>(null);
   const [togglingSpecies, setTogglingSpecies] = useState<Record<string, boolean>>({});
+  const [resettingStudent, setResettingStudent] = useState<Record<string, boolean>>({});
+  const [deletingStudent, setDeletingStudent] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -135,6 +137,45 @@ export default function AdminPracticoPage() {
       alert("Error al cambiar estado de la especie.");
     }
     setTogglingSpecies((prev) => ({ ...prev, [speciesId]: false }));
+  }
+
+  async function handleResetStudent(studentId: string, studentName: string) {
+    const confirmed = window.confirm(`¿Reiniciar todas las respuestas de ${studentName}? Esta acción no se puede deshacer.`);
+    if (!confirmed) return;
+
+    setResettingStudent((prev) => ({ ...prev, [studentId]: true }));
+    try {
+      await update(ref(db), {
+        [`courseResponses/${courseId}/${studentId}`]: null,
+      });
+
+      if (selectedStudent === studentId) {
+        setActiveTab("respuestas");
+      }
+    } catch {
+      alert("Error al reiniciar respuestas del alumno.");
+    }
+    setResettingStudent((prev) => ({ ...prev, [studentId]: false }));
+  }
+
+  async function handleDeleteStudent(studentId: string, studentName: string) {
+    const confirmed = window.confirm(`¿Eliminar a ${studentName} del curso? También se borrarán todas sus respuestas.`);
+    if (!confirmed) return;
+
+    setDeletingStudent((prev) => ({ ...prev, [studentId]: true }));
+    try {
+      await update(ref(db), {
+        [`courseStudents/${courseId}/${studentId}`]: null,
+        [`courseResponses/${courseId}/${studentId}`]: null,
+      });
+
+      if (selectedStudent === studentId) {
+        setSelectedStudent(null);
+      }
+    } catch {
+      alert("Error al eliminar alumno.");
+    }
+    setDeletingStudent((prev) => ({ ...prev, [studentId]: false }));
   }
 
   function handleCopy(text: string, id: string) {
@@ -286,6 +327,8 @@ export default function AdminPracticoPage() {
                 const progress = course
                   ? getStudentProgress(course.species, allResponses[student.id])
                   : "No iniciado";
+                const isResetting = resettingStudent[student.id] ?? false;
+                const isDeleting = deletingStudent[student.id] ?? false;
                 const progressColor =
                   progress === "Completado" ? "#7c3aed" :
                   progress === "Completado parcial" ? "#d97706" :
@@ -322,6 +365,7 @@ export default function AdminPracticoPage() {
                       <button
                         onClick={() => handleCopy(student.sessionUrl, student.id)}
                         style={btnSmStyle}
+                        disabled={isResetting || isDeleting}
                       >
                         {copiedId === student.id ? "✓ Copiado" : "Copiar enlace"}
                       </button>
@@ -331,8 +375,23 @@ export default function AdminPracticoPage() {
                           setActiveTab("respuestas");
                         }}
                         style={btnSmStyle}
+                        disabled={isResetting || isDeleting}
                       >
                         Ver respuestas
+                      </button>
+                      <button
+                        onClick={() => handleResetStudent(student.id, student.name)}
+                        style={{ ...btnSmStyle, background: "#fff7ed", border: "1px solid #fdba74", color: "#c2410c" }}
+                        disabled={isResetting || isDeleting}
+                      >
+                        {isResetting ? "Reiniciando..." : "Reiniciar respuestas"}
+                      </button>
+                      <button
+                        onClick={() => handleDeleteStudent(student.id, student.name)}
+                        style={{ ...btnSmStyle, background: "#fef2f2", border: "1px solid #fca5a5", color: "#b91c1c" }}
+                        disabled={isResetting || isDeleting}
+                      >
+                        {isDeleting ? "Eliminando..." : "Eliminar alumno"}
                       </button>
                     </div>
                   </div>
