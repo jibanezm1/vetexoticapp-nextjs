@@ -1035,9 +1035,9 @@ function normalizeSpeciesQuestions(
       normalized[question.id] = {
         ...question,
         type,
-        minLength: type === "open" ? 50 : undefined,
-        options,
         order: nextOrder,
+        ...(type === "open" ? { minLength: 50 } : {}),
+        ...(options ? { options } : {}),
       };
 
       nextOrder += 1;
