@@ -1,6 +1,10 @@
-import type { CourseSpecies } from "./types";
+import type { CourseQuestion, CourseQuestionOption, CourseSpecies } from "./types";
 
-type StaticSpecies = Omit<CourseSpecies, "enabled" | "enabledAt" | "enabledBy">;
+type StoredSpecies = Omit<CourseSpecies, "enabled" | "enabledAt" | "enabledBy">;
+type BaseQuestion = Omit<CourseQuestion, "type" | "minLength" | "options">;
+type StaticSpecies = Omit<StoredSpecies, "questions"> & {
+  questions: Record<string, BaseQuestion>;
+};
 
 export const COURSE_ID = "fauna-silvestre-2026";
 
@@ -8,7 +12,7 @@ export const COURSE_TITLE = "Clase práctica: Clínica de animales silvestres y 
 export const COURSE_DESCRIPTION =
   "Práctico interactivo por especies. Cada alumno responde preguntas clínicas de rehabilitación, medicina de la conservación, patologías, tratamientos y reinserción.";
 
-export const SPECIES_DATA: Record<string, StaticSpecies> = {
+const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
   pinguino: {
     id: "pinguino",
     name: "Pingüino",
@@ -791,3 +795,268 @@ export const SPECIES_DATA: Record<string, StaticSpecies> = {
     },
   },
 };
+
+const MULTIPLE_CHOICE_OPTIONS: Record<string, Record<string, CourseQuestionOption[]>> = {
+  pinguino: {
+    r2: [
+      { id: "a", text: "Nivel de alerta, postura, respiración, condición corporal y estado del plumaje antes de intervenir.", isCorrect: true },
+      { id: "b", text: "Solo confirmar si pertenece a una colonia cercana y devolverlo al mar de inmediato.", isCorrect: false },
+      { id: "c", text: "Tomar temperatura cloacal y ofrecer alimento antes de observarlo a distancia.", isCorrect: false },
+    ],
+    r3: [
+      { id: "a", text: "Lavar el plumaje y alimentar de inmediato para acelerar la liberación.", isCorrect: false },
+      { id: "b", text: "Estabilizarlo primero: bajar estrés, controlar temperatura y evaluar hidratación antes de procedimientos largos.", isCorrect: true },
+      { id: "c", text: "Mantenerlo activo para comprobar rápido si aún puede nadar.", isCorrect: false },
+    ],
+    mc2: [
+      { id: "a", text: "Porque un solo individuo puede ser parte de un evento ambiental o sanitario mayor y debe registrarse.", isCorrect: true },
+      { id: "b", text: "Porque los pingüinos varados siempre indican tráfico ilegal de fauna.", isCorrect: false },
+      { id: "c", text: "Porque la conservación solo importa si el animal pertenece a una especie exótica.", isCorrect: false },
+    ],
+    mc3: [
+      { id: "a", text: "Captura incidental, contaminación marina, perturbación de nidificación y cambios en disponibilidad de presas.", isCorrect: true },
+      { id: "b", text: "Únicamente depredación natural por orcas y skúas; la acción humana no es relevante.", isCorrect: false },
+      { id: "c", text: "Solo la deshidratación durante traslados terrestres dentro de centros de rescate.", isCorrect: false },
+    ],
+    p2: [
+      { id: "a", text: "El aceite mejora la flotabilidad, pero dificulta secar el plumaje al salir del agua.", isCorrect: false },
+      { id: "b", text: "El plumaje pierde impermeabilidad y aislamiento, lo que favorece hipotermia y dificulta nadar y alimentarse.", isCorrect: true },
+      { id: "c", text: "El único problema clínico es que el ave deja de vocalizar por unas horas.", isCorrect: false },
+    ],
+    p3: [
+      { id: "a", text: "Respiración con esfuerzo, descarga nasal, sonidos anormales y postura alterada.", isCorrect: true },
+      { id: "b", text: "Solo diarrea y aumento del apetito.", isCorrect: false },
+      { id: "c", text: "Únicamente plumaje seco y reacción agresiva al cuidador.", isCorrect: false },
+    ],
+    t2: [
+      { id: "a", text: "Sí, porque todo pingüino varado debe recibir antibiótico preventivo amplio.", isCorrect: false },
+      { id: "b", text: "No; se indica según hallazgos clínicos como heridas contaminadas o sospecha de infección.", isCorrect: true },
+      { id: "c", text: "Solo si el animal ya recuperó peso y está listo para la liberación.", isCorrect: false },
+    ],
+    t3: [
+      { id: "a", text: "Sí, porque el lavado inmediato reduce el estrés aunque el paciente esté inestable.", isCorrect: false },
+      { id: "b", text: "No siempre; primero debe estabilizarse y luego comprobar impermeabilidad antes de liberarlo.", isCorrect: true },
+      { id: "c", text: "Solo si el aceite está seco y el animal ya comió por sí solo.", isCorrect: false },
+    ],
+    ri2: [
+      { id: "a", text: "Sí, comer en cautiverio es suficiente para asegurar supervivencia en el mar.", isCorrect: false },
+      { id: "b", text: "No; además debe nadar, mantener impermeabilidad, orientarse y no depender de humanos.", isCorrect: true },
+      { id: "c", text: "Sí, siempre que haya pasado al menos 24 horas sin vómitos.", isCorrect: false },
+    ],
+    ri3: [
+      { id: "a", text: "Plumaje no impermeable, lesiones permanentes, mala condición corporal o dependencia humana.", isCorrect: true },
+      { id: "b", text: "Haber permanecido más de una semana en rehabilitación.", isCorrect: false },
+      { id: "c", text: "Que pertenezca a una especie costera y no oceánica.", isCorrect: false },
+    ],
+  },
+  tucuquere: {
+    r2: [
+      { id: "a", text: "Estado general, respiración, hidratación, alas, patas, garras, pico y ojos con contención segura.", isCorrect: true },
+      { id: "b", text: "Solo el peso corporal, porque las lesiones de ala se detectan después.", isCorrect: false },
+      { id: "c", text: "Primero dejarlo cazar una presa viva para medir reflejos.", isCorrect: false },
+    ],
+    r3: [
+      { id: "a", text: "Porque un vuelo deficiente impide cazar, escapar y sostenerse en vida libre.", isCorrect: true },
+      { id: "b", text: "Porque las rapaces solo vuelan durante la época reproductiva.", isCorrect: false },
+      { id: "c", text: "Porque cualquier ave que planea puede compensar con mayor agresividad territorial.", isCorrect: false },
+    ],
+    mc2: [
+      { id: "a", text: "Porque los búhos pueden actuar como centinelas de exposición ambiental a rodenticidas.", isCorrect: true },
+      { id: "b", text: "Porque toda intoxicación en rapaces implica necesariamente rabia.", isCorrect: false },
+      { id: "c", text: "Porque la única fuente de tóxicos en búhos son plantas ornamentales urbanas.", isCorrect: false },
+    ],
+    mc3: [
+      { id: "a", text: "Regular poblaciones presa, especialmente de pequeños y medianos vertebrados.", isCorrect: true },
+      { id: "b", text: "Dispersar semillas de bosques templados mediante dieta frugívora estacional.", isCorrect: false },
+      { id: "c", text: "Mantener playas libres de carroña marina.", isCorrect: false },
+    ],
+    p2: [
+      { id: "a", text: "Trauma neurológico, intoxicación anticoagulante, shock o enfermedad sistémica.", isCorrect: true },
+      { id: "b", text: "Solo un periodo normal de muda de plumas.", isCorrect: false },
+      { id: "c", text: "Exceso de alimento previo a la captura.", isCorrect: false },
+    ],
+    p3: [
+      { id: "a", text: "Porque la visión es esencial para cazar, orientarse, posarse y evitar obstáculos.", isCorrect: true },
+      { id: "b", text: "Porque los ojos sirven solo para comunicación intraespecífica, no para la caza.", isCorrect: false },
+      { id: "c", text: "Porque las lesiones oculares se compensan completamente con el oído.", isCorrect: false },
+    ],
+    t2: [
+      { id: "a", text: "Puede requerir inmovilización, analgesia, cirugía y luego rehabilitación en jaula de vuelo.", isCorrect: true },
+      { id: "b", text: "Solo reposo en una caja pequeña hasta que deje de vocalizar.", isCorrect: false },
+      { id: "c", text: "Liberación temprana para que el ave termine de fortalecer el ala en terreno.", isCorrect: false },
+    ],
+    t3: [
+      { id: "a", text: "Porque consolidar hueso basta; la coordinación y musculatura se recuperan solas después de liberar.", isCorrect: false },
+      { id: "b", text: "Porque además debe recuperar vuelo simétrico, resistencia, maniobra y capacidad de caza.", isCorrect: true },
+      { id: "c", text: "Porque en rapaces la prioridad final es solo tolerar la presencia humana.", isCorrect: false },
+    ],
+    ri2: [
+      { id: "a", text: "Sí, si acepta presas entregadas por humanos puede liberarse de inmediato.", isCorrect: false },
+      { id: "b", text: "No; debe forrajear y cazar de manera independiente antes de volver a vida libre.", isCorrect: true },
+      { id: "c", text: "Sí, si el apetito mejora y se posa correctamente dentro de la caja de transporte.", isCorrect: false },
+    ],
+    ri3: [
+      { id: "a", text: "Vuelo deficiente, lesión ocular relevante, fractura mal consolidada o habituación humana.", isCorrect: true },
+      { id: "b", text: "Haber recibido analgesia durante la rehabilitación.", isCorrect: false },
+      { id: "c", text: "Provenir de una zona con presencia de roedores silvestres.", isCorrect: false },
+    ],
+  },
+  pudu: {
+    r2: [
+      { id: "a", text: "Porque el estrés y la restricción repetida pueden agravar el cuadro y desencadenar miopatía por captura.", isCorrect: true },
+      { id: "b", text: "Porque la piel del pudú no tolera el contacto humano por más de un minuto.", isCorrect: false },
+      { id: "c", text: "Porque las mordidas de perro siempre son superficiales y no requieren revisión inmediata.", isCorrect: false },
+    ],
+    r3: [
+      { id: "a", text: "Un ambiente tranquilo, de baja luz, poco ruido y mínima presencia humana.", isCorrect: true },
+      { id: "b", text: "Un recinto con tránsito frecuente para que no pierda tolerancia a las personas.", isCorrect: false },
+      { id: "c", text: "Un espacio compartido con otros herbívoros domésticos para disminuir ansiedad.", isCorrect: false },
+    ],
+    mc2: [
+      { id: "a", text: "Promover tenencia responsable: no dejar perros sueltos, no criar pudúes y avisar a la autoridad.", isCorrect: true },
+      { id: "b", text: "Indicar que los perros con collar no representan riesgo para fauna nativa.", isCorrect: false },
+      { id: "c", text: "Explicar que basta con trasladar los pudúes juveniles a patios domiciliarios protegidos.", isCorrect: false },
+    ],
+    mc3: [
+      { id: "a", text: "Porque es fauna silvestre con alta susceptibilidad al estrés y debe mantener conducta natural para reinsertarse.", isCorrect: true },
+      { id: "b", text: "Porque solo los machos adultos pueden adaptarse a la convivencia humana.", isCorrect: false },
+      { id: "c", text: "Porque la ley solo prohíbe mantener pudúes durante el verano.", isCorrect: false },
+    ],
+    p2: [
+      { id: "a", text: "Decaimiento marcado, disnea, sangrado, incapacidad de mantenerse de pie, dolor intenso o fracturas evidentes.", isCorrect: true },
+      { id: "b", text: "Orejas erguidas, inmovilidad breve y evitación visual aislada.", isCorrect: false },
+      { id: "c", text: "Aumento de apetito dentro de las primeras horas de manejo.", isCorrect: false },
+    ],
+    p3: [
+      { id: "a", text: "Porque una herida pequeña puede ocultar daño profundo, contaminación bacteriana o perforaciones internas.", isCorrect: true },
+      { id: "b", text: "Porque las mordidas pequeñas solo generan riesgo si el animal pesa más de 20 kg.", isCorrect: false },
+      { id: "c", text: "Porque las lesiones por perro no se infectan cuando el pudú sigue caminando.", isCorrect: false },
+    ],
+    t2: [
+      { id: "a", text: "Evitar manipulación repetida, alimentación improvisada, cercanía con perros o intentos de domesticación.", isCorrect: true },
+      { id: "b", text: "Ofrecer leche y frutas dulces para reducir el miedo al humano.", isCorrect: false },
+      { id: "c", text: "Mantenerlo con visitas frecuentes para evaluar si recupera docilidad.", isCorrect: false },
+    ],
+    t3: [
+      { id: "a", text: "Porque como herbívoro silvestre requiere una dieta acorde; una dieta improvisada favorece trastornos digestivos y dependencia.", isCorrect: true },
+      { id: "b", text: "Porque todos los rumiantes silvestres deben recibir solo pellet comercial de conejo.", isCorrect: false },
+      { id: "c", text: "Porque la alimentación solo importa después del alta conductual.", isCorrect: false },
+    ],
+    ri2: [
+      { id: "a", text: "No debe liberarse si tiene lesiones permanentes, dependencia humana, mala locomoción o un sitio con riesgo inmediato alto.", isCorrect: true },
+      { id: "b", text: "Puede liberarse aunque esté demasiado dócil si su peso corporal es normal.", isCorrect: false },
+      { id: "c", text: "Solo debe retenerse si aún conserva heridas visibles en la piel.", isCorrect: false },
+    ],
+    ri3: [
+      { id: "a", text: "Porque el sitio debe ofrecer hábitat adecuado y evitar perros sueltos, tránsito intenso o baja cobertura vegetal.", isCorrect: true },
+      { id: "b", text: "Porque los pudúes siempre deben liberarse cerca de áreas urbanas para facilitar su monitoreo.", isCorrect: false },
+      { id: "c", text: "Porque el lugar de liberación solo importa si el animal fue criado en cautiverio.", isCorrect: false },
+    ],
+  },
+  lobo_marino: {
+    r2: [
+      { id: "a", text: "Heridas, enmallamiento, sangrado, dificultad respiratoria, debilidad extrema o incapacidad de desplazarse.", isCorrect: true },
+      { id: "b", text: "Solo estar solo en la playa durante el día.", isCorrect: false },
+      { id: "c", text: "Dormir más de diez minutos en la arena seca.", isCorrect: false },
+    ],
+    r3: [
+      { id: "a", text: "Porque puede estar descansando, enfermo o lesionado, y forzarlo al agua empeora el estrés y dificulta la evaluación.", isCorrect: true },
+      { id: "b", text: "Porque los lobos marinos no pueden nadar después de tocar la arena caliente.", isCorrect: false },
+      { id: "c", text: "Porque siempre regresan solos al mar apenas baja la marea.", isCorrect: false },
+    ],
+    mc2: [
+      { id: "a", text: "Ubicación, fecha, tamaño aproximado, conducta, heridas, enmallamiento y fotos tomadas a distancia.", isCorrect: true },
+      { id: "b", text: "Solo el peso estimado y la velocidad del viento al momento del hallazgo.", isCorrect: false },
+      { id: "c", text: "Exclusivamente si la playa tiene acceso vehicular o no.", isCorrect: false },
+    ],
+    mc3: [
+      { id: "a", text: "Porque acercarse, tocar o moverlo aumenta estrés, riesgo de mordidas y dificulta el trabajo del equipo entrenado.", isCorrect: true },
+      { id: "b", text: "Porque los lobos marinos solo se alteran si escuchan ruidos metálicos.", isCorrect: false },
+      { id: "c", text: "Porque el principal problema del público es que enfría demasiado el sustrato de descanso.", isCorrect: false },
+    ],
+    p2: [
+      { id: "a", text: "Enmallamiento o constricción con riesgo de heridas profundas, infección y dificultad para alimentarse o respirar.", isCorrect: true },
+      { id: "b", text: "Una marca superficial sin relevancia clínica si aún puede vocalizar.", isCorrect: false },
+      { id: "c", text: "Un signo típico de recambio normal del pelaje juvenil.", isCorrect: false },
+    ],
+    p3: [
+      { id: "a", text: "Respiración con esfuerzo, secreciones, tos, postura anormal o sonidos respiratorios alterados.", isCorrect: true },
+      { id: "b", text: "Aletas húmedas y pupilas contraídas bajo sol intenso.", isCorrect: false },
+      { id: "c", text: "Únicamente bostezos repetidos antes de entrar al agua.", isCorrect: false },
+    ],
+    t2: [
+      { id: "a", text: "Estabilización, hidratación, analgesia, tratamiento de heridas y retiro seguro de redes por personal capacitado.", isCorrect: true },
+      { id: "b", text: "Ejercicio forzado en arena para evaluar resistencia antes de iniciar cualquier terapia.", isCorrect: false },
+      { id: "c", text: "Alimentación manual en playa abierta como medida inicial estándar.", isCorrect: false },
+    ],
+    t3: [
+      { id: "a", text: "Porque son animales grandes y fuertes que requieren contención especializada, bioseguridad y evaluación veterinaria.", isCorrect: true },
+      { id: "b", text: "Porque el principal riesgo es solo que escapen antes de ser fotografiados.", isCorrect: false },
+      { id: "c", text: "Porque fuera del agua no pueden responder con mordidas ni estrés severo.", isCorrect: false },
+    ],
+    ri2: [
+      { id: "a", text: "No, si la herida compromete movilidad, alimentación, respiración, termorregulación o mantiene alto riesgo infeccioso.", isCorrect: true },
+      { id: "b", text: "Sí, siempre que el animal vuelva a entrar al agua por sus propios medios.", isCorrect: false },
+      { id: "c", text: "Sí, si la lesión está seca aunque siga abierta.", isCorrect: false },
+    ],
+    ri3: [
+      { id: "a", text: "Debilidad extrema, enfermedad activa, incapacidad de nadar, heridas graves o dependencia humana.", isCorrect: true },
+      { id: "b", text: "Permanecer menos de 48 horas en rehabilitación.", isCorrect: false },
+      { id: "c", text: "Pertenecer a una colonia de gran tamaño.", isCorrect: false },
+    ],
+  },
+};
+
+function normalizeSpeciesQuestions(
+  speciesId: string,
+  questions: Record<string, BaseQuestion>
+): Record<string, CourseQuestion> {
+  const grouped: Record<string, BaseQuestion[]> = {};
+
+  Object.values(questions)
+    .sort((a, b) => a.order - b.order)
+    .forEach((question) => {
+      if (!grouped[question.category]) {
+        grouped[question.category] = [];
+      }
+      grouped[question.category].push(question);
+    });
+
+  const normalized: Record<string, CourseQuestion> = {};
+  let nextOrder = 1;
+
+  Object.values(grouped).forEach((group) => {
+    group.slice(0, 3).forEach((question, index) => {
+      const type = index === 0 ? "open" : "multiple_choice";
+      const options = type === "multiple_choice"
+        ? MULTIPLE_CHOICE_OPTIONS[speciesId]?.[question.id]
+        : undefined;
+
+      normalized[question.id] = {
+        ...question,
+        type,
+        minLength: type === "open" ? 50 : undefined,
+        options,
+        order: nextOrder,
+      };
+
+      nextOrder += 1;
+    });
+  });
+
+  return normalized;
+}
+
+function normalizeSpeciesData(data: Record<string, StaticSpecies>): Record<string, StoredSpecies> {
+  return Object.fromEntries(
+    Object.entries(data).map(([speciesId, species]) => [
+      speciesId,
+      {
+        ...species,
+        questions: normalizeSpeciesQuestions(speciesId, species.questions),
+      },
+    ])
+  );
+}
+
+export const SPECIES_DATA: Record<string, StoredSpecies> = normalizeSpeciesData(BASE_SPECIES_DATA);

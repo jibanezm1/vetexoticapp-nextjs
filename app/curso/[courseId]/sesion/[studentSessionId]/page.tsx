@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { off, onValue, ref } from "firebase/database";
 import { db } from "@/lib/firebase";
+import { isQuestionAnswered } from "@/lib/wildlifeCourse/questionHelpers";
 import type { Course, CourseSpecies, CourseStudent, StudentResponses } from "@/lib/wildlifeCourse/types";
 
 type SpeciesStatus = "locked" | "enabled" | "partial" | "completed";
@@ -15,10 +16,12 @@ function getSpeciesStatus(
   if (!species.enabled) return "locked";
   if (!responses) return "enabled";
 
-  const questionCount = Object.keys(species.questions).length;
-  const answeredCount = Object.values(responses).filter(
-    (r) => r && typeof r === "object" && (r as { answer?: string }).answer?.trim()
-  ).length;
+  const questions = Object.values(species.questions);
+  const questionCount = questions.length;
+  const answeredCount = questions.filter((question) => {
+    const response = responses[question.id] as { answer?: string; status?: string } | undefined;
+    return isQuestionAnswered(question, response as never);
+  }).length;
   const submittedCount = Object.values(responses).filter(
     (r) => r && typeof r === "object" && (r as { status?: string }).status === "submitted"
   ).length;
@@ -238,8 +241,8 @@ export default function StudentSessionPage() {
                   <p style={{ fontSize: 13, color: "#5a5a5a", margin: "4px 0 0", lineHeight: 1.4 }}>
                     {Object.keys(species.questions).length} preguntas
                     {responses[species.id] && (() => {
-                      const answered = Object.values(responses[species.id]).filter(
-                        (r) => r?.answer?.trim()
+                      const answered = Object.values(species.questions).filter((question) =>
+                        isQuestionAnswered(question, responses[species.id]?.[question.id])
                       ).length;
                       return answered > 0 ? ` · ${answered} respondidas` : "";
                     })()}

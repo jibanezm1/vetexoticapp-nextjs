@@ -12,21 +12,21 @@ export async function seedWildlifeCourse(courseId: string): Promise<{ created: b
 
   if (snap.exists()) {
     const existing = snap.val();
-    // Add any missing species without overwriting existing
     const updates: Record<string, unknown> = {};
+
     for (const [speciesId, speciesData] of Object.entries(SPECIES_DATA)) {
-      if (!existing.species?.[speciesId]) {
-        updates[`courses/${courseId}/species/${speciesId}`] = {
-          ...speciesData,
-          enabled: false,
-          enabledAt: null,
-          enabledBy: null,
-        };
-      }
+      const existingSpecies = existing.species?.[speciesId];
+      updates[`courses/${courseId}/species/${speciesId}`] = {
+        ...speciesData,
+        enabled: existingSpecies?.enabled ?? false,
+        enabledAt: existingSpecies?.enabledAt ?? null,
+        enabledBy: existingSpecies?.enabledBy ?? null,
+      };
     }
+
     if (Object.keys(updates).length > 0) {
       await update(ref(db), updates);
-      return { created: false, message: "Especies faltantes agregadas al curso existente." };
+      return { created: false, message: "Curso resincronizado correctamente con la estructura actual." };
     }
     return { created: false, message: "El curso ya existe y está completo." };
   }

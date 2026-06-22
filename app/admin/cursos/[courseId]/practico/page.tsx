@@ -5,6 +5,11 @@ import { useParams } from "next/navigation";
 import { off, onValue, ref, update } from "firebase/database";
 import { db } from "@/lib/firebase";
 import QRCode from "@/app/quiz/components/QRCode";
+import {
+  getQuestionResponseText,
+  hasStoredAnswer,
+  isQuestionAnswered,
+} from "@/lib/wildlifeCourse/questionHelpers";
 import { seedWildlifeCourse } from "@/lib/wildlifeCourse/seed";
 import type {
   AllStudentResponses,
@@ -32,7 +37,12 @@ function getStudentProgress(
   if (!studentResponses) return "No iniciado";
   const totalQ = Object.values(species).reduce((acc, s) => acc + Object.keys(s.questions).length, 0);
   if (totalQ === 0) return "No iniciado";
-  const answered = Object.values(studentResponses).flatMap((sr) => Object.values(sr)).filter((r) => r?.answer?.trim()).length;
+  const answered = Object.values(species).reduce((acc, currentSpecies) => {
+    const speciesResponses = studentResponses[currentSpecies.id] ?? {};
+    return acc + Object.values(currentSpecies.questions).filter((question) =>
+      isQuestionAnswered(question, speciesResponses[question.id])
+    ).length;
+  }, 0);
   const submitted = Object.values(studentResponses).flatMap((sr) => Object.values(sr)).filter((r) => r?.status === "submitted").length;
   if (answered === 0) return "No iniciado";
   if (submitted === totalQ) return "Completado";
@@ -391,8 +401,11 @@ export default function AdminPracticoPage() {
                     {/* Progress bar */}
                     {species.enabled && (() => {
                       const total = Object.keys(species.questions).length;
+                      const speciesQuestions = Object.values(species.questions);
                       const responded = Object.values(allResponses).filter(
-                        (sr) => sr?.[species.id] && Object.values(sr[species.id]).some((r) => r?.answer?.trim())
+                        (sr) => sr?.[species.id] && speciesQuestions.some((question) =>
+                          isQuestionAnswered(question, sr[species.id]?.[question.id])
+                        )
                       ).length;
                       const pct = sortedStudents.length > 0 ? Math.round((responded / sortedStudents.length) * 100) : 0;
                       return (
@@ -487,6 +500,12 @@ export default function AdminPracticoPage() {
                                   boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
                                   borderLeft: `3px solid ${r.status === "submitted" ? "#7c3aed" : "#d97706"}`,
                                 }}>
+                                  {(() => {
+                                    const answerText = getQuestionResponseText(q, r);
+                                    const hasAnswer = hasStoredAnswer(answerText);
+
+                                    return (
+                                      <>
                                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4, flexWrap: "wrap", gap: 4 }}>
                                     <span style={{ fontSize: 11, color: "#9ca3af" }}>{q.category}</span>
                                     <span style={{
@@ -498,17 +517,22 @@ export default function AdminPracticoPage() {
                                     </span>
                                   </div>
                                   <p style={{ fontSize: 13, fontWeight: 600, color: "#374151", margin: "0 0 6px" }}>{q.text}</p>
+                                  {q.type === "multiple_choice" && (
+                                    <p style={{ fontSize: 11, fontWeight: 700, color: "#1a6b3a", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: 0.4 }}>
+                                      Alternativa
+                                    </p>
+                                  )}
                                   <p style={{
                                     fontSize: 14,
-                                    color: r.answer?.trim() ? "#1a1a1a" : "#9ca3af",
+                                    color: hasAnswer ? "#1a1a1a" : "#9ca3af",
                                     margin: 0,
                                     lineHeight: 1.5,
-                                    fontStyle: r.answer?.trim() ? "normal" : "italic",
+                                    fontStyle: hasAnswer ? "normal" : "italic",
                                     background: "#f9fafb",
                                     borderRadius: 8,
                                     padding: "8px 10px",
                                   }}>
-                                    {r.answer?.trim() || "Sin respuesta"}
+                                    {answerText || "Sin respuesta"}
                                   </p>
                                   {r.updatedAt && (
                                     <p style={{ fontSize: 11, color: "#9ca3af", margin: "4px 0 0" }}>
@@ -516,6 +540,9 @@ export default function AdminPracticoPage() {
                                       {r.submittedAt && ` · Enviada: ${formatDate(r.submittedAt)}`}
                                     </p>
                                   )}
+                                      </>
+                                    );
+                                  })()}
                                 </div>
                               );
                             })}

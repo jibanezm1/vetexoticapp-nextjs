@@ -1,10 +1,21 @@
+export type CourseQuestionType = "open" | "multiple_choice";
+
+export interface CourseQuestionOption {
+  id: string;
+  text: string;
+  isCorrect: boolean;
+}
+
 export interface CourseQuestion {
   id: string;
   category: string;
   text: string;
+  type: CourseQuestionType;
   expectedAnswer: string;
   citation: { source: string; url: string };
   order: number;
+  minLength?: number;
+  options?: CourseQuestionOption[];
 }
 
 export interface CourseSpecies {

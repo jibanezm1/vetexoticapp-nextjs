@@ -4,6 +4,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { get, off, onValue, ref, set, update } from "firebase/database";
 import { db } from "@/lib/firebase";
+import {
+  getQuestionMinimumLength,
+  isQuestionAnswered,
+} from "@/lib/wildlifeCourse/questionHelpers";
 import type { CourseQuestion, CourseSpecies, CourseStudent, QuestionResponse } from "@/lib/wildlifeCourse/types";
 
 type SaveStatus = "idle" | "saving" | "saved" | "error";
@@ -44,6 +48,7 @@ export default function SpeciePracticaPage() {
   const [submitLoading, setSubmitLoading] = useState(false);
 
   const debounceTimers = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
+  const questionRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const textareaRefs = useRef<Record<string, HTMLTextAreaElement | null>>({});
 
   useEffect(() => {
@@ -143,11 +148,12 @@ export default function SpeciePracticaPage() {
     }
   }, [courseId, studentSessionId, speciesId, responses]);
 
-  function handleAnswerChange(questionId: string, value: string) {
+  function handleOpenAnswerChange(question: CourseQuestion, value: string) {
+    const questionId = question.id;
     setDrafts((prev) => ({ ...prev, [questionId]: value }));
 
     clearTimeout(debounceTimers.current[questionId]);
-    if (value.trim().length >= 50) {
+    if (value.trim().length >= getQuestionMinimumLength(question)) {
       setSaveStatus((prev) => ({ ...prev, [questionId]: "saving" }));
       debounceTimers.current[questionId] = setTimeout(() => {
         saveAnswer(questionId, value);
@@ -157,21 +163,25 @@ export default function SpeciePracticaPage() {
     }
   }
 
+  function handleOptionSelect(questionId: string, optionId: string) {
+    setDrafts((prev) => ({ ...prev, [questionId]: optionId }));
+    void saveAnswer(questionId, optionId);
+  }
+
   async function handleSubmitAll() {
     if (!species) return;
 
-    // Find first question that is empty or too short
     const allQuestions = Object.values(species.questions).sort((a, b) => a.order - b.order);
 
     const firstIncomplete = allQuestions.find((q) => {
-      const answer = drafts[q.id]?.trim() ?? responses[q.id]?.answer?.trim() ?? "";
-      return answer.length < 50;
+      const answer = drafts[q.id] ?? responses[q.id]?.answer ?? "";
+      return !isQuestionAnswered(q, responses[q.id], answer);
     });
 
     if (firstIncomplete) {
+      questionRefs.current[firstIncomplete.id]?.scrollIntoView({ behavior: "smooth", block: "center" });
       const el = textareaRefs.current[firstIncomplete.id];
       if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "center" });
         el.focus();
       }
       return;
@@ -243,8 +253,11 @@ export default function SpeciePracticaPage() {
   if (!species) return null;
 
   const questionGroups = groupQuestionsByCategory(species.questions);
+  const allQuestions = Object.values(species.questions).sort((a, b) => a.order - b.order);
   const totalQuestions = Object.keys(species.questions).length;
-  const answeredCount = Object.values(drafts).filter((v) => v?.trim().length >= 50).length;
+  const answeredCount = allQuestions.filter((question) =>
+    isQuestionAnswered(question, responses[question.id], drafts[question.id] ?? responses[question.id]?.answer ?? "")
+  ).length;
   const submittedCount = Object.values(responses).filter((r) => r?.status === "submitted").length;
 
   return (
@@ -309,9 +322,11 @@ export default function SpeciePracticaPage() {
                 const status = saveStatus[q.id] ?? "idle";
                 const isSubmitted = responses[q.id]?.status === "submitted";
                 const draft = drafts[q.id] ?? responses[q.id]?.answer ?? "";
+                const minLength = getQuestionMinimumLength(q);
+                const isMultipleChoice = q.type === "multiple_choice";
 
                 return (
-                  <div key={q.id} style={{
+                  <div key={q.id} ref={(el) => { questionRefs.current[q.id] = el; }} style={{
                     background: "white",
                     borderRadius: 14,
                     padding: "16px 16px",
@@ -336,33 +351,65 @@ export default function SpeciePracticaPage() {
                     <p style={{ fontSize: 15, fontWeight: 600, color: "#1a1a1a", margin: "0 0 12px", lineHeight: 1.5 }}>
                       {q.text}
                     </p>
-                    <textarea
-                      ref={(el) => { textareaRefs.current[q.id] = el; }}
-                      value={draft}
-                      onChange={(e) => handleAnswerChange(q.id, e.target.value)}
-                      placeholder="Escribe tu respuesta aquí... (mínimo 50 caracteres)"
-                      rows={4}
-                      maxLength={500}
-                      style={{
-                        width: "100%",
-                        padding: "12px",
-                        borderRadius: 10,
-                        border: `2px solid ${
-                          draft.trim().length > 0 && draft.trim().length < 50
-                            ? "#ef4444"
-                            : draft.trim().length >= 50
-                            ? catColor + "60"
-                            : "#e5e7eb"
-                        }`,
-                        fontSize: 15,
-                        lineHeight: 1.5,
-                        resize: "vertical",
-                        outline: "none",
-                        boxSizing: "border-box",
-                        fontFamily: "inherit",
-                        color: "#1a1a1a",
-                      }}
-                    />
+                    {isMultipleChoice ? (
+                      <div style={{ display: "grid", gap: 8 }}>
+                        {q.options?.map((option) => {
+                          const selected = draft === option.id;
+                          return (
+                            <button
+                              key={option.id}
+                              type="button"
+                              onClick={() => handleOptionSelect(q.id, option.id)}
+                              style={{
+                                textAlign: "left",
+                                padding: "12px 14px",
+                                borderRadius: 10,
+                                border: `2px solid ${selected ? catColor : "#e5e7eb"}`,
+                                background: selected ? `${catColor}12` : "#ffffff",
+                                color: "#1a1a1a",
+                                fontSize: 14,
+                                lineHeight: 1.5,
+                                cursor: "pointer",
+                                fontWeight: selected ? 700 : 500,
+                              }}
+                            >
+                              <span style={{ color: selected ? catColor : "#6b7280", marginRight: 8 }}>
+                                {selected ? "●" : "○"}
+                              </span>
+                              {option.text}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <textarea
+                        ref={(el) => { textareaRefs.current[q.id] = el; }}
+                        value={draft}
+                        onChange={(e) => handleOpenAnswerChange(q, e.target.value)}
+                        placeholder={`Escribe tu respuesta aquí... (mínimo ${minLength} caracteres)`}
+                        rows={4}
+                        maxLength={500}
+                        style={{
+                          width: "100%",
+                          padding: "12px",
+                          borderRadius: 10,
+                          border: `2px solid ${
+                            draft.trim().length > 0 && draft.trim().length < minLength
+                              ? "#ef4444"
+                              : draft.trim().length >= minLength
+                              ? catColor + "60"
+                              : "#e5e7eb"
+                          }`,
+                          fontSize: 15,
+                          lineHeight: 1.5,
+                          resize: "vertical",
+                          outline: "none",
+                          boxSizing: "border-box",
+                          fontFamily: "inherit",
+                          color: "#1a1a1a",
+                        }}
+                      />
+                    )}
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 6 }}>
                       <span style={{
                         fontSize: 12,
@@ -375,17 +422,23 @@ export default function SpeciePracticaPage() {
                         {status === "saved" && "✓ Guardado"}
                         {status === "error" && "Error al guardar"}
                       </span>
-                      <span style={{
-                        fontSize: 12,
-                        color: draft.trim().length < 50 && draft.trim().length > 0
-                          ? "#ef4444"
-                          : "#9ca3af",
-                      }}>
-                        {draft.length}/500
-                        {draft.trim().length > 0 && draft.trim().length < 50 && (
-                          <span> · mín. 50</span>
-                        )}
-                      </span>
+                      {isMultipleChoice ? (
+                        <span style={{ fontSize: 12, color: draft ? catColor : "#9ca3af" }}>
+                          {draft ? "1 alternativa seleccionada" : "Selecciona 1 alternativa"}
+                        </span>
+                      ) : (
+                        <span style={{
+                          fontSize: 12,
+                          color: draft.trim().length < minLength && draft.trim().length > 0
+                            ? "#ef4444"
+                            : "#9ca3af",
+                        }}>
+                          {draft.length}/500
+                          {draft.trim().length > 0 && draft.trim().length < minLength && (
+                            <span> · mín. {minLength}</span>
+                          )}
+                        </span>
+                      )}
                     </div>
                   </div>
                 );
@@ -431,7 +484,7 @@ export default function SpeciePracticaPage() {
         </button>
 
         <p style={{ textAlign: "center", fontSize: 12, color: "#9ca3af", margin: 0 }}>
-          Las respuestas se guardan automáticamente mientras escribes.
+          Las respuestas se guardan automáticamente mientras escribes o eliges una alternativa.
           Puedes editar hasta que la especie sea cerrada.
         </p>
       </div>
