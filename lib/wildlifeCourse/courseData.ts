@@ -18,6 +18,50 @@ export const SPECIES_DATA: Record<string, StaticSpecies> = {
       "Llega aviso de un pingüino encontrado en una playa. Está quieto, no huye, tiene plumas sucias, baja condición corporal y fue manipulado por turistas. Algunos alumnos proponen hidratarlo, otros liberarlo de inmediato porque 'es normal que esté en la playa'.",
     keyConcept:
       "El pingüino no se libera porque se ve mejor; se libera cuando puede sobrevivir en el mar sin asistencia.",
+    supportSections: [
+      {
+        title: "Vulnerabilidad ecológica",
+        body:
+          "El material complementario destaca que los pingüinos dependen de presas muy específicas, por lo que ENSO, sobrepesca, captura incidental y contaminación pueden traducirse rápido en inanición, varamientos y eventos de mortalidad.",
+      },
+      {
+        title: "Conservación y marco legal",
+        body:
+          "Además del caso clínico individual, el práctico se conecta con vigilancia ambiental: CITES, categorías de conservación y registro sistemático de varamientos ayudan a interpretar si el paciente forma parte de un problema poblacional más amplio.",
+      },
+      {
+        title: "Fisiología útil para el manejo",
+        body:
+          "Las glándulas de la sal, el flujo respiratorio aviar y la adaptación al buceo explican por qué el control térmico, la impermeabilidad del plumaje y la reserva de oxígeno son variables críticas al evaluar pronóstico y aptitud de liberación.",
+      },
+      {
+        title: "Rescate y traslado",
+        body:
+          "El apoyo docente refuerza que antes de lavar, alimentar o trasladar se debe estabilizar: identificar hipotermia, hipoglucemia y deshidratación, y usar cajas ventiladas con manejo térmico ajustado a la especie para no agravar el cuadro.",
+      },
+    ],
+    galleryImages: [
+      {
+        src: "/images/wildlife-course/pinguino/image_001.png",
+        alt: "Lámina complementaria sobre conservación de pingüinos",
+        caption: "Conservación y amenazas en Sphenisciformes",
+      },
+      {
+        src: "/images/wildlife-course/pinguino/image_017.png",
+        alt: "Lámina complementaria sobre osmorregulación en pingüinos",
+        caption: "Glándulas de la sal y osmorregulación",
+      },
+      {
+        src: "/images/wildlife-course/pinguino/image_024.png",
+        alt: "Lámina complementaria sobre fisiología de buceo en pingüinos",
+        caption: "Adaptaciones respiratorias y de buceo",
+      },
+      {
+        src: "/images/wildlife-course/pinguino/image_036.png",
+        alt: "Lámina complementaria sobre rescate de pingüinos",
+        caption: "Rescate, soporte inicial y traslado",
+      },
+    ],
     questions: {
       r1: {
         id: "r1",
@@ -222,6 +266,40 @@ export const SPECIES_DATA: Record<string, StaticSpecies> = {
     caseText:
       "Ingresa un tucúquere encontrado al borde de una carretera. Está alerta, pero no vuela. Presenta una posible lesión en ala y se muestra agresivo al manejo.",
     keyConcept: "En un ave rapaz, sobrevivir no es suficiente: debe poder cazar.",
+    supportSections: [
+      {
+        title: "Rehabilitación ortopédica de precisión",
+        body:
+          "El material complementario insiste en que un ala no puede quedar 'casi bien': una rapaz con mínima asimetría pierde sustentación aerodinámica, no recupera caza funcional y no es candidata real a reinserción.",
+      },
+      {
+        title: "Conducta silvestre como criterio clínico",
+        body:
+          "La rehabilitación no termina con consolidar hueso. También debe evitarse impronta y habituación, porque una rapaz que pierde distancia frente al humano queda clínicamente recuperada pero ecológicamente irrecuperable.",
+      },
+    ],
+    galleryImages: [
+      {
+        src: "/images/wildlife-course/tucuquere/image_001.png",
+        alt: "Lámina complementaria de rapaces para el tucúquere",
+        caption: "Apoyo visual de anatomía y clínica en rapaces",
+      },
+      {
+        src: "/images/wildlife-course/tucuquere/image_018.png",
+        alt: "Lámina complementaria de rehabilitación de rapaces",
+        caption: "Evaluación funcional del vuelo",
+      },
+      {
+        src: "/images/wildlife-course/tucuquere/image_037.png",
+        alt: "Lámina complementaria de patología o manejo en rapaces",
+        caption: "Manejo clínico y ortopédico en aves rapaces",
+      },
+      {
+        src: "/images/wildlife-course/tucuquere/image_060.png",
+        alt: "Lámina complementaria final de rapaces",
+        caption: "Rehabilitación conductual y retorno a vida libre",
+      },
+    ],
     questions: {
       r1: {
         id: "r1",
@@ -414,6 +492,50 @@ export const SPECIES_DATA: Record<string, StaticSpecies> = {
     caseText:
       "Un pudú juvenil es encontrado en una zona rural. Los vecinos dicen que fue perseguido por perros. Presenta estrés marcado, heridas superficiales y dificultad para mantenerse tranquilo. Algunos alumnos quieren manipularlo para revisar todo de inmediato.",
     keyConcept: "En pudú, muchas veces el enemigo clínico principal no es solo la mordida: es el estrés.",
+    supportSections: [
+      {
+        title: "Estado de conservación",
+        body:
+          "El material de apoyo lo resume como un cérvido endémico vulnerable, distribuido en el bosque templado austral y presionado sobre todo por perros domésticos y asilvestrados, atropellos y fragmentación del bosque nativo.",
+      },
+      {
+        title: "Respuesta al estrés",
+        body:
+          "En pudú el cortisol, la frecuencia cardíaca y la glucosa pueden dispararse en minutos. Esa susceptibilidad explica por qué la miopatía de captura puede aparecer incluso cuando el manejo parece inicialmente exitoso.",
+      },
+      {
+        title: "Manejo del distrés",
+        body:
+          "La recomendación del material complementario es hands-off: bajar ruido y estímulos visuales, usar contención opaca, sedación rápida y monitoreo estrecho de temperatura y oxigenación para no prolongar la captura.",
+      },
+      {
+        title: "Interfase sanitario-productiva",
+        body:
+          "El deck agrega riesgo One Health por contacto con ganado y perros: leptospirosis, Chlamydia abortus y otras enfermedades emergentes obligan a pensar bioseguridad, EPP y vigilancia más allá del trauma inicial.",
+      },
+    ],
+    galleryImages: [
+      {
+        src: "/images/wildlife-course/pudu/image_061.png",
+        alt: "Lámina complementaria del pudú sobre conservación",
+        caption: "Estado de conservación y amenazas del pudú",
+      },
+      {
+        src: "/images/wildlife-course/pudu/image_074.png",
+        alt: "Lámina complementaria del pudú sobre fisiología",
+        caption: "Fisiología y riesgo de miopatía de captura",
+      },
+      {
+        src: "/images/wildlife-course/pudu/image_082.png",
+        alt: "Lámina complementaria del pudú sobre distrés",
+        caption: "Manejo del distrés y anestesia",
+      },
+      {
+        src: "/images/wildlife-course/pudu/image_093.png",
+        alt: "Lámina complementaria del pudú sobre patologías emergentes",
+        caption: "Riesgos infecciosos y enfoque One Health",
+      },
+    ],
     questions: {
       r1: {
         id: "r1",
@@ -607,6 +729,50 @@ export const SPECIES_DATA: Record<string, StaticSpecies> = {
       "Se reporta un lobo marino juvenil en la playa. Está solo. Personas se acercan para tomar fotos. Algunos creen que hay que devolverlo al mar de inmediato. Otros dicen que hay que capturarlo porque está varado.",
     keyConcept:
       "No todo lobo marino en la playa necesita rescate; muchas veces la mejor intervención inicial es distancia, evaluación y aviso a la autoridad.",
+    supportSections: [
+      {
+        title: "Amenazas en la costa chilena",
+        body:
+          "El material complementario agrega contexto epidemiológico y ambiental: redes de pesca, contaminación marina, H5N1 y floraciones algales nocivas son factores reales de ingreso, mortalidad y manejo sanitario en el litoral.",
+      },
+      {
+        title: "Adaptación anatómica y locomoción",
+        body:
+          "La locomoción pectoral, la rotación de aletas posteriores y la morfología de pinnípedos ayudan a distinguir un descanso fisiológico en playa de una alteración que compromete desplazamiento, natación o reincorporación al mar.",
+      },
+      {
+        title: "Patologías relevantes",
+        body:
+          "Además del trauma y enmallamiento, el apoyo docente incorpora neumonías bacterianas, H5N1, parasitosis pulmonares y biotoxinas marinas, todas capaces de producir letargia, signos respiratorios o varamientos masivos.",
+      },
+      {
+        title: "Admisión y criterios de liberación",
+        body:
+          "La admisión segura exige equipo, bioseguridad y evaluación a distancia. Para liberación, el material enfatiza condición corporal adecuada, conducta normal, alimentación autónoma y, cuando corresponde, marcaje para seguimiento.",
+      },
+    ],
+    galleryImages: [
+      {
+        src: "/images/wildlife-course/lobo_marino/image_001.png",
+        alt: "Lámina complementaria del lobo marino sobre conservación",
+        caption: "Estado de conservación y amenazas costeras",
+      },
+      {
+        src: "/images/wildlife-course/lobo_marino/image_013.png",
+        alt: "Lámina complementaria del lobo marino sobre anatomía funcional",
+        caption: "Adaptación anatómica en pinnípedos",
+      },
+      {
+        src: "/images/wildlife-course/lobo_marino/image_043.png",
+        alt: "Lámina complementaria del lobo marino sobre patologías",
+        caption: "Patologías respiratorias, infecciosas y tóxicas",
+      },
+      {
+        src: "/images/wildlife-course/lobo_marino/image_056.png",
+        alt: "Lámina complementaria del lobo marino sobre admisión clínica",
+        caption: "Admisión, bioseguridad y diagnóstico inicial",
+      },
+    ],
     questions: {
       r1: {
         id: "r1",

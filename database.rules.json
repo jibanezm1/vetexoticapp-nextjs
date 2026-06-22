@@ -1,0 +1,119 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "sessions": {
+      "$code": {
+        ".read": "auth != null",
+
+        "messages": {
+          "$messageId": {
+            ".write": "auth != null && !data.exists()",
+            ".validate": "newData.hasChildren(['sender_name', 'text', 'created_at']) && newData.child('text').isString() && newData.child('text').val().length >= 1 && newData.child('text').val().length <= 500 && newData.child('sender_name').isString()"
+          }
+        },
+
+        "kicks": {
+          "$kickId": {
+            ".write": "auth != null && !data.exists()",
+            ".validate": "newData.hasChildren(['kicked_at']) && newData.child('kicked_at').isNumber()"
+          }
+        },
+
+        "extra_seconds": {
+          ".write": "auth != null",
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 300"
+        }
+      }
+    },
+
+    "venue_chats": {
+      "$venueId": {
+        ".read": "auth != null",
+
+        "requests": {
+          "$requestId": {
+            ".write": "auth != null",
+            ".validate": "newData.hasChildren(['from_user_id', 'to_user_id', 'chat_id', 'status']) && newData.child('status').val().matches(/^(pending|accepted|rejected)$/)"
+          }
+        },
+
+        "chats": {
+          "$chatId": {
+            "messages": {
+              "$messageId": {
+                ".write": "auth != null && !data.exists()",
+                ".validate": "newData.hasChildren(['sender_id', 'sender_name', 'text', 'created_at']) && newData.child('text').isString() && newData.child('text').val().length >= 1 && newData.child('text').val().length <= 1000"
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "compatibility_rooms": {
+      "$code": {
+        ".read": "auth != null",
+        ".write": "auth != null",
+        ".validate": "!newData.exists() || (newData.hasChildren(['code', 'createdAt', 'status', 'hostId', 'hostName']) && newData.child('status').val().matches(/^(lobby|voting|results)$/))"
+      }
+    },
+
+    "party_tables_live": {
+      "$tableId": {
+        ".read": "auth != null",
+        "signals": {
+          ".indexOn": ["client_created_at"],
+          "$signalId": {
+            ".write": "auth != null",
+            ".validate": "!newData.exists() || newData.hasChildren(['table_id', 'kind', 'status'])"
+          }
+        }
+      }
+    },
+
+    "party_venues_live": {
+      "$venueId": {
+        ".read": "auth != null",
+        "signals": {
+          ".indexOn": ["client_created_at"],
+          "$signalId": {
+            ".write": "auth != null",
+            ".validate": "!newData.exists() || newData.hasChildren(['table_id', 'kind', 'status'])"
+          }
+        }
+      }
+    },
+
+    "quiz_sessions": {
+      ".read": true,
+      ".write": true
+    },
+
+    "expomascotas": {
+      ".read": true,
+      ".write": true
+    },
+
+    "uss": {
+      ".read": true,
+      ".write": true
+    },
+
+    "courses": {
+      ".read": true,
+      ".write": true
+    },
+
+    "courseStudents": {
+      ".read": true,
+      ".write": true
+    },
+
+    "courseResponses": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}
