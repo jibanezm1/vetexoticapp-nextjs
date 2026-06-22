@@ -1,7 +1,8 @@
 import type { CourseQuestion, CourseQuestionOption, CourseSpecies } from "./types";
 
 type StoredSpecies = Omit<CourseSpecies, "enabled" | "enabledAt" | "enabledBy">;
-type BaseQuestion = Omit<CourseQuestion, "type" | "minLength" | "options">;
+type BaseQuestion = Omit<CourseQuestion, "type" | "minLength" | "options"> &
+  Partial<Pick<CourseQuestion, "type" | "minLength" | "options">>;
 type StaticSpecies = Omit<StoredSpecies, "questions"> & {
   questions: Record<string, BaseQuestion>;
 };
@@ -794,6 +795,183 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       },
     },
   },
+
+  quiz_integrador: {
+    id: "quiz_integrador",
+    name: "Quiz Integrador",
+    emoji: "📝",
+    order: 5,
+    caseText:
+      "Evaluación integradora de medicina y rehabilitación de fauna silvestre. Consolida los contenidos de pingüinos, rapaces y estrígidos, pudúes y lobos marinos, con énfasis en biomecánica, fisiopatología del shock y criterio ético de destinación.",
+    keyConcept:
+      "Integrar la clínica, la conservación y la ética permite decidir no solo cómo tratar, sino también cuándo un paciente puede volver responsablemente a la vida silvestre.",
+    questions: {
+      q1: {
+        id: "q1",
+        category: "Selección múltiple",
+        text: "Llega a la sala de urgencias un pudú juvenil rescatado de un ataque de perros y un tucúquere politraumatizado por colisión vial. Siguiendo los protocolos intrahospitalarios de triage, ¿cuál es el abordaje inmediato obligatorio antes de profundizar en el examen físico exhaustivo?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Instaurar la estabilización médica inicial: control estricto del distrés acústico y visual, analgesia multimodal agresiva y fluidoterapia térmica para frenar la cascada metabólica fatal.",
+        citation: {
+          source: "Minimum Standards for Wildlife Rehabilitation",
+          url: "https://myodfw.com/sites/default/files/2026-03/MinimumStandards3rdEdition.pdf",
+        },
+        order: 1,
+        options: [
+          { id: "a", text: "Registrar el peso exacto en gramos en la balanza y proceder a la contención física forzada para suturar heridas superficiales inmediatamente.", isCorrect: false },
+          { id: "b", text: "Instaurar la estabilización médica inicial: control estricto del distrés acústico/visual, analgesia multimodal agresiva y fluidoterapia térmica para frenar la cascada metabólica fatal.", isCorrect: true },
+          { id: "c", text: "Ofrecer una presa viva o forraje leñoso de forma forzada para medir la integridad de la almohadilla dental o el reflejo de prensión de la garra.", isCorrect: false },
+        ],
+      },
+      q2: {
+        id: "q2",
+        category: "Selección múltiple",
+        text: "Durante la fase de hospitalización de un pingüino varado y empetrolado, se requiere canalizar una vía para fluidoterapia parenteral. ¿Qué particularidad anatómica ósea condiciona la elección de la vía de acceso hídrico en esta especie?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Los pingüinos presentan una pérdida evolutiva de la neumaticidad ósea, con huesos densos, sólidos y compactos, por lo que debe preferirse el acceso intravenoso o subcutáneo.",
+        citation: {
+          source: "USS PNGUINO - Rescate y primeros auxilios",
+          url: "https://seabirdrescue.org.au/wp-content/uploads/2022/08/olied-seabirds-jessop-and-healy.pdf",
+        },
+        order: 2,
+        options: [
+          { id: "a", text: "Los pingüinos poseen una alta neumaticidad en el húmero y fémur, por lo que la fluidoterapia intraósea es la vía de elección para bolos rápidos.", isCorrect: false },
+          { id: "b", text: "Presentan una pérdida evolutiva de la neumaticidad ósea, resultando en huesos densos, sólidos y compactos, lo que hace la administración intraósea casi imposible y obliga a preferir el acceso intravenoso o subcutáneo.", isCorrect: true },
+          { id: "c", text: "Sus huesos largos reducidos a tendones distales exigen exclusivamente un lavado intramedular para evitar el shock térmico.", isCorrect: false },
+        ],
+      },
+      q3: {
+        id: "q3",
+        category: "Selección múltiple",
+        text: "Al evaluar la salud digestiva de los pacientes rapaces en el hospital mediante el monitoreo de sus egagrópilas, ¿qué hallazgo se considera una alerta de divergencia patológica severa y no un estándar fisiológico?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Observar que los huesos de las presas se encuentran completamente disueltos por el ácido gástrico dentro de la egagrópila de un búho.",
+        citation: {
+          source: "Birds of Prey: Initial Treatment and Care Guidelines",
+          url: "https://www.environment.nsw.gov.au/sites/default/files/birds-of-prey-initial-treatment-care-guidelines-210567.pdf",
+        },
+        order: 3,
+        options: [
+          { id: "a", text: "Encontrar esqueletos de roedores perfectamente intactos en la egagrópila de una rapaz nocturna como el tucúquere.", isCorrect: false },
+          { id: "b", text: "Encontrar restos de pelo y plumas compactados en la molleja de un halcón peregrino tras 24 horas de confinamiento.", isCorrect: false },
+          { id: "c", text: "Observar que los huesos de las presas se encuentran completamente disueltos por el ácido gástrico dentro de la egagrópila de un búho (Strigiformes).", isCorrect: true },
+        ],
+      },
+      q4: {
+        id: "q4",
+        category: "Selección múltiple",
+        text: "Un pudú que ha sufrido una persecución prolongada por caninos ingresa al centro de rescate evidenciando mioglobinuria, rigidez muscular extrema y una temperatura rectal superior a 41 °C. ¿Qué cuadro fisiopatológico sistémico no infeccioso se ha desencadenado?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Miopatía de captura en fase aguda, caracterizada por rabdomiólisis, acidosis láctica severa y necrosis del músculo esquelético con riesgo inminente de falla renal.",
+        citation: {
+          source: "USS mamíferos silvestres - Miopatía de captura",
+          url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6612673/",
+        },
+        order: 4,
+        options: [
+          { id: "a", text: "Miopatía de captura en fase aguda, caracterizada por rabdomiólisis, acidosis láctica severa y necrosis del músculo esquelético con riesgo inminente de falla renal.", isCorrect: true },
+          { id: "b", text: "Infección polimicrobiana aguda por Actinomyces pyogenes y Fusobacterium necrophorum con destrucción del parénquima esplénico.", isCorrect: false },
+          { id: "c", text: "Placentitis necrótica inducida por una baja inmunitaria y cambios hormonales mediados por el fotoperíodo austral.", isCorrect: false },
+        ],
+      },
+      q5: {
+        id: "q5",
+        category: "Selección múltiple",
+        text: "Un lobo marino común (Otaria flavescens) juvenil en rehabilitación es alimentado exclusivamente con pescado magro congelado sin recibir suplementación vitamínica profiláctica. ¿Qué cuadro clínico neurológico corre el riesgo de desarrollar debido a la acción de las tiaminasas?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Polioencefalomalacia, caracterizada por ataxia cerebelosa, convulsiones generalizadas y muerte en cuestión de horas.",
+        citation: {
+          source: "USS mamíferos silvestres - Tiamina y tiaminasa",
+          url: "https://repository.library.noaa.gov/view/noaa/48555/noaa_48555_DS1.pdf",
+        },
+        order: 5,
+        options: [
+          { id: "a", text: "Anisakiasis gástrica perforante con migración de larvas L3 hacia el tejido muscular apendicular.", isCorrect: false },
+          { id: "b", text: "Polioencefalomalacia, caracterizada por ataxia cerebelosa, convulsiones generalizadas y muerte en cuestión de horas.", isCorrect: true },
+          { id: "c", text: "Tuberculosis marina zoonótica mediada por la destrucción enzimática de la queratina sulfatada de la aleta.", isCorrect: false },
+        ],
+      },
+      q6: {
+        id: "q6",
+        category: "Selección múltiple",
+        text: "Un polluelo de rapaz nocturna es criado a mano en un centro de rescate sin la utilización de títeres ni mallas miméticas, asimilando de forma irreversible al ser humano como su conspecífico. De acuerdo con las normativas del SAG y los comités de ética, ¿cuál es el destino de este espécimen?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Se clasifica como un animal irrecuperable e inviable en la naturaleza; se prohíbe su liberación y debe mantenerse en cautiverio formal autorizado para educación ambiental o como nodriza.",
+        citation: {
+          source: "Raptors Rehabilitation Guide",
+          url: "https://www.doc.govt.nz/globalassets/documents/our-work/wildlife-health/raptors-rehabilitation-guide.pdf",
+        },
+        order: 6,
+        options: [
+          { id: "a", text: "Debe ser liberado de inmediato mediante una suelta directa (Hard Release) en un Parque Nacional de alta montaña.", isCorrect: false },
+          { id: "b", text: "Debe ser sometido a natación terapéutica intensiva para revertir la habituación antes de la caída anual de plumas.", isCorrect: false },
+          { id: "c", text: "Se clasifica como un animal irrecuperable e inviable en la naturaleza; se prohíbe su liberación y debe confinarse de por vida en cautiverio formal para educación ambiental o como nodriza.", isCorrect: true },
+        ],
+      },
+      q7: {
+        id: "q7",
+        category: "Desarrollo",
+        text: "Frente a una fractura distal del miembro torácico en una rapaz o ave marina, se aplica temporalmente un vendaje en \"ocho\". ¿Por qué una tensión excesiva o una inmovilización prolongada e inadecuada en la Zona 1 (codo) puede provocar una contractura irreversible que condene al ave al cautiverio permanente? Explique basándose en las estructuras anatómicas en riesgo.",
+        type: "open",
+        minLength: 50,
+        expectedAnswer:
+          "En la cara anterior del codo se ubican el tendón y la membrana propatagial. Una tensión excesiva o inmovilización prolongada genera isquemia, compresión y contractura permanente, con pérdida de flexibilidad alar y sustentación aerodinámica que inhabilita al ave para volar y cazar.",
+        citation: {
+          source: "Birds of Prey: Initial Treatment and Care Guidelines",
+          url: "https://www.environment.nsw.gov.au/sites/default/files/birds-of-prey-initial-treatment-care-guidelines-210567.pdf",
+        },
+        order: 7,
+      },
+      q8: {
+        id: "q8",
+        category: "Desarrollo",
+        text: "Durante el brote de Influenza Aviar Altamente Patogénica (IAAP) H5N1 registrado en el litoral chileno, se reportó la muerte masiva de más de 30.000 lobos marinos comunes (Otaria flavescens). Explique brevemente la signología neurológica y respiratoria predominante descrita en esta especie y qué rol cumplen los Centros de Rehabilitación de Fauna Silvestre bajo el paradigma de One Health frente a estas zoonosis emergentes.",
+        type: "open",
+        minLength: 50,
+        expectedAnswer:
+          "La signología incluye ataxia severa, stargazing, convulsiones, disnea y secreción nasal sanguinolenta. Bajo Una Salud, los centros actúan como centinelas epidemiológicos de primera línea, detectando precozmente derrames zoonóticos y brotes ambientales antes de que afecten a personas o ganado.",
+        citation: {
+          source: "USS mamíferos silvestres - IAAP H5N1 en lobos marinos",
+          url: "https://repository.library.noaa.gov/view/noaa/48555/noaa_48555_DS1.pdf",
+        },
+        order: 8,
+      },
+      q9: {
+        id: "q9",
+        category: "Desarrollo",
+        text: "Al planificar la liberación o reubicación de un pudú o huemul rehabilitado, las normativas de la UICN exigen evaluar la ecología del sitio receptor e impedir la suelta en áreas con ganadería doméstica activa. ¿Qué riesgos sanitarios y qué patologías infecciosas de la interfaz ganado-fauna nativa justifican esta restricción científica?",
+        type: "open",
+        minLength: 50,
+        expectedAnswer:
+          "Se debe evitar la exposición de fauna silvestre a patógenos pecuarios y resguardar la capacidad de carga. Entre los riesgos documentados están Chlamydia abortus, causante de placentitis necrótica y abortos, y Leptospira pomona, transmitida por contacto con orina de ganado en fuentes de agua compartidas.",
+        citation: {
+          source: "IUCN Guidelines for Reintroductions and Other Conservation Translocations",
+          url: "https://portals.iucn.org/library/efiles/documents/2013-009.pdf",
+        },
+        order: 9,
+      },
+      q10: {
+        id: "q10",
+        category: "Desarrollo",
+        text: "De acuerdo con los manuales de estándares mínimos de rehabilitación y el algoritmo de decisión ética hospitalaria, describa al menos dos escenarios clínicos basales que determinen de forma inmediata la clasificación de un paciente en \"Código Negro\" (indicación de eutanasia compasiva).",
+        type: "open",
+        minLength: 50,
+        expectedAnswer:
+          "Son válidos: amputaciones traumáticas masivas o fracturas expuestas de huesos neumáticos conectados al sistema respiratorio; sección o trauma medular completo; evisceración o necrosis extensa irreversible; y ceguera o pérdida completa de la visión binocular en depredadores de élite.",
+        citation: {
+          source: "Minimum Standards for Wildlife Rehabilitation",
+          url: "https://myodfw.com/sites/default/files/2026-03/MinimumStandards3rdEdition.pdf",
+        },
+        order: 10,
+      },
+    },
+  },
 };
 
 const MULTIPLE_CHOICE_OPTIONS: Record<string, Record<string, CourseQuestionOption[]>> = {
@@ -1011,11 +1189,28 @@ function normalizeSpeciesQuestions(
   speciesId: string,
   questions: Record<string, BaseQuestion>
 ): Record<string, CourseQuestion> {
+  const sortedQuestions = Object.values(questions).sort((a, b) => a.order - b.order);
+
+  if (sortedQuestions.some((question) => question.type)) {
+    return Object.fromEntries(
+      sortedQuestions.map((question, index) => {
+        const type = question.type ?? "open";
+        return [
+          question.id,
+          {
+            ...question,
+            type,
+            order: index + 1,
+            ...(type === "open" ? { minLength: question.minLength ?? 50 } : {}),
+          } as CourseQuestion,
+        ];
+      })
+    );
+  }
+
   const grouped: Record<string, BaseQuestion[]> = {};
 
-  Object.values(questions)
-    .sort((a, b) => a.order - b.order)
-    .forEach((question) => {
+  sortedQuestions.forEach((question) => {
       if (!grouped[question.category]) {
         grouped[question.category] = [];
       }
