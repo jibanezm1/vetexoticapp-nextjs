@@ -13,6 +13,16 @@ export const COURSE_TITLE = "Clase práctica: Clínica de animales silvestres y 
 export const COURSE_DESCRIPTION =
   "Práctico interactivo por especies. Cada alumno responde preguntas clínicas de rehabilitación, medicina de la conservación, patologías, tratamientos y reinserción.";
 
+export const RABBIT_DENTAL_COURSE_ID = "odontologia-conejos-2026";
+export const RABBIT_DENTAL_COURSE_TITLE = "Quiz 1: Odontología y fisiología digestiva del conejo";
+export const RABBIT_DENTAL_COURSE_DESCRIPTION =
+  "Evaluación de selección múltiple sobre anatomía dental, enfermedad dental adquirida, estasis gastrointestinal, abscesos odontogénicos y cecotrofia en conejos.";
+
+const RABBIT_DENTAL_CITATION = {
+  source: "Material docente: Quiz 1 odontología de conejos",
+  url: "https://vetexoticapp.cl/cursos",
+};
+
 const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
   pinguino: {
     id: "pinguino",
@@ -363,11 +373,11 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
       t3: {
         id: "t3",
         category: "Tratamientos",
-        text: "¿Cuál es el abordaje clínico correcto para el manejo hospitalario de un tucúquere con pododermatitis avanzada (Bumblefoot grado III a V)?",
+        text: "Ante un tucúquere con lesión traumática en un miembro torácico, ¿cuál es el abordaje clínico inicial más adecuado?",
         expectedAnswer:
-          "Requiere desbridamiento quirúrgico, perlas de PMMA, antibioticoterapia sistémica y ajuste de perchas terapéuticas, porque es una lesión profunda y no un simple problema de apoyo.",
+          "Lo primero es realizar una radiografía y estabilizar con vendaje, porque la evaluación imagenológica inicial permite orientar el manejo del trauma antes de definir intervenciones adicionales o un pronóstico definitivo.",
         citation: {
-          source: "USS CLASE RAPACES - Manejo de Bumblefoot",
+          source: "USS CLASE RAPACES - Rehabilitación traumatológica",
           url: "https://www.environment.nsw.gov.au/sites/default/files/birds-of-prey-initial-treatment-care-guidelines-210567.pdf",
         },
         order: 12,
@@ -974,6 +984,181 @@ const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
   },
 };
 
+const RABBIT_DENTAL_SPECIES_DATA: Record<string, StaticSpecies> = {
+  conejo: {
+    id: "conejo",
+    name: "Conejo",
+    emoji: "🐰",
+    order: 1,
+    caseText:
+      "Quiz integrador de conejo adulto orientado a analizar problemas frecuentes de odontología y fisiología digestiva: crecimiento dental continuo, anisognatismo, estasis gastrointestinal, obstrucción, abscesos odontogénicos y cecotrofia.",
+    keyConcept:
+      "En conejos, el equilibrio entre desgaste dental, fibra efectiva y motilidad gastrointestinal sostiene la salud clínica; cuando se rompe, la enfermedad dental y digestiva se retroalimentan.",
+    questions: {
+      q1: {
+        id: "q1",
+        category: "Análisis clínico",
+        text: "Un conejo adulto acude a urgencias por anorexia repentina, dolor abdominal agudo e hiperglucemia severa (>360 mg/dL). Considerando la anatomía gástrica del conejo, ¿cuál de las siguientes afirmaciones explica correctamente la fisiopatología de la distensión gástrica masiva que pone en riesgo su vida?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "El gran desarrollo del cardias impide el vómito, obligando al estómago a intentar descomprimirse solo en sentido aboral, mecanismo que fracasa ante una obstrucción.",
+        citation: RABBIT_DENTAL_CITATION,
+        order: 1,
+        options: [
+          { id: "a", text: "El gran desarrollo del cardias impide el vómito, obligando al estómago a intentar descomprimirse solo en sentido aboral, mecanismo que fracasa ante una obstrucción.", isCorrect: true },
+          { id: "b", text: "El pH extremadamente alcalino del estómago inactiva la flora bacteriana, promoviendo la fermentación rápida y el timpanismo incontrolable.", isCorrect: false },
+          { id: "c", text: "La ausencia del esfínter pilórico permite el reflujo del contenido cecal hacia el estómago, generando tricobezoares que bloquean la motilidad.", isCorrect: false },
+          { id: "d", text: "El estómago monogástrico carece de inervación motora intrínseca, dependiendo exclusivamente de la ingestión de cecotrofos para vaciar su contenido.", isCorrect: false },
+        ],
+      },
+      q2: {
+        id: "q2",
+        category: "Análisis clínico",
+        text: "Al evaluar la dinámica masticatoria de un conejo y su anisognatismo (la maxila es más ancha que la mandíbula), ¿qué patrón patológico es el más predecible si el paciente desarrolla Enfermedad Dental Adquirida (EDA) por falta de desgaste?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Formación de espículas hacia el lado vestibular en los molares maxilares y hacia el lado lingual en los molares mandibulares.",
+        citation: RABBIT_DENTAL_CITATION,
+        order: 2,
+        options: [
+          { id: "a", text: "Formación de espolones en la cara palatina de los molares superiores y en la cara vestibular de los inferiores.", isCorrect: false },
+          { id: "b", text: "Formación de espículas (puntas) hacia el lado vestibular en los molares maxilares y hacia el lado lingual en los molares mandibulares.", isCorrect: true },
+          { id: "c", text: "Cese temprano del crecimiento elodonto, provocando la fusión de las coronas clínicas mandibulares y maxilares.", isCorrect: false },
+          { id: "d", text: "Elongación exclusiva de los incisivos secundarios (peg teeth) debido a la ausencia de contacto con los molares mandibulares durante el ciclo horizontal.", isCorrect: false },
+        ],
+      },
+      q3: {
+        id: "q3",
+        category: "Análisis clínico",
+        text: "Un paciente presenta letargo y un abdomen pastoso. A la radiografía se observa material compactado en el estómago con un \"halo\" de gas a su alrededor, y la glucemia es de 153 mg/dL (8.5 mmol/L). ¿Qué error grave de interpretación y tratamiento clínico se podría cometer en este caso?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Diagnosticar erróneamente una obstrucción mecánica aguda y someter al paciente a una gastrotomía de urgencia, cuando el cuadro corresponde a una estasis tratable médicamente.",
+        citation: RABBIT_DENTAL_CITATION,
+        order: 3,
+        options: [
+          { id: "a", text: "Considerar que el halo de gas es patognomónico de peritonitis y realizar una eutanasia inmediata.", isCorrect: false },
+          { id: "b", text: "Diagnosticar una disbiosis cecal secundaria e iniciar terapia agresiva con fluidos intravenosos y clindamicina.", isCorrect: false },
+          { id: "c", text: "Diagnosticar erróneamente una obstrucción mecánica aguda y someter al paciente a una gastrotomía de urgencia, cuando el cuadro corresponde a una estasis tratable médicamente.", isCorrect: true },
+          { id: "d", text: "Interpretar que la glucosa es extremadamente alta para un conejo y administrar insulina de inmediato para evitar el shock hipovolémico.", isCorrect: false },
+        ],
+      },
+      q4: {
+        id: "q4",
+        category: "Análisis clínico",
+        text: "Un conejo es diagnosticado con un absceso mandibular odontogénico (EDA Grado V). Un tutor, intentando evitar la cirugía, sugiere tratarlo exclusivamente con antibióticos sistémicos a largo plazo. Basado en la fisiopatología de estos abscesos, ¿por qué esta aproximación terapéutica fracasará inevitablemente?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "La gruesa cápsula del absceso y la osteomielitis profunda aíslan a las bacterias, mientras los fragmentos dentales actúan como secuestros que perpetúan la infección.",
+        citation: RABBIT_DENTAL_CITATION,
+        order: 4,
+        options: [
+          { id: "a", text: "Porque los conejos son incapaces de absorber antibióticos sistémicos debido al pH extremadamente ácido de su estómago que inactiva los fármacos.", isCorrect: false },
+          { id: "b", text: "Porque la flora bacteriana causante es exclusivamente aerobia estricta y crea resistencia a cualquier antibiótico en un 100% de los casos tras 48 horas.", isCorrect: false },
+          { id: "c", text: "Porque el pus en los conejos es completamente líquido y se reabsorbe hacia el torrente sanguíneo, causando septicemia antes de que el antibiótico actúe.", isCorrect: false },
+          { id: "d", text: "Porque la gruesa cápsula del absceso y la osteomielitis profunda aíslan a las bacterias (pus avascular) y los fragmentos dentales actúan como un secuestro que perpetúa la infección.", isCorrect: true },
+        ],
+      },
+      q5: {
+        id: "q5",
+        category: "Análisis clínico",
+        text: "Se le recomienda a un tutor cambiar la dieta de su conejo adulto de una mezcla comercial (muesli) a un heno de gramíneas (ej. Timothy) ad libitum. ¿Qué doble beneficio sistémico (gastrointestinal y odontológico) fundamenta mecánicamente esta recomendación?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "La alta cantidad de fibra indigestible promueve el desgaste dental continuo por abrasión durante el ciclo de molienda y estimula la motilidad gastrointestinal rápida, evitando la estasis.",
+        citation: RABBIT_DENTAL_CITATION,
+        order: 5,
+        options: [
+          { id: "a", text: "La alta cantidad de fibra indigestible promueve el desgaste dental continuo por abrasión durante el ciclo de molienda y estimula la motilidad gastrointestinal rápida, evitando la estasis.", isCorrect: true },
+          { id: "b", text: "El heno de gramíneas acidifica drásticamente el pH del ciego previniendo la disbiosis, y detiene de forma permanente el crecimiento elodonto de los dientes de mejilla.", isCorrect: false },
+          { id: "c", text: "El bajo nivel de calcio del heno fortalece el hueso alveolar previniendo abscesos maxilares, y retrasa el tránsito en el intestino delgado para maximizar la absorción proteica.", isCorrect: false },
+          { id: "d", text: "Incrementa la producción de enterotoxinas protectoras en el estómago, lo que a su vez disuelve los tricobezoares y pule las espículas dentales incipientes.", isCorrect: false },
+        ],
+      },
+      q6: {
+        id: "q6",
+        category: "Análisis clínico",
+        text: "Al analizar una radiografía lateral de cráneo de un conejo con sospecha de maloclusión, trazas la \"Línea Blanca\" de Böehmer y Crossley (desde el extremo proximal del hueso nasal hasta la protuberancia occipital). Observas que los ápices de los dientes maxilares sobrepasan esta línea hacia dorsal. ¿Qué proceso fisiopatológico explica este hallazgo?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Elongación retrógrada de las coronas de reserva debido a presiones intrusivas originadas por una oclusión anormal y falta de desgaste.",
+        citation: RABBIT_DENTAL_CITATION,
+        order: 6,
+        options: [
+          { id: "a", text: "Prognatismo mandibular congénito severo que empuja y desplaza pasivamente toda la arcada maxilar hacia la órbita.", isCorrect: false },
+          { id: "b", text: "Elongación retrógrada de las coronas de reserva (raíces) debido a que las presiones intrusivas originadas por una oclusión anormal y falta de desgaste redirigen el crecimiento hacia el hueso.", isCorrect: true },
+          { id: "c", text: "Una reabsorción aguda del hueso alveolar producida por una enterotoxemia cecal, lo que provoca la expulsión espontánea de los premolares.", isCorrect: false },
+          { id: "d", text: "Crecimiento fisiológico normal de los incisivos secundarios (peg teeth) que compensan la fricción natural generada por el consumo de heno abrasivo.", isCorrect: false },
+        ],
+      },
+      q7: {
+        id: "q7",
+        category: "Análisis clínico",
+        text: "Un conejo presenta epífora crónica (lagrimeo constante) y secreción purulenta en el ojo derecho (dacriocistitis), pero el tutor reporta que consume heno con normalidad. Relacionando la anatomía craneal y las fases de la Enfermedad Dental Adquirida, ¿cuál de las siguientes es la deducción clínica más lógica a investigar?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "La elongación retrógrada y anormal de los ápices de los incisivos primarios superiores o premolares rostrales, que pueden ocluir físicamente el conducto nasolagrimal.",
+        citation: RABBIT_DENTAL_CITATION,
+        order: 7,
+        options: [
+          { id: "a", text: "Un absceso retromasetérico en los molares inferiores distales (M4/M5) que ha luxado la mandíbula inferior hacia el nervio óptico.", isCorrect: false },
+          { id: "b", text: "Una estasis gastrointestinal subyacente que genera un aumento de la presión intraocular debido al dolor visceral agudo referido al cráneo.", isCorrect: false },
+          { id: "c", text: "La elongación retrógrada y anormal de los ápices de los incisivos primarios superiores o premolares rostrales, los cuales ocluyen físicamente el conducto nasolagrimal.", isCorrect: true },
+          { id: "d", text: "El crecimiento excesivo de la corona clínica de los incisivos mandibulares que, al no desgastarse, perforan el paladar duro y alcanzan la órbita ocular desde abajo.", isCorrect: false },
+        ],
+      },
+      q8: {
+        id: "q8",
+        category: "Análisis clínico",
+        text: "Ante un cuadro agudo de distensión gástrica severa y timpanismo en un conejo (diagnosticado como posible obstrucción o dilatación aguda), un médico inexperto sugiere realizar una trocarización (punción a través de la pared abdominal) para liberar el gas. Analizando las propiedades anatómicas del tracto digestivo del conejo, ¿cuál es el resultado más probable de ejecutar esta maniobra?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Un altísimo riesgo de ruptura de la frágil pared estomacal o filtración de contenidos gástricos y bacterias a la cavidad abdominal, provocando una peritonitis aguda y fatal.",
+        citation: RABBIT_DENTAL_CITATION,
+        order: 8,
+        options: [
+          { id: "a", text: "Una descompresión altamente exitosa que aliviará el shock hipovolémico instantáneamente, reiniciando la motilidad cecal en menos de una hora.", isCorrect: false },
+          { id: "b", text: "Un alivio temporal del dolor que obligará a la expulsión retrógrada (vómito) de los tricobezoares estancados, limpiando la vía gástrica.", isCorrect: false },
+          { id: "c", text: "El re-establecimiento de los movimientos del \"fusus coli\" gracias a la alteración súbita de la presión intraperitoneal inducida por la aguja.", isCorrect: false },
+          { id: "d", text: "Un altísimo riesgo de ruptura de la frágil pared estomacal o filtración de contenidos gástricos y bacterias a la cavidad abdominal, provocando una peritonitis aguda y fatal.", isCorrect: true },
+        ],
+      },
+      q9: {
+        id: "q9",
+        category: "Análisis clínico",
+        text: "Durante un procedimiento dental intraoral en un paciente con Síndrome de Maloclusión, el profesional determina que debe reducir la altura de las coronas clínicas elongadas de los incisivos. Analizando las estructuras del diente del lagomorfo, ¿por qué el uso de cortaúñas o alicates está terminantemente prohibido para esta acción?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Estas herramientas generan una fuerza de cizallamiento que provoca fracturas longitudinales hacia la corona de reserva, exposición pulpar, necrosis e infección periapical.",
+        citation: RABBIT_DENTAL_CITATION,
+        order: 9,
+        options: [
+          { id: "a", text: "Porque estas herramientas generan una fuerza de cizallamiento que provoca fracturas longitudinales hacia la corona de reserva, exposición de la pulpa dolorosa, y eventual necrosis o infección periapical.", isCorrect: true },
+          { id: "b", text: "Porque el esmalte de los dientes del conejo contiene concentraciones de sílice tan altas que mellarán las cuchillas de acero inoxidable de forma inmediata e irreversible.", isCorrect: false },
+          { id: "c", text: "Porque dejan un ángulo de corte exactamente horizontal (0 grados), impidiendo por completo que el conejo pueda realizar el ciclo masticatorio lateral de cizallamiento.", isCorrect: false },
+          { id: "d", text: "Porque la presión súbita del alicate estimula directamente el nervio vago en el paladar duro, desencadenando un paro respiratorio bajo anestesia inhalatoria.", isCorrect: false },
+        ],
+      },
+      q10: {
+        id: "q10",
+        category: "Análisis clínico",
+        text: "El conejo depende de una compleja estrategia digestiva que incluye la \"cecotrofia\". Tras formarse en el ciego y colon proximal, estos cecotrofos blandos son tragados enteros por el animal y alojados en el fundus gástrico por varias horas. ¿Cuál es el propósito funcional anatómico de esta fase de retención estomacal?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Proveer un entorno donde la cubierta mucosa gelatinosa del cecotrofo protege temporalmente a los microorganismos, permitiendo que las bacterias continúen fermentando antes de ser digeridos en el intestino delgado.",
+        citation: RABBIT_DENTAL_CITATION,
+        order: 10,
+        options: [
+          { id: "a", text: "Elevar el pH del estómago de 1.0 hasta un nivel completamente alcalino (pH 8.0) para permitir que el esfínter pilórico relaje su musculatura y deje pasar el alimento.", isCorrect: false },
+          { id: "b", text: "Proveer un entorno donde la cubierta mucosa gelatinosa del cecotrofo protege temporalmente a los microorganismos, permitiendo que las bacterias continúen fermentando (produciendo ácido láctico y asimilando vitaminas) antes de ser digeridos en el intestino delgado.", isCorrect: true },
+          { id: "c", text: "Fomentar mecánicamente la aglomeración de pelo ingerido durante el acicalamiento para formar tricobezoares funcionales que actúen como molinos gástricos.", isCorrect: false },
+          { id: "d", text: "Suspender temporalmente los ciclos de contracción del fusus coli para que el colon distal pueda absorber todo el exceso de fósforo proveniente de la dieta base.", isCorrect: false },
+        ],
+      },
+    },
+  },
+};
+
 const MULTIPLE_CHOICE_OPTIONS: Record<string, Record<string, CourseQuestionOption[]>> = {
   pinguino: {
     r2: [
@@ -1064,9 +1249,9 @@ const MULTIPLE_CHOICE_OPTIONS: Record<string, Record<string, CourseQuestionOptio
       { id: "c", text: "Liberación temprana para que el ave termine de fortalecer el ala en terreno.", isCorrect: false },
     ],
     t3: [
-      { id: "a", text: "Porque consolidar hueso basta; la coordinación y musculatura se recuperan solas después de liberar.", isCorrect: false },
-      { id: "b", text: "Porque además debe recuperar vuelo simétrico, resistencia, maniobra y capacidad de caza.", isCorrect: true },
-      { id: "c", text: "Porque en rapaces la prioridad final es solo tolerar la presencia humana.", isCorrect: false },
+      { id: "a", text: "Realizar una radiografía y vendaje.", isCorrect: true },
+      { id: "b", text: "Realizar radiografía de ambos miembros, hacer curaciones y aplicar un vendaje en 8.", isCorrect: false },
+      { id: "c", text: "Realizar radiografía y, si hay osteomielitis, efectuar eutanasia en el ejemplar.", isCorrect: false },
     ],
     ri2: [
       { id: "a", text: "Sí, si acepta presas entregadas por humanos puede liberarse de inmediato.", isCorrect: false },
@@ -1255,3 +1440,26 @@ function normalizeSpeciesData(data: Record<string, StaticSpecies>): Record<strin
 }
 
 export const SPECIES_DATA: Record<string, StoredSpecies> = normalizeSpeciesData(BASE_SPECIES_DATA);
+export const RABBIT_DENTAL_SPECIES_DATA_NORMALIZED: Record<string, StoredSpecies> =
+  normalizeSpeciesData(RABBIT_DENTAL_SPECIES_DATA);
+
+const COURSE_TEMPLATES: Record<string, {
+  title: string;
+  description: string;
+  species: Record<string, StoredSpecies>;
+}> = {
+  [COURSE_ID]: {
+    title: COURSE_TITLE,
+    description: COURSE_DESCRIPTION,
+    species: SPECIES_DATA,
+  },
+  [RABBIT_DENTAL_COURSE_ID]: {
+    title: RABBIT_DENTAL_COURSE_TITLE,
+    description: RABBIT_DENTAL_COURSE_DESCRIPTION,
+    species: RABBIT_DENTAL_SPECIES_DATA_NORMALIZED,
+  },
+};
+
+export function getCourseTemplate(courseId: string) {
+  return COURSE_TEMPLATES[courseId] ?? COURSE_TEMPLATES[COURSE_ID];
+}

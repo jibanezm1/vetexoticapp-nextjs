@@ -10,6 +10,7 @@ import {
   hasStoredAnswer,
   isQuestionAnswered,
 } from "@/lib/wildlifeCourse/questionHelpers";
+import { RABBIT_DENTAL_COURSE_ID } from "@/lib/wildlifeCourse/courseData";
 import { seedWildlifeCourse } from "@/lib/wildlifeCourse/seed";
 import type {
   AllStudentResponses,
@@ -21,6 +22,14 @@ import type {
 } from "@/lib/wildlifeCourse/types";
 
 type AdminTab = "alumnos" | "especies" | "respuestas" | "graficos";
+type SelectedGraphQuestion = { speciesId: string; questionId: string };
+
+const PROTECTED_COURSE_IDS = new Set(["fauna-silvestre-2026", RABBIT_DENTAL_COURSE_ID]);
+const ADMIN_ACCESS_CODE = "Valkytorby3032";
+
+function getAdminAccessStorageKey(courseId: string): string {
+  return `wildlife_admin_access_${courseId}`;
+}
 
 function getMultipleChoiceQuestions(species: CourseSpecies): CourseQuestion[] {
   return Object.values(species.questions)
@@ -46,6 +55,31 @@ function getOptionCounts(
 
   return counts;
 }
+
+const PIE_COLORS = ["#1a6b3a", "#2563eb", "#f59e0b", "#dc2626", "#7c3aed", "#0891b2"];
+
+function getPiePoint(center: number, radius: number, angleInDegrees: number) {
+  const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180;
+  return {
+    x: center + radius * Math.cos(angleInRadians),
+    y: center + radius * Math.sin(angleInRadians),
+  };
+}
+
+function getPieSlicePath(center: number, radius: number, startAngle: number, endAngle: number): string {
+  const safeEndAngle = endAngle - startAngle >= 360 ? startAngle + 359.99 : endAngle;
+  const start = getPiePoint(center, radius, safeEndAngle);
+  const end = getPiePoint(center, radius, startAngle);
+  const largeArcFlag = safeEndAngle - startAngle <= 180 ? "0" : "1";
+
+  return [
+    `M ${center} ${center}`,
+    `L ${start.x} ${start.y}`,
+    `A ${radius} ${radius} 0 ${largeArcFlag} 0 ${end.x} ${end.y}`,
+    "Z",
+  ].join(" ");
+}
+
 function formatDate(ts: number): string {
   return new Date(ts).toLocaleString("es-CL", {
     day: "2-digit",
@@ -78,12 +112,14 @@ function getStudentProgress(
 export default function AdminPracticoPage() {
   const params = useParams();
   const courseId = params.courseId as string;
+  const requiresAccessCode = PROTECTED_COURSE_IDS.has(courseId);
+  const enrollUrl =
+    typeof window !== "undefined" ? `${window.location.origin}/curso/${courseId}/inscripcion` : "";
 
   const [course, setCourse] = useState<Course | null>(null);
   const [students, setStudents] = useState<Record<string, CourseStudent>>({});
   const [allResponses, setAllResponses] = useState<AllStudentResponses>({});
   const [activeTab, setActiveTab] = useState<AdminTab>("alumnos");
-  const [enrollUrl, setEnrollUrl] = useState("");
   const [seeding, setSeeding] = useState(false);
   const [seedMsg, setSeedMsg] = useState("");
   const [copiedId, setCopiedId] = useState("");
@@ -91,16 +127,20 @@ export default function AdminPracticoPage() {
   const [selectedSpecies, setSelectedSpecies] = useState<string | null>(null);
   const [selectedGraphSpecies, setSelectedGraphSpecies] = useState<string | null>(null);
   const [selectedGraphCategory, setSelectedGraphCategory] = useState<string | null>(null);
+  const [selectedGraphQuestion, setSelectedGraphQuestion] = useState<SelectedGraphQuestion | null>(null);
   const [togglingSpecies, setTogglingSpecies] = useState<Record<string, boolean>>({});
   const [resettingStudent, setResettingStudent] = useState<Record<string, boolean>>({});
   const [deletingStudent, setDeletingStudent] = useState<Record<string, boolean>>({});
   const [revealedAnswers, setRevealedAnswers] = useState<Record<string, boolean>>({});
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setEnrollUrl(`${window.location.origin}/curso/${courseId}/inscripcion`);
+  const [isAuthorized, setIsAuthorized] = useState(() => {
+    if (!requiresAccessCode || typeof window === "undefined") {
+      return !requiresAccessCode;
     }
-  }, [courseId]);
+
+    return window.sessionStorage.getItem(getAdminAccessStorageKey(courseId)) === ADMIN_ACCESS_CODE;
+  });
+  const [accessCodeInput, setAccessCodeInput] = useState("");
+  const [accessError, setAccessError] = useState("");
 
   // Real-time: course
   useEffect(() => {
@@ -159,7 +199,9 @@ export default function AdminPracticoPage() {
       }
 
       updates[`courses/${courseId}/species/${speciesId}/enabled`] = !currentEnabled;
-      updates[`courses/${courseId}/species/${speciesId}/enabledAt`] = !currentEnabled ? Date.now() : null;
+      updates[`courses/${courseId}/species/${speciesId}/enabledAt`] = !currentEnabled
+        ? { ".sv": "timestamp" }
+        : null;
       await update(ref(db), updates);
     } catch {
       alert("Error al cambiar estado de la especie.");
@@ -221,6 +263,22 @@ export default function AdminPracticoPage() {
     }));
   }
 
+  function handleAccessSubmit(e: React.FormEvent) {
+    e.preventDefault();
+
+    if (accessCodeInput.trim() !== ADMIN_ACCESS_CODE) {
+      setAccessError("Código incorrecto. Intenta nuevamente.");
+      return;
+    }
+
+    if (typeof window !== "undefined") {
+      window.sessionStorage.setItem(getAdminAccessStorageKey(courseId), ADMIN_ACCESS_CODE);
+    }
+
+    setAccessError("");
+    setIsAuthorized(true);
+  }
+
   const sortedSpecies = course
     ? Object.values(course.species).sort((a, b) => a.order - b.order)
     : [];
@@ -229,6 +287,12 @@ export default function AdminPracticoPage() {
   const activeGraphSpecies = selectedGraphSpecies && sortedSpecies.some((species) => species.id === selectedGraphSpecies)
     ? selectedGraphSpecies
     : sortedSpecies[0]?.id ?? null;
+  const modalGraphSpecies = selectedGraphQuestion
+    ? sortedSpecies.find((species) => species.id === selectedGraphQuestion.speciesId)
+    : null;
+  const modalGraphQuestion = modalGraphSpecies && selectedGraphQuestion
+    ? modalGraphSpecies.questions[selectedGraphQuestion.questionId]
+    : null;
 
   // Styles
   const pageStyle: React.CSSProperties = {
@@ -274,6 +338,104 @@ export default function AdminPracticoPage() {
     cursor: "pointer",
     whiteSpace: "nowrap" as const,
   };
+
+  const accessPageStyle: React.CSSProperties = {
+    minHeight: "100vh",
+    background: "linear-gradient(135deg, #0a2e1a 0%, #123e26 55%, #1d5c37 100%)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "24px 16px",
+    fontFamily: "system-ui, -apple-system, sans-serif",
+  };
+
+  const accessCardStyle: React.CSSProperties = {
+    width: "100%",
+    maxWidth: 420,
+    background: "rgba(255,255,255,0.98)",
+    borderRadius: 22,
+    padding: 28,
+    boxShadow: "0 24px 60px rgba(0,0,0,0.28)",
+  };
+
+  const accessInputStyle: React.CSSProperties = {
+    width: "100%",
+    padding: "14px 16px",
+    borderRadius: 12,
+    border: "1px solid #b7cfbe",
+    fontSize: 16,
+    outline: "none",
+    boxSizing: "border-box",
+    marginTop: 10,
+    marginBottom: 12,
+  };
+
+  const accessButtonStyle: React.CSSProperties = {
+    width: "100%",
+    padding: "14px 16px",
+    borderRadius: 12,
+    border: "none",
+    background: "linear-gradient(135deg, #0f5a32, #2f8f57)",
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: 700,
+    cursor: "pointer",
+  };
+
+  if (requiresAccessCode && !isAuthorized) {
+    return (
+      <main style={accessPageStyle}>
+        <form style={accessCardStyle} onSubmit={handleAccessSubmit}>
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: 54,
+              height: 54,
+              borderRadius: 16,
+              background: "#e7f4eb",
+              color: "#14532d",
+              fontSize: 28,
+              marginBottom: 16,
+            }}
+          >
+            🔒
+          </div>
+          <h1 style={{ margin: 0, color: "#123524", fontSize: 28, fontWeight: 800 }}>
+            Acceso protegido
+          </h1>
+          <p style={{ margin: "10px 0 0", color: "#486356", fontSize: 15, lineHeight: 1.5 }}>
+            Ingresa el código de seguridad para acceder al práctico de administración.
+          </p>
+          <label
+            htmlFor="admin-access-code"
+            style={{ display: "block", marginTop: 18, color: "#1f3b2c", fontSize: 14, fontWeight: 700 }}
+          >
+            Código de acceso
+          </label>
+          <input
+            id="admin-access-code"
+            type="password"
+            value={accessCodeInput}
+            onChange={(e) => {
+              setAccessCodeInput(e.target.value);
+              if (accessError) setAccessError("");
+            }}
+            placeholder="Ingresa el código"
+            style={accessInputStyle}
+            autoFocus
+          />
+          {accessError ? (
+            <p style={{ margin: "0 0 12px", color: "#b42318", fontSize: 14 }}>{accessError}</p>
+          ) : null}
+          <button type="submit" style={accessButtonStyle}>
+            Entrar al práctico
+          </button>
+        </form>
+      </main>
+    );
+  }
 
   return (
     <div style={pageStyle}>
@@ -534,94 +696,29 @@ export default function AdminPracticoPage() {
                             </div>
 
                             <div className="admin-graphs-grid">
-                            {filteredQuestions.map((question) => {
-                              const revealKey = `${species.id}:${question.id}`;
-                              const isRevealed = revealedAnswers[revealKey] ?? false;
-                              const optionCounts = getOptionCounts(species.id, question, allResponses);
-                              const totalResponses = Object.values(optionCounts).reduce((sum, count) => sum + count, 0);
-
-                              return (
-                                <div key={question.id} className="admin-graph-question-card" style={{ borderTop: "1px solid #ecf0ec", paddingTop: 14, marginTop: 14 }}>
-                                  <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "flex-start", flexWrap: "wrap", marginBottom: 10 }}>
-                                    <div>
-                                      <p style={{ fontSize: 11, fontWeight: 700, color: "#1a6b3a", margin: "0 0 4px", textTransform: "uppercase", letterSpacing: 0.5 }}>
-                                        {question.category}
-                                      </p>
-                                      <p style={{ fontSize: 14, fontWeight: 600, color: "#1f2937", margin: 0, lineHeight: 1.5 }}>
-                                        {question.text}
-                                      </p>
-                                    </div>
-                                    <button
-                                      type="button"
-                                      onClick={() => toggleRevealAnswer(species.id, question.id)}
-                                      style={{
-                                        ...btnSmStyle,
-                                        background: isRevealed ? "#ecfdf5" : "#eff6ff",
-                                        border: `1px solid ${isRevealed ? "#86efac" : "#93c5fd"}`,
-                                        color: isRevealed ? "#166534" : "#1d4ed8",
-                                      }}
-                                    >
-                                      {isRevealed ? "Ocultar correcta" : "Revelar correcta"}
-                                    </button>
-                                  </div>
-
-                                  <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 10px" }}>
-                                    {totalResponses} respuestas registradas
+                            {filteredQuestions.map((question) => (
+                                <button
+                                  key={question.id}
+                                  type="button"
+                                  onClick={() => setSelectedGraphQuestion({ speciesId: species.id, questionId: question.id })}
+                                  className="admin-graph-question-card"
+                                  style={{
+                                    width: "100%",
+                                    textAlign: "left",
+                                    border: "1px solid #dbe7df",
+                                    borderRadius: 14,
+                                    background: "#ffffff",
+                                    padding: "14px 16px",
+                                    marginTop: 10,
+                                    cursor: "pointer",
+                                    boxShadow: "0 1px 5px rgba(0,0,0,0.06)",
+                                  }}
+                                >
+                                  <p style={{ fontSize: 14, fontWeight: 600, color: "#1f2937", margin: 0, lineHeight: 1.5 }}>
+                                    {question.text}
                                   </p>
-
-                                  <div style={{ display: "grid", gap: 10 }}>
-                                    {(question.options ?? []).map((option) => {
-                                      const count = optionCounts[option.id] ?? 0;
-                                      const percentage = totalResponses > 0 ? Math.round((count / totalResponses) * 100) : 0;
-                                      const showCorrect = isRevealed && option.isCorrect;
-
-                                      return (
-                                        <div
-                                          key={option.id}
-                                          style={{
-                                            border: `2px solid ${showCorrect ? "#16a34a" : "#e5e7eb"}`,
-                                            borderRadius: 12,
-                                            padding: "10px 12px",
-                                            background: showCorrect ? "#f0fdf4" : "#fafafa",
-                                          }}
-                                        >
-                                          <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "center", marginBottom: 8 }}>
-                                            <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
-                                              <span style={{ fontSize: 12, fontWeight: 800, color: "#6b7280", flexShrink: 0 }}>
-                                                {option.id.toUpperCase()}
-                                              </span>
-                                              <span style={{ fontSize: 13, color: "#1f2937", lineHeight: 1.4 }}>
-                                                {option.text}
-                                              </span>
-                                              {showCorrect && (
-                                                <span style={{ fontSize: 11, fontWeight: 700, color: "#166534", background: "#dcfce7", borderRadius: 999, padding: "2px 8px", flexShrink: 0 }}>
-                                                  Correcta
-                                                </span>
-                                              )}
-                                            </div>
-                                            <span style={{ fontSize: 12, fontWeight: 700, color: showCorrect ? "#166534" : "#374151", flexShrink: 0 }}>
-                                              {count} · {percentage}%
-                                            </span>
-                                          </div>
-
-                                          <div style={{ background: "#e5e7eb", borderRadius: 999, height: 10, overflow: "hidden" }}>
-                                            <div
-                                              style={{
-                                                width: `${percentage}%`,
-                                                height: "100%",
-                                                borderRadius: 999,
-                                                background: showCorrect ? "linear-gradient(90deg, #16a34a, #22c55e)" : "linear-gradient(90deg, #1a6b3a, #34d399)",
-                                                transition: "width 0.3s ease",
-                                              }}
-                                            />
-                                          </div>
-                                        </div>
-                                      );
-                                    })}
-                                  </div>
-                                </div>
-                              );
-                            })}
+                                </button>
+                              ))}
                             </div>
                           </>
                         )}
@@ -853,6 +950,207 @@ export default function AdminPracticoPage() {
           </div>
         )}
       </div>
+      {modalGraphSpecies && modalGraphQuestion && (() => {
+        const revealKey = `${modalGraphSpecies.id}:${modalGraphQuestion.id}`;
+        const isRevealed = revealedAnswers[revealKey] ?? false;
+        const optionCounts = getOptionCounts(modalGraphSpecies.id, modalGraphQuestion, allResponses);
+        const totalResponses = Object.values(optionCounts).reduce((sum, count) => sum + count, 0);
+        const correctOption = modalGraphQuestion.options?.find((option) => option.isCorrect);
+        const correctCount = correctOption ? optionCounts[correctOption.id] ?? 0 : 0;
+        const correctPercentage = totalResponses > 0 ? Math.round((correctCount / totalResponses) * 100) : 0;
+
+        return (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Gráfico de ${modalGraphQuestion.text}`}
+            onClick={() => setSelectedGraphQuestion(null)}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 50,
+              background: "rgba(6, 24, 14, 0.72)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 18,
+            }}
+          >
+            <div
+              onClick={(event) => event.stopPropagation()}
+              style={{
+                width: "100%",
+                maxWidth: 920,
+                maxHeight: "90vh",
+                overflow: "auto",
+                background: "#ffffff",
+                borderRadius: 22,
+                padding: 22,
+                boxShadow: "0 30px 80px rgba(0,0,0,0.35)",
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 14, marginBottom: 14 }}>
+                <div>
+                  <p style={{ fontSize: 12, fontWeight: 800, color: "#1a6b3a", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: 0.6 }}>
+                    {modalGraphSpecies.emoji} {modalGraphSpecies.name} · {modalGraphQuestion.category}
+                  </p>
+                  <h2 style={{ fontSize: 18, lineHeight: 1.45, color: "#1f2937", margin: 0 }}>
+                    {modalGraphQuestion.text}
+                  </h2>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSelectedGraphQuestion(null)}
+                  style={{
+                    border: "none",
+                    background: "#f3f4f6",
+                    color: "#374151",
+                    borderRadius: 999,
+                    width: 36,
+                    height: 36,
+                    fontSize: 20,
+                    fontWeight: 800,
+                    cursor: "pointer",
+                    flexShrink: 0,
+                  }}
+                  aria-label="Cerrar gráfico"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap", marginBottom: 18 }}>
+                <p style={{ fontSize: 13, color: "#6b7280", margin: 0 }}>
+                  {totalResponses} respuestas registradas
+                </p>
+                <button
+                  type="button"
+                  onClick={() => toggleRevealAnswer(modalGraphSpecies.id, modalGraphQuestion.id)}
+                  style={{
+                    ...btnSmStyle,
+                    background: isRevealed ? "#ecfdf5" : "#eff6ff",
+                    border: `1px solid ${isRevealed ? "#86efac" : "#93c5fd"}`,
+                    color: isRevealed ? "#166534" : "#1d4ed8",
+                  }}
+                >
+                  {isRevealed ? "Ocultar correcta" : "Revelar correcta"}
+                </button>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "minmax(220px, 300px) minmax(0, 1fr)", gap: 22, alignItems: "center" }}>
+                <div style={{ position: "relative", width: "100%", maxWidth: 300, margin: "0 auto" }}>
+                  <svg viewBox="0 0 180 180" role="img" aria-label={`Gráfico de torta para ${modalGraphQuestion.text}`} style={{ width: "100%", height: "auto", display: "block", overflow: "visible" }}>
+                    <circle cx="90" cy="90" r="64" fill="#eef2f7" />
+                    {totalResponses === 0 ? (
+                      <circle cx="90" cy="90" r="46" fill="#ffffff" opacity="0.92" />
+                    ) : (() => {
+                      let startAngle = 0;
+                      return (modalGraphQuestion.options ?? []).map((option, optionIndex) => {
+                        const count = optionCounts[option.id] ?? 0;
+                        const angle = (count / totalResponses) * 360;
+                        const endAngle = startAngle + angle;
+                        const midAngle = startAngle + angle / 2;
+                        const isCorrectSlice = isRevealed && option.isCorrect;
+                        const explodeDistance = isCorrectSlice ? 12 : 0;
+                        const offset = getPiePoint(0, explodeDistance, midAngle);
+                        const slicePath = angle > 0 ? getPieSlicePath(90, 64, startAngle, endAngle) : "";
+                        startAngle = endAngle;
+
+                        if (!slicePath) return null;
+
+                        return (
+                          <g
+                            key={option.id}
+                            transform={`translate(${offset.x}, ${offset.y})`}
+                            style={{ transition: "transform 0.45s ease" }}
+                          >
+                            <path
+                              d={slicePath}
+                              fill={PIE_COLORS[optionIndex % PIE_COLORS.length]}
+                              stroke="#ffffff"
+                              strokeWidth={isCorrectSlice ? 4 : 2}
+                              style={{
+                                filter: isCorrectSlice ? "drop-shadow(0 10px 14px rgba(22, 101, 52, 0.28))" : "none",
+                                transition: "filter 0.45s ease, stroke-width 0.45s ease",
+                              }}
+                            />
+                          </g>
+                        );
+                      });
+                    })()}
+                    <circle cx="90" cy="90" r="38" fill="#ffffff" opacity="0.96" />
+                    <text x="90" y={isRevealed ? "84" : "92"} textAnchor="middle" fill={isRevealed ? "#166534" : "#374151"} fontSize={isRevealed ? "26" : "18"} fontWeight="800">
+                      {isRevealed ? `${correctPercentage}%` : totalResponses}
+                    </text>
+                    <text x="90" y={isRevealed ? "105" : "111"} textAnchor="middle" fill="#6b7280" fontSize="10" fontWeight="700">
+                      {isRevealed ? "correctas" : "respuestas"}
+                    </text>
+                  </svg>
+                  {isRevealed && (
+                    <div style={{
+                      position: "absolute",
+                      right: 4,
+                      top: 4,
+                      background: "#dcfce7",
+                      color: "#166534",
+                      border: "1px solid #86efac",
+                      borderRadius: 999,
+                      padding: "6px 10px",
+                      fontSize: 12,
+                      fontWeight: 800,
+                      boxShadow: "0 8px 20px rgba(22, 101, 52, 0.18)",
+                    }}>
+                      {correctCount}/{totalResponses} correctas
+                    </div>
+                  )}
+                </div>
+
+                <div style={{ display: "grid", gap: 10 }}>
+                  {(modalGraphQuestion.options ?? []).map((option, optionIndex) => {
+                    const count = optionCounts[option.id] ?? 0;
+                    const percentage = totalResponses > 0 ? Math.round((count / totalResponses) * 100) : 0;
+                    const showCorrect = isRevealed && option.isCorrect;
+
+                    return (
+                      <div
+                        key={option.id}
+                        style={{
+                          border: `2px solid ${showCorrect ? "#16a34a" : "#e5e7eb"}`,
+                          borderRadius: 12,
+                          padding: "10px 12px",
+                          background: showCorrect ? "#f0fdf4" : "#fafafa",
+                          boxShadow: showCorrect ? "0 10px 24px rgba(22, 101, 52, 0.12)" : "none",
+                          transition: "all 0.25s ease",
+                        }}
+                      >
+                        <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "center" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
+                            <span style={{ width: 12, height: 12, borderRadius: "50%", background: PIE_COLORS[optionIndex % PIE_COLORS.length], flexShrink: 0 }} />
+                            <span style={{ fontSize: 12, fontWeight: 800, color: "#6b7280", flexShrink: 0 }}>
+                              {option.id.toUpperCase()}
+                            </span>
+                            <span style={{ fontSize: 13, color: "#1f2937", lineHeight: 1.4 }}>
+                              {option.text}
+                            </span>
+                            {showCorrect && (
+                              <span style={{ fontSize: 11, fontWeight: 700, color: "#166534", background: "#dcfce7", borderRadius: 999, padding: "2px 8px", flexShrink: 0 }}>
+                                Correcta
+                              </span>
+                            )}
+                          </div>
+                          <span style={{ fontSize: 12, fontWeight: 800, color: showCorrect ? "#166534" : "#374151", flexShrink: 0 }}>
+                            {count} · {percentage}%
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }
