@@ -23,6 +23,17 @@ const RABBIT_DENTAL_CITATION = {
   url: "https://vetexoticapp.cl/cursos",
 };
 
+export const RABBIT_DENTAL_U3_U4_COURSE_ID = "odontologia-conejos-u3-u4-2026";
+export const RABBIT_DENTAL_U3_U4_COURSE_TITLE =
+  "Quiz 2: Diagnóstico avanzado y fisiopatología del SDA en conejos";
+export const RABBIT_DENTAL_U3_U4_COURSE_DESCRIPTION =
+  "Evaluación de selección múltiple sobre métodos de diagnóstico avanzado y clasificación del Síndrome Dental Adquirido (Unidad 3) y su fisiopatología en órganos anexos: hígado, páncreas y vía biliar (Unidad 4).";
+
+const RABBIT_DENTAL_U3_U4_CITATION = {
+  source: "Material docente: Quiz 2 diagnóstico avanzado y fisiopatología del SDA",
+  url: "https://vetexoticapp.cl/cursos",
+};
+
 const BASE_SPECIES_DATA: Record<string, StaticSpecies> = {
   pinguino: {
     id: "pinguino",
@@ -1159,6 +1170,414 @@ const RABBIT_DENTAL_SPECIES_DATA: Record<string, StaticSpecies> = {
   },
 };
 
+const RABBIT_DENTAL_U3_U4_SPECIES_DATA: Record<string, StaticSpecies> = {
+  conejo_u3_u4: {
+    id: "conejo_u3_u4",
+    name: "Conejo",
+    emoji: "🐰",
+    order: 1,
+    caseText:
+      "Cuestionario de evaluación integrador sobre métodos de diagnóstico avanzado y clasificación del Síndrome Dental Adquirido (SDA) en conejos, y su fisiopatología en órganos anexos: hígado, vía biliar y páncreas.",
+    keyConcept:
+      "El diagnóstico por imagen (TC) y la clasificación por grados del SDA orientan el manejo clínico, mientras que el dolor dental crónico desencadena complicaciones sistémicas graves en hígado, vía biliar y páncreas.",
+    questions: {
+      u1: {
+        id: "u1",
+        category: "Unidad 3 - Diagnóstico y clasificación",
+        text: "¿Qué porcentaje aproximado de lesiones oclusales y periapicales se pasa por alto mediante la inspección intraoral con otoscopio en un conejo consciente?",
+        type: "multiple_choice",
+        expectedAnswer: "Entre el 50% y el 75%.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 1,
+        options: [
+          { id: "a", text: "Entre el 50% y el 75%.", isCorrect: true },
+          { id: "b", text: "Menos del 20%.", isCorrect: false },
+          { id: "c", text: "Exactamente el 10%.", isCorrect: false },
+          { id: "d", text: "Más del 95%.", isCorrect: false },
+        ],
+      },
+      u2: {
+        id: "u2",
+        category: "Unidad 3 - Diagnóstico y clasificación",
+        text: "¿Cuál es la técnica de diagnóstico por imagen considerada el \"gold standard\" en odontología de pequeños mamíferos por eliminar la superposición ósea?",
+        type: "multiple_choice",
+        expectedAnswer: "Tomografía Computarizada (TC).",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 2,
+        options: [
+          { id: "a", text: "Radiografía lateral simple.", isCorrect: false },
+          { id: "b", text: "Tomografía Computarizada (TC).", isCorrect: true },
+          { id: "c", text: "Ecografía abdominal de alta frecuencia.", isCorrect: false },
+          { id: "d", text: "Radiografía ventrodorsal.", isCorrect: false },
+        ],
+      },
+      u3: {
+        id: "u3",
+        category: "Unidad 3 - Diagnóstico y clasificación",
+        text: "Un conejo presenta en el estudio radiográfico cambios marcados en la dirección del crecimiento dental y deformación de las coronas de reserva. ¿A qué grado de la clasificación del SDA corresponde?",
+        type: "multiple_choice",
+        expectedAnswer: "Grado 3.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 3,
+        options: [
+          { id: "a", text: "Grado 1.", isCorrect: false },
+          { id: "b", text: "Grado 2.", isCorrect: false },
+          { id: "c", text: "Grado 3.", isCorrect: true },
+          { id: "d", text: "Grado 5.", isCorrect: false },
+        ],
+      },
+      u4: {
+        id: "u4",
+        category: "Unidad 3 - Diagnóstico y clasificación",
+        text: "¿Cuál de los siguientes factores se comporta como el factor de riesgo demográfico más significativo para el desarrollo de la Enfermedad Dental Adquirida (EDA)?",
+        type: "multiple_choice",
+        expectedAnswer: "La edad avanzada del paciente.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 4,
+        options: [
+          { id: "a", text: "La dieta basada exclusivamente en heno.", isCorrect: false },
+          { id: "b", text: "El alojamiento en libertad dentro del hogar.", isCorrect: false },
+          { id: "c", text: "El sexo hembra en conejos juveniles.", isCorrect: false },
+          { id: "d", text: "La edad avanzada del paciente.", isCorrect: true },
+        ],
+      },
+      u5: {
+        id: "u5",
+        category: "Unidad 3 - Diagnóstico y clasificación",
+        text: "Un conejo presenta osteomielitis mandibular severa, fístulas óseas y abscesos periapicales destructivos. ¿Cómo se clasifica clínicamente este estadio del SDA?",
+        type: "multiple_choice",
+        expectedAnswer: "Grado 5 (Fase terminal).",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 5,
+        options: [
+          { id: "a", text: "Grado 5 (Fase terminal).", isCorrect: true },
+          { id: "b", text: "Grado 4 (Senectud).", isCorrect: false },
+          { id: "c", text: "Grado 2 (Elongación coronaria).", isCorrect: false },
+          { id: "d", text: "Grado 1 (Normal).", isCorrect: false },
+        ],
+      },
+      u6: {
+        id: "u6",
+        category: "Unidad 3 - Diagnóstico y clasificación",
+        text: "¿Por qué el mantenimiento de conejos en libertad dentro del hogar actúa como un factor protector frente a la Enfermedad Dental Adquirida?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Permite el acceso a luz solar indirecta para la síntesis de vitamina D y evita morder barrotes.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 6,
+        options: [
+          { id: "a", text: "Porque incrementa el consumo de carbohidratos solubles.", isCorrect: false },
+          { id: "b", text: "Porque permite el acceso a luz solar indirecta para la síntesis de vitamina D y evita morder barrotes.", isCorrect: true },
+          { id: "c", text: "Porque elimina la necesidad de realizar movimientos de molienda lateral.", isCorrect: false },
+          { id: "d", text: "Porque detiene el crecimiento continuo de los dientes elodontes.", isCorrect: false },
+        ],
+      },
+      u7: {
+        id: "u7",
+        category: "Unidad 3 - Diagnóstico y clasificación",
+        text: "Durante un corte de incisivos en un conejo despierto se utilizó un cortaúñas común. ¿Qué complicación iatrogénica directa produce esta maniobra?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Microfracturas longitudinales subgingivales que exponen la cavidad pulpar.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 7,
+        options: [
+          { id: "a", text: "Torsión del lóbulo hepático caudado.", isCorrect: false },
+          { id: "b", text: "Coccidiosis por sobrecrecimiento bacteriano.", isCorrect: false },
+          { id: "c", text: "Microfracturas longitudinales subgingivales que exponen la cavidad pulpar.", isCorrect: true },
+          { id: "d", text: "Detención inmediata de la motilidad del fusus coli.", isCorrect: false },
+        ],
+      },
+      u8: {
+        id: "u8",
+        category: "Unidad 4 - Fisiopatología de órganos anexos",
+        text: "¿Por qué el cultivo microbiológico tomado del centro caseoso de un absceso facial en conejos suele dar un resultado estéril o no viable?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Los heterófilos del conejo carecen de mieloperoxidasas de licuefacción, acumulando pus sólido y bacterias muertas.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 8,
+        options: [
+          { id: "a", text: "Porque los abscesos en conejos son causados exclusivamente por virus.", isCorrect: false },
+          { id: "b", text: "Porque la cápsula del absceso impide la entrada de antibióticos.", isCorrect: false },
+          { id: "c", text: "Porque el pus del conejo es de consistencia líquida y se lava fácilmente.", isCorrect: false },
+          { id: "d", text: "Porque los heterófilos del conejo carecen de mieloperoxidasas de licuefacción, acumulando pus sólido y bacterias muertas.", isCorrect: true },
+        ],
+      },
+      u9: {
+        id: "u9",
+        category: "Unidad 4 - Fisiopatología de órganos anexos",
+        text: "¿De qué estructura se debe obtener la muestra biológica para realizar un cultivo y antibiograma adecuado en un absceso odontogénico?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Directamente de la pared interna de la cápsula fibrosa del absceso tras el desbridamiento.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 9,
+        options: [
+          { id: "a", text: "Directamente de la pared interna de la cápsula fibrosa del absceso tras el desbridamiento.", isCorrect: true },
+          { id: "b", text: "Del centro líquido o purulento del absceso mediante aspiración con aguja fina.", isCorrect: false },
+          { id: "c", text: "De la saliva obtenida con un hisopo en la cavidad oral.", isCorrect: false },
+          { id: "d", text: "Del suero sanguíneo mediante titulación de anticuerpos.", isCorrect: false },
+        ],
+      },
+      u10: {
+        id: "u10",
+        category: "Unidad 4 - Fisiopatología de órganos anexos",
+        text: "¿Qué alteración ocular o anexa se produce cuando las raíces de los dientes de mejilla superiores invaden la fosa orbitaria debido a la EDA?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Obstrucción del conducto nasolagrimal, dacriocistitis y exoftalmos unilateral.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 10,
+        options: [
+          { id: "a", text: "Cataratas bilaterales juveniles.", isCorrect: false },
+          { id: "b", text: "Obstrucción del conducto nasolagrimal, dacriocistitis y exoftalmos unilateral.", isCorrect: true },
+          { id: "c", text: "Atrofia progresiva de la retina.", isCorrect: false },
+          { id: "d", text: "Ictericia conjuntival severa.", isCorrect: false },
+        ],
+      },
+      u11: {
+        id: "u11",
+        category: "Unidad 4 - Fisiopatología de órganos anexos",
+        text: "¿Cuál es el motivo anatómico por el cual el lóbulo hepático caudado del conejo presenta una alta predisposición a la torsión?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Se proyecta hacia la fosa renal derecha unido por un pedículo vascular estrecho y móvil.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 11,
+        options: [
+          { id: "a", text: "Está fusionado al lóbulo cuadrado mediante una amplia banda muscular.", isCorrect: false },
+          { id: "b", text: "Se ubica en la cavidad torácica ventral junto al corazón.", isCorrect: false },
+          { id: "c", text: "Se proyecta hacia la fosa renal derecha unido por un pedículo vascular estrecho y móvil.", isCorrect: true },
+          { id: "d", text: "Es el único lóbulo que carece de irrigación sanguínea.", isCorrect: false },
+        ],
+      },
+      u12: {
+        id: "u12",
+        category: "Unidad 4 - Fisiopatología de órganos anexos",
+        text: "¿Por qué la ictericia clínica es un hallazgo sumamente raro en conejos que cursan con enfermedad hepática severa?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "El pigmento biliar primario que producen y secretan es la biliverdina en lugar de la bilirrubina.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 12,
+        options: [
+          { id: "a", text: "Porque el conejo filtra la bilirrubina por la piel.", isCorrect: false },
+          { id: "b", text: "Porque los conejos no poseen vesícula biliar.", isCorrect: false },
+          { id: "c", text: "Porque el hígado del conejo no metaboliza lípidos.", isCorrect: false },
+          { id: "d", text: "Porque el pigmento biliar primario que producen y secretan es la biliverdina en lugar de la bilirrubina.", isCorrect: true },
+        ],
+      },
+      u13: {
+        id: "u13",
+        category: "Unidad 4 - Fisiopatología de órganos anexos",
+        text: "En un caso de torsión de lóbulo hepático, ¿cómo influye el descenso del hematocrito (PCV) en el pronóstico del paciente?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Por cada 1% que desciende el hematocrito, las probabilidades de muerte aumentan un 12%.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 13,
+        options: [
+          { id: "a", text: "Por cada 1% que desciende el hematocrito, las probabilidades de muerte aumentan un 12%.", isCorrect: true },
+          { id: "b", text: "Por cada 1% que desciende el hematocrito, las probabilidades de supervivencia aumentan un 50%.", isCorrect: false },
+          { id: "c", text: "El hematocrito no tiene ningún impacto en la mortalidad del conejo.", isCorrect: false },
+          { id: "d", text: "El hematocrito solo se altera si existe coccidiosis intestinal concomitante.", isCorrect: false },
+        ],
+      },
+      u14: {
+        id: "u14",
+        category: "Unidad 4 - Fisiopatología de órganos anexos",
+        text: "Un paciente presenta dolor abdominal agudo, anemia severa súbita y en la ecografía Doppler se observa ausencia total de flujo sanguíneo en el lóbulo caudado. ¿Cuál es el tratamiento curativo definitivo?",
+        type: "multiple_choice",
+        expectedAnswer: "Lobectomía hepática quirúrgica de emergencia.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 14,
+        options: [
+          { id: "a", text: "Administración de toltrazuril oral por 2 días.", isCorrect: false },
+          { id: "b", text: "Lobectomía hepática quirúrgica de emergencia.", isCorrect: true },
+          { id: "c", text: "Colocación de una sonda nasoesofágica para alimentación forzada.", isCorrect: false },
+          { id: "d", text: "Limado de espículas dentales bajo sedación.", isCorrect: false },
+        ],
+      },
+      u15: {
+        id: "u15",
+        category: "Unidad 4 - Fisiopatología de órganos anexos",
+        text: "¿Qué hallazgo de laboratorio e imagenológico apoya el diagnóstico de lipidosis hepática en un conejo anoréxico?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Elevación de transaminasas (ALT, AST, GGT), cetonuria, pH urinario < 7.5 y parénquima hepático hiperecoico.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 15,
+        options: [
+          { id: "a", text: "Hipocolesterolemia, pH urinario > 8.0 y parénquima anecoico.", isCorrect: false },
+          { id: "b", text: "Disminución marcada de ALT y AST con urea elevada.", isCorrect: false },
+          { id: "c", text: "Elevación de transaminasas (ALT, AST, GGT), cetonuria, pH urinario < 7.5 y parénquima hepático hiperecoico.", isCorrect: true },
+          { id: "d", text: "Presencia de ooquistes elípticos en la orina.", isCorrect: false },
+        ],
+      },
+      u16: {
+        id: "u16",
+        category: "Unidad 4 - Fisiopatología de órganos anexos",
+        text: "¿Cuál es el agente causal de la coccidiosis hepática en conejos y qué hallazgo histopatológico/macroscópico la caracteriza?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Eimeria stiedae con hiperplasia adenomatosa biliar y nódulos blanquecinos en el hígado.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 16,
+        options: [
+          { id: "a", text: "Clostridium perfringens con necrosis de la vesícula biliar.", isCorrect: false },
+          { id: "b", text: "Pasteurella multocida con abscesos purulentos encapsulados.", isCorrect: false },
+          { id: "c", text: "Escherichia coli con atrofia del parénquima pancreático.", isCorrect: false },
+          { id: "d", text: "Eimeria stiedae con hiperplasia adenomatosa biliar y nódulos blanquecinos en el hígado.", isCorrect: true },
+        ],
+      },
+      u17: {
+        id: "u17",
+        category: "Unidad 4 - Fisiopatología de órganos anexos",
+        text: "Anatómicamente, ¿dónde desemboca el conducto pancreático exocrino en el conejo?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "En el duodeno, aproximadamente a 30 cm distal al píloro y de forma independiente del conducto biliar.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 17,
+        options: [
+          { id: "a", text: "En el duodeno, aproximadamente a 30 cm distal al píloro y de forma independiente del conducto biliar.", isCorrect: true },
+          { id: "b", text: "Directamente en el píloro junto al esfínter del cardias.", isCorrect: false },
+          { id: "c", text: "En el íleon terminal a nivel del sacculus rotundus.", isCorrect: false },
+          { id: "d", text: "En el ciego, fusionado con la papila ileal.", isCorrect: false },
+        ],
+      },
+      u18: {
+        id: "u18",
+        category: "Unidad 4 - Fisiopatología de órganos anexos",
+        text: "¿Por qué la medición de amilasa y lipasa séricas convencionales no es fiable para confirmar pancreatitis en el paciente vivo?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Presentan baja sensibilidad/especificidad y pueden elevarse por hepatopatías, enteropatías o insuficiencia renal.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 18,
+        options: [
+          { id: "a", text: "Porque estas enzimas nunca se elevan en pequeños mamíferos.", isCorrect: false },
+          { id: "b", text: "Porque presentan baja sensibilidad/especificidad y pueden elevarse por hepatopatías, enteropatías o insuficiencia renal.", isCorrect: true },
+          { id: "c", text: "Porque el conejo no sintetiza enzimas pancreáticas.", isCorrect: false },
+          { id: "d", text: "Porque la muestra se altera inmediatamente si el pH gástrico es ácido.", isCorrect: false },
+        ],
+      },
+      u19: {
+        id: "u19",
+        category: "Unidad 4 - Fisiopatología de órganos anexos",
+        text: "¿Cuál es la prueba diagnóstica de elección para apoyar el diagnóstico clínico de pancreatitis en un conejo vivo?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Ecografía abdominal que muestre páncreas agrandado e hipoecoico con grasa mesentérica hiperecoica.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 19,
+        options: [
+          { id: "a", text: "Titulación de cPL mediante ELISA comercial específico de conejo.", isCorrect: false },
+          { id: "b", text: "Radiografía de tórax en proyección lateral.", isCorrect: false },
+          { id: "c", text: "Ecografía abdominal que muestre páncreas agrandado e hipoecoico con grasa mesentérica hiperecoica.", isCorrect: true },
+          { id: "d", text: "Flotación fecal en solución azucarada.", isCorrect: false },
+        ],
+      },
+      u20: {
+        id: "u20",
+        category: "Unidad 3 - Diagnóstico y clasificación",
+        text: "¿Qué protocolo de instrumental es obligatorio utilizar para el limado correcto de espículas de esmalte en los dientes de mejilla?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Fresas de diamante de baja velocidad bajo anestesia general, protegiendo tejidos blandos con espátulas romas.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 20,
+        options: [
+          { id: "a", text: "Cortaúñas de guillotina en el paciente despierto.", isCorrect: false },
+          { id: "b", text: "Alicates mecánicos de corte transversal sin anestesia.", isCorrect: false },
+          { id: "c", text: "Limas manuales de ortodoncia humana sin protección de cavidad oral.", isCorrect: false },
+          { id: "d", text: "Fresas de diamante de baja velocidad bajo anestesia general, protegiendo tejidos blandos con espátulas romas.", isCorrect: true },
+        ],
+      },
+      u21: {
+        id: "u21",
+        category: "Unidad 4 - Fisiopatología de órganos anexos",
+        text: "¿Cuál es la razón fisiopatológica por la que el dolor dental desencadena lipidosis hepática en el conejo?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "El dolor causa anorexia, lo que induce un balance energético negativo y movilización masiva de ácidos grasos al hígado.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 21,
+        options: [
+          { id: "a", text: "El dolor causa anorexia, lo que induce un balance energético negativo y movilización masiva de ácidos grasos al hígado.", isCorrect: true },
+          { id: "b", text: "El dolor dental destruye directamente las células acinares del páncreas.", isCorrect: false },
+          { id: "c", text: "Las bacterias orales migran por la saliva hacia la vena porta matando los hepatocitos.", isCorrect: false },
+          { id: "d", text: "El dolor estimula la secreción excesiva de biliverdina que paraliza el hígado.", isCorrect: false },
+        ],
+      },
+      u22: {
+        id: "u22",
+        category: "Unidad 3 - Diagnóstico y clasificación",
+        text: "Para el manejo posoperatorio de un absceso facial de Grado 5, ¿cuál es el tiempo mínimo recomendado para mantener la antibioterapia sistémica guiada por antibiograma?",
+        type: "multiple_choice",
+        expectedAnswer: "Un mínimo de 4 a 6 semanas.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 22,
+        options: [
+          { id: "a", text: "3 a 5 días máximo.", isCorrect: false },
+          { id: "b", text: "Un mínimo de 4 a 6 semanas.", isCorrect: true },
+          { id: "c", text: "Exactamente 24 horas.", isCorrect: false },
+          { id: "d", text: "No se deben administrar antibióticos posquirúrgicos.", isCorrect: false },
+        ],
+      },
+      u23: {
+        id: "u23",
+        category: "Unidad 3 - Diagnóstico y clasificación",
+        text: "¿Qué hallazgo distingue al Grado 2 de la clasificación del SDA frente a estadios más avanzados?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "La elongación de coronas clínicas e irregularidad oclusal sin desviación evidente de las raíces.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 23,
+        options: [
+          { id: "a", text: "La presencia de osteomielitis destructiva y abscesos periapicales.", isCorrect: false },
+          { id: "b", text: "El cese total del crecimiento activo por daño del tejido germinal.", isCorrect: false },
+          { id: "c", text: "La elongación de coronas clínicas e irregularidad oclusal sin desviación evidente de las raíces.", isCorrect: true },
+          { id: "d", text: "La pérdida total de la fórmula dentaria.", isCorrect: false },
+        ],
+      },
+      u24: {
+        id: "u24",
+        category: "Unidad 3 - Diagnóstico y clasificación",
+        text: "¿Qué material de relleno local de liberación lenta se recomienda empacar en la cavidad remanente tras la extirpación de un absceso odontogénico?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "Perlas de polimetilmetacrilato (PMMA) o esponjas de colágeno impregnadas en antibióticos.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 24,
+        options: [
+          { id: "a", text: "Gasa quirúrgica seca con talco.", isCorrect: false },
+          { id: "b", text: "Pasta de hidróxido de calcio puro sin antibiótico.", isCorrect: false },
+          { id: "c", text: "Algodón estéril impregnado en alcohol.", isCorrect: false },
+          { id: "d", text: "Perlas de polimetilmetacrilato (PMMA) o esponjas de colágeno impregnadas en antibióticos.", isCorrect: true },
+        ],
+      },
+      u25: {
+        id: "u25",
+        category: "Unidad 3 - Diagnóstico y clasificación",
+        text: "¿Cuál es la causa primaria de la desviación de las coronas de reserva e invasión del hueso cortical en la patogenia de la EDA?",
+        type: "multiple_choice",
+        expectedAnswer:
+          "La reducción de fibra que disminuye la molienda lateral e incrementa las fuerzas de compresión intrusiva en los ápices.",
+        citation: RABBIT_DENTAL_U3_U4_CITATION,
+        order: 25,
+        options: [
+          { id: "a", text: "La ingesta excesiva de heno rico en fitolitos de sílice.", isCorrect: false },
+          { id: "b", text: "El exceso de ejercicio en conejos criados en libertad.", isCorrect: false },
+          { id: "c", text: "La inflamación primaria de las glándulas salivales.", isCorrect: false },
+          { id: "d", text: "La reducción de fibra que disminuye la molienda lateral e incrementa las fuerzas de compresión intrusiva en los ápices.", isCorrect: true },
+        ],
+      },
+    },
+  },
+};
+
 const MULTIPLE_CHOICE_OPTIONS: Record<string, Record<string, CourseQuestionOption[]>> = {
   pinguino: {
     r2: [
@@ -1442,6 +1861,8 @@ function normalizeSpeciesData(data: Record<string, StaticSpecies>): Record<strin
 export const SPECIES_DATA: Record<string, StoredSpecies> = normalizeSpeciesData(BASE_SPECIES_DATA);
 export const RABBIT_DENTAL_SPECIES_DATA_NORMALIZED: Record<string, StoredSpecies> =
   normalizeSpeciesData(RABBIT_DENTAL_SPECIES_DATA);
+export const RABBIT_DENTAL_U3_U4_SPECIES_DATA_NORMALIZED: Record<string, StoredSpecies> =
+  normalizeSpeciesData(RABBIT_DENTAL_U3_U4_SPECIES_DATA);
 
 const COURSE_TEMPLATES: Record<string, {
   title: string;
@@ -1457,6 +1878,11 @@ const COURSE_TEMPLATES: Record<string, {
     title: RABBIT_DENTAL_COURSE_TITLE,
     description: RABBIT_DENTAL_COURSE_DESCRIPTION,
     species: RABBIT_DENTAL_SPECIES_DATA_NORMALIZED,
+  },
+  [RABBIT_DENTAL_U3_U4_COURSE_ID]: {
+    title: RABBIT_DENTAL_U3_U4_COURSE_TITLE,
+    description: RABBIT_DENTAL_U3_U4_COURSE_DESCRIPTION,
+    species: RABBIT_DENTAL_U3_U4_SPECIES_DATA_NORMALIZED,
   },
 };
 

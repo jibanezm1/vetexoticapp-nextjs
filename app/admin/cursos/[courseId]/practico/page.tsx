@@ -10,7 +10,7 @@ import {
   hasStoredAnswer,
   isQuestionAnswered,
 } from "@/lib/wildlifeCourse/questionHelpers";
-import { RABBIT_DENTAL_COURSE_ID } from "@/lib/wildlifeCourse/courseData";
+import { RABBIT_DENTAL_COURSE_ID, RABBIT_DENTAL_U3_U4_COURSE_ID } from "@/lib/wildlifeCourse/courseData";
 import { seedWildlifeCourse } from "@/lib/wildlifeCourse/seed";
 import type {
   AllStudentResponses,
@@ -24,7 +24,11 @@ import type {
 type AdminTab = "alumnos" | "especies" | "respuestas" | "graficos";
 type SelectedGraphQuestion = { speciesId: string; questionId: string };
 
-const PROTECTED_COURSE_IDS = new Set(["fauna-silvestre-2026", RABBIT_DENTAL_COURSE_ID]);
+const PROTECTED_COURSE_IDS = new Set([
+  "fauna-silvestre-2026",
+  RABBIT_DENTAL_COURSE_ID,
+  RABBIT_DENTAL_U3_U4_COURSE_ID,
+]);
 const ADMIN_ACCESS_CODE = "Valkytorby3032";
 
 function getAdminAccessStorageKey(courseId: string): string {
