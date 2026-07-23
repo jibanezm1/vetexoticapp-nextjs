@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import Script from "next/script";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from '@vercel/analytics/next';
 
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700"],
@@ -261,6 +262,7 @@ export default function RootLayout({
         <main>{children}</main>
         <Footer />
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
